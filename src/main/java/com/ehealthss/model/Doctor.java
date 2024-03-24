@@ -21,7 +21,7 @@ import com.ehealthss.model.enums.DoctorDepartment;
 public class Doctor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -47,9 +47,8 @@ public class Doctor {
 	public Doctor() {
 	}
 
-	public Doctor(int id, User user, String firstName, String lastName, String email, String phone,
+	public Doctor(User user, String firstName, String lastName, String email, String phone,
 			DoctorDepartment department, Date createdOn, Date updatedOn) {
-		this.id = id;
 		this.user = user;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -60,11 +59,11 @@ public class Doctor {
 		this.updatedOn = updatedOn;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
