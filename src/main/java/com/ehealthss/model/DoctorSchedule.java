@@ -19,7 +19,7 @@ import com.ehealthss.model.enums.DayOfWeek;
 public class DoctorSchedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctor_id")
@@ -53,11 +53,11 @@ public class DoctorSchedule {
 		this.updatedOn = updatedOn;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
