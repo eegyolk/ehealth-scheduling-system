@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 public class LocationAvailability {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
@@ -43,11 +43,11 @@ public class LocationAvailability {
 		this.endTime = endTime;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
