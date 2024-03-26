@@ -1,4 +1,4 @@
-package com.ehealthss.service.interfaces;
+package com.ehealthss.service;
 
 import org.springframework.stereotype.Service;
 
