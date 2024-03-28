@@ -18,10 +18,12 @@ public class AuthenticationController {
 
 	@GetMapping("/login")
 	public String login(Model uiModel, CsrfToken token,
-			@RequestParam(name = "error", required = false) boolean hasError) {
+			@RequestParam(name = "error", required = false) boolean hasError,
+			@RequestParam(name = "logout", required = false) boolean isLogout) {
 
 		uiModel.addAttribute("pageTitle", "Login");
 		uiModel.addAttribute("hasError", hasError);
+		uiModel.addAttribute("isLogout", isLogout);
 
 		return "authentication/login";
 	}

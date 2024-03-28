@@ -6,6 +6,8 @@
 		<form th:action="@{/login}" method="POST">
 			<div th:insert="~{fragments/messages :: login_error}"
 				th:if="${hasError}"></div>
+			<div th:insert="~{fragments/messages :: logout_success}"
+				th:if="${isLogout}"></div>
 
 			<h1 class="fw-bold fs-2 text-primary text-center mb-4">
 				<i class="bi bi-heart-pulse-fill"></i> eHealthQue
