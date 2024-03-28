@@ -7,6 +7,8 @@ import java.util.Objects;
 import com.ehealthss.model.enums.UserType;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,13 +20,17 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String username;
 	private String password;
+
+	@Enumerated(EnumType.STRING)
 	private UserType type;
+
 	private Date createdOn;
 	private Date updatedOn;
 
@@ -39,7 +45,7 @@ public class User {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<AppointmentActivity> appointmentActivities;
-	
+
 	public User() {
 	}
 
@@ -123,7 +129,7 @@ public class User {
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
 	}
-	
+
 	public List<AppointmentActivity> getAppointmentActivities() {
 		return appointmentActivities;
 	}

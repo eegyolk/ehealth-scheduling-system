@@ -19,6 +19,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "patient")
 public class Patient {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

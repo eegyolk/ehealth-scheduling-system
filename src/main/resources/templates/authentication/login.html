@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/include :: include_sign_in}"></head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+	<main class="form-signin w-100 m-auto">
+		<form th:action="@{/login}" method="POST">
+			<div th:insert="~{fragments/messages :: login_error}"
+				th:if="${hasError}"></div>
+
+			<h1 class="fw-bold fs-2 text-primary text-center mb-4">
+				<i class="bi bi-heart-pulse-fill"></i> eHealthQue
+			</h1>
+			<h1 class="h5 mb-3 fw-normal text-center">Please sign in to your
+				account</h1>
+
+			<div class="form-floating mb-2">
+				<input name="username" type="text" class="form-control"
+					id="floatingInput" placeholder="Username" required> <label
+					for="floatingInput">Username</label>
+			</div>
+			<div class="form-floating">
+				<input name="password" type="password" class="form-control"
+					id="floatingPassword" placeholder="Password" required> <label
+					for="floatingPassword">Password</label>
+			</div>
+
+			<button class="btn btn-primary w-100 py-2 mb-2" type="submit">Sign
+				in</button>
+			<span class="text-body-secondary">If you haven't owned an
+				account yet, please visit any of our </span> <a
+				class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+				href="/locations">partner clinics</a> <span
+				class="text-body-secondary"> to register.</span>
+		</form>
+	</main>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

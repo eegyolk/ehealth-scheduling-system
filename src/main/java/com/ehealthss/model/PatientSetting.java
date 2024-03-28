@@ -15,6 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "patient_setting")
 public class PatientSetting {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -24,11 +25,11 @@ public class PatientSetting {
 	private Patient patient;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "doctor_id")
+	@JoinColumn(name = "preferred_doctor")
 	private Doctor preferredDoctor;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "location_id")
+	@JoinColumn(name = "preferred_location")
 	private Location preferredLocation;
 
 	private String preferredTime;

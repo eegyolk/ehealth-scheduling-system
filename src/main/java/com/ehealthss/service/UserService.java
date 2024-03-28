@@ -9,6 +9,8 @@ import com.ehealthss.model.User;
 @Service
 public interface UserService {
 
+	User findByLogin(String username);
+	
 	List<User> findAllUsers();
 
 	void save(User user);
