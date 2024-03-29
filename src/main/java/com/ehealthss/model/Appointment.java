@@ -1,6 +1,8 @@
 package com.ehealthss.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,7 +41,11 @@ public class Appointment {
 	private Date datetime;
 	private String description;
 	private String reason;
+	
+	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
+	
+	private boolean joinWaitlist;
 	private int slot;
 	private Date createdOn;
 	private Date updatedOn;
@@ -51,7 +57,7 @@ public class Appointment {
 	}
 
 	public Appointment(Patient patient, Doctor doctor, Location location, String referenceNo, Date datetime,
-			String description, String reason, AppointmentStatus status, int slot) {
+			String description, String reason, AppointmentStatus status, boolean joinWaitlist, int slot) {
 		this.patient = patient;
 		this.doctor = doctor;
 		this.location = location;
@@ -60,6 +66,7 @@ public class Appointment {
 		this.description = description;
 		this.reason = reason;
 		this.status = status;
+		this.joinWaitlist = joinWaitlist;
 		this.slot = slot;
 	}
 
@@ -135,6 +142,14 @@ public class Appointment {
 		this.status = status;
 	}
 
+	public boolean isJoinWaitlist() {
+		return joinWaitlist;
+	}
+
+	public void setJoinWaitlist(boolean joinWaitlist) {
+		this.joinWaitlist = joinWaitlist;
+	}
+
 	public int getSlot() {
 		return slot;
 	}
@@ -170,13 +185,13 @@ public class Appointment {
 	@Override
 	public String toString() {
 		return String.format(
-				"Appointment [id=%s, referenceNo=%s, datetime=%s, description=%s, reason=%s, status=%s, slot=%s, createdOn=%s, updatedOn=%s]",
-				id, referenceNo, datetime, description, reason, status, slot, createdOn, updatedOn);
+				"Appointment [id=%s, referenceNo=%s, datetime=%s, description=%s, reason=%s, status=%s, joinWaitlist=%s, slot=%s, createdOn=%s, updatedOn=%s]",
+				id, referenceNo, datetime, description, reason, status, joinWaitlist, slot, createdOn, updatedOn);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(createdOn, datetime, description, id, reason, referenceNo, slot, status, updatedOn);
+		return Objects.hash(createdOn, datetime, description, id, reason, referenceNo, joinWaitlist, slot, status, updatedOn);
 	}
 
 	@Override
@@ -191,7 +206,7 @@ public class Appointment {
 		return Objects.equals(createdOn, other.createdOn) && Objects.equals(datetime, other.datetime)
 				&& Objects.equals(description, other.description) && id == other.id
 				&& Objects.equals(reason, other.reason) && Objects.equals(referenceNo, other.referenceNo)
-				&& slot == other.slot && status == other.status && Objects.equals(updatedOn, other.updatedOn);
+				&& joinWaitlist == other.joinWaitlist && slot == other.slot && status == other.status && Objects.equals(updatedOn, other.updatedOn);
 	}
 
 }
