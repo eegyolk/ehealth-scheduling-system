@@ -1,0 +1,42 @@
+<nav th:fragment="header">
+	<div class="container-fluid">
+		<h4 class="fw-bold fs-2 text-primary text-center m-0">
+			<i class="bi bi-heart-pulse-fill"></i> eHealthQue
+		</h4>
+
+		<div class="align-items-end" id="navbarCollapse">
+			<ul class="navbar-nav me-auto mb-2 mb-md-0">
+				<li class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Dashboard') ? 'fw-medium active' : '')"
+					href="/dashboard">Dashboard</a></li>
+				<li class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Book Appointment') ? 'fw-medium active' : '')"
+					href="/book-appointment">Book Appointment</a></li>
+				<li class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Doctor Clock-In') ? 'fw-medium active' : '')"
+					href="/doctor-clock-in">Doctor Clock-In</a></li>
+				<li class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Help & Support') ? 'fw-medium active' : '')"
+					href="/help-and-support">Help & Support</a></li>
+				<li class="nav-item px-2"><button type="button"
+						class="btn btn-primary">
+						<i class="bi bi-search"></i>
+					</button></li>
+				<li class="nav-item px-2"><div class="vr"></div></li>
+				<li class="nav-item px-2"><button type="button"
+						class="btn btn-primary">
+						<i class="bi bi-bell-fill"></i>
+					</button></li>
+				<li class="nav-item px-2"><button type="button"
+						class="btn btn-primary">
+						<i class="bi bi-person-fill"></i>
+					</button></li>
+				<li class="nav-item px-2"><button id="fullscreenButton" type="button"
+						class="btn btn-primary">
+						<i class="bi bi-arrows-fullscreen"></i>
+					</button></li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
