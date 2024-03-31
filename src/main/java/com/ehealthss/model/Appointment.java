@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.ehealthss.model.enums.AppointmentStatus;
 
 @Entity
@@ -47,7 +50,10 @@ public class Appointment {
 	
 	private boolean joinWaitlist;
 	private int slot;
+	
+	@CreationTimestamp
 	private Date createdOn;
+	
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")

@@ -4,13 +4,17 @@
 		content="eHealthQueue - eHealth Scheduling System" />
 	<meta name="author" content="Edgardo Guzman Jr" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	<title th:text="'eHealthQue - ' + ${pageTitle}"></title>
+	
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 		rel="stylesheet">
 	<link rel="stylesheet"
 		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link href="/css/sign-in.css" rel="stylesheet">
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <head th:fragment="include">
@@ -19,17 +23,34 @@
 		content="eHealthQueue - eHealth Scheduling System" />
 	<meta name="author" content="Edgardo Guzman Jr" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	<title th:text="'eHealthQue - ' + ${pageTitle}"></title>
+	
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 		rel="stylesheet">
 	<link rel="stylesheet"
 		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link href="/css/navbar-fixed.css" rel="stylesheet">
+	<link th:if="${withCalendarComponent}" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css">
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script th:if="${withCalendarComponent}" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/solid.min.js"></script>
+    <script th:if="${withCalendarComponent}" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/fontawesome.min.js"></script>
+		
+	<script th:if="${withCalendarComponent}" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script th:if="${withCalendarComponent}" src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/tempus-dominus.min.js"></script>
+	<script th:if="${withCalendarComponent}" src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/jQuery-provider.js"></script>
+	
 	<style>
 		html body {
     		background-color: #f9f9f9;
 		}
+		
+		/* Overrides the modal medium size from 500px to 550px */
+		.modal-dialog { 
+		    min-width: 550px !important;
+		}
 	</style>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>

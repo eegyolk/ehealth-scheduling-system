@@ -1,6 +1,7 @@
 package com.ehealthss.model;
 
 import com.ehealthss.model.enums.PatientGender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,6 +27,7 @@ public class Patient {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	private String firstName;

@@ -1,0 +1,155 @@
+<div class="modal fade" id="createAppointment" tabindex="-1"
+	aria-labelledby="#createAppointmentLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#createAppointmentLabel">Create
+					Appointment</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="container">
+					<div id="divFeedback" class="row mb-3"></div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">
+							<span class="text-danger me-1">*</span>Title
+						</div>
+						<div class="col">
+							<input id="textTitle" type="text" class="form-control" required />
+							<div id="textTitleFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">
+							<span class="text-danger me-1">*</span>Clinic
+						</div>
+						<div class="col">
+							<select id="selectClinic" class="form-select" aria-label="Clinic"
+								required>
+								<option selected disabled value="">...</option>
+								<option th:each="location : ${locations}"
+									th:value="${location.id}"
+									th:text="${location.name} + ' - ' + ${location.address}"></option>
+							</select>
+							<div id="selectClinicFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">
+							<span class="text-danger me-1">*</span>Department
+						</div>
+						<div class="col">
+							<select id="selectDepartment" class="form-select"
+								aria-label="Department" disabled required>
+								<option selected disabled value="">...</option>
+								<option th:each="department : ${doctorDepartments}"
+									th:value="${department}"
+									th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(department, '_', ' ')))}"></option>
+							</select>
+							<div id="selectDepartmentFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">
+							<span class="text-danger me-1">*</span>Doctor
+						</div>
+						<div class="col">
+							<select id="selectDoctor" class="form-select" aria-label="Doctor"
+								disabled required>
+								<option selected disabled value="">...</option>
+							</select>
+							<div id="selectDoctorFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">
+							<span class="text-danger me-1">*</span>Datetime
+						</div>
+						<div class="col">
+							<div class="input-group" id="datetimepicker1"
+								data-td-target-input="nearest" data-td-target-toggle="nearest">
+								<input id="textDate" type="text" class="form-control" readonly
+									disabled required /> <span class="input-group-text"
+									data-td-target="#datetimepicker1"
+									data-td-toggle="datetimepicker"> <span
+									class="fas fa-calendar"></span>
+								</span>
+								<div id="textDateFeedback" class="invalid-feedback"></div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="input-group">
+								<select id="selectTime" class="form-select" aria-label="Time"
+									disabled required>
+									<option selected disabled value="">...</option>
+									<option value="1">09:00 AM</option>
+									<option value="1">09:30 AM</option>
+									<option value="1">12:30 PM</option>
+								</select> <span class="input-group-text"
+									data-td-target="#datetimepicker1"
+									data-td-toggle="datetimepicker"> <span
+									class="fas fa-clock"></span>
+								</span>
+								<div id="selectTimeFeedback" class="invalid-feedback"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">
+							<span class="text-danger me-1">*</span>Reason
+						</div>
+						<div class="col">
+							<textarea id="textReason" class="form-control"
+								aria-label="Reason" required></textarea>
+							<div id="textReasonFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1"></div>
+						<div class="col">
+							<input id="checkJoinWaitlist" class="form-check-input"
+								type="checkbox"> <label class="form-check-label"
+								for="joinWaitlist"> Join waitlist </label><i
+								class="bi bi-question-circle-fill ms-1" data-bs-toggle="tooltip"
+								data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+								data-bs-title="You will be added to the waitlist if the selected date and time are not available."></i>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-3 pt-1"></div>
+						<div class="col">
+							<input id="checkConfirmInformation" class="form-check-input"
+								type="checkbox" required /> <label class="form-check-label"
+								for="confirmInformation"><span class="text-danger me-1">*</span>Confirm
+								information </label>
+							<div id="checkConfirmInformationFeedback"
+								class="invalid-feedback"></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}" />
+				<button id="buttonCancel" type="button" class="btn btn-danger" data-bs-dismiss="modal">
+					<i class="bi bi-x-lg me-1"></i>Cancel
+				</button>
+				<button id="buttonSave" type="button" class="btn btn-primary">
+					<i class="bi bi-save me-1"></i>Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

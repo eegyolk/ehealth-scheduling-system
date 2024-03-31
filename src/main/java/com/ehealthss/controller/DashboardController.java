@@ -26,7 +26,8 @@ public class DashboardController {
 		User currentUser = userService.findByLogin(userDetails.getUsername());
 
 		uiModel.addAttribute("pageTitle", "Dashboard");
-
+		uiModel.addAttribute("withCalendarComponent", false);
+		
 		return "dashboard/dashboard";
 	}
 

@@ -6,6 +6,8 @@ import java.util.Objects;
 import com.ehealthss.model.enums.DayOfWeek;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +27,9 @@ public class LocationAvailability {
 	@JoinColumn(name = "location_id")
 	private Location location;
 
-	private DayOfWeek dow;
+	@Enumerated(EnumType.STRING)
+	private DayOfWeek dayOfWeek;
+	
 	private boolean allDay;
 	private String startTime;
 	private String endTime;
@@ -35,9 +39,9 @@ public class LocationAvailability {
 	public LocationAvailability() {
 	}
 
-	public LocationAvailability(Location location, DayOfWeek dow, boolean allDay, String startTime, String endTime) {
+	public LocationAvailability(Location location, DayOfWeek dayOfWeek, boolean allDay, String startTime, String endTime) {
 		this.location = location;
-		this.dow = dow;
+		this.dayOfWeek = dayOfWeek;
 		this.allDay = allDay;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -59,12 +63,12 @@ public class LocationAvailability {
 		this.location = location;
 	}
 
-	public DayOfWeek getDow() {
-		return dow;
+	public DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
 	}
 
-	public void setDow(DayOfWeek dow) {
-		this.dow = dow;
+	public void setDayOfWeek(DayOfWeek dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
 	}
 
 	public boolean isAllDay() {
@@ -110,13 +114,13 @@ public class LocationAvailability {
 	@Override
 	public String toString() {
 		return String.format(
-				"LocationAvailability [id=%s, dow=%s, allDay=%s, startTime=%s, endTime=%s, createdOn=%s, updatedOn=%s]",
-				id, dow, allDay, startTime, endTime, createdOn, updatedOn);
+				"LocationAvailability [id=%s, dayOfWeek=%s, allDay=%s, startTime=%s, endTime=%s, createdOn=%s, updatedOn=%s]",
+				id, dayOfWeek, allDay, startTime, endTime, createdOn, updatedOn);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(allDay, createdOn, dow, endTime, id, startTime, updatedOn);
+		return Objects.hash(allDay, createdOn, dayOfWeek, endTime, id, startTime, updatedOn);
 	}
 
 	@Override
@@ -128,7 +132,7 @@ public class LocationAvailability {
 		if (getClass() != obj.getClass())
 			return false;
 		LocationAvailability other = (LocationAvailability) obj;
-		return allDay == other.allDay && Objects.equals(createdOn, other.createdOn) && dow == other.dow
+		return allDay == other.allDay && Objects.equals(createdOn, other.createdOn) && dayOfWeek == other.dayOfWeek
 				&& Objects.equals(endTime, other.endTime) && id == other.id
 				&& Objects.equals(startTime, other.startTime) && Objects.equals(updatedOn, other.updatedOn);
 	}

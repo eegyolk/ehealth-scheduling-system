@@ -1,3 +1,3 @@
-$(document).ready(function() {
-	console.log("Im using jQuery");
+$().ready(function() {
+	console.log("Initialize header jQuery");
 });

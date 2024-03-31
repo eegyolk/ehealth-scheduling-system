@@ -1,6 +1,8 @@
 package com.ehealthss.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,23 +15,28 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.ehealthss.model.enums.DayOfWeek;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "doctor_schedule")
-public class DoctorSchedule {
+public class DoctorSchedule implements Comparable<DoctorSchedule> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctor_id")
+	@JsonIgnore
 	private Doctor doctor;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
+	@JsonIgnore
 	private Location location;
 
+	@Enumerated(EnumType.STRING)
 	private DayOfWeek dayOfWeek;
+	
 	private String startTime;
 	private String endTime;
 	private int slot;
@@ -157,6 +164,11 @@ public class DoctorSchedule {
 		return Objects.equals(createdOn, other.createdOn) && dayOfWeek == other.dayOfWeek && duration == other.duration
 				&& Objects.equals(endTime, other.endTime) && id == other.id && slot == other.slot
 				&& Objects.equals(startTime, other.startTime) && Objects.equals(updatedOn, other.updatedOn);
+	}
+
+	@Override
+	public int compareTo(DoctorSchedule o) {
+		return o.getId().compareTo(this.getId());
 	}
 
 }

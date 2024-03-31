@@ -14,6 +14,8 @@ import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.ehealthss.model.enums.AppointmentStatus;
 
 @Entity
@@ -36,8 +38,8 @@ public class AppointmentActivity {
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
 	
+	@CreationTimestamp
 	private Date createdOn;
-	private Date updatedOn;
 
 	public AppointmentActivity() {
 	}
@@ -97,23 +99,15 @@ public class AppointmentActivity {
 		this.createdOn = createdOn;
 	}
 
-	public Date getUpdatedOn() {
-		return updatedOn;
-	}
-
-	public void setUpdatedOn(Date updatedOn) {
-		this.updatedOn = updatedOn;
-	}
-
 	@Override
 	public String toString() {
-		return String.format("AppointmentActivity [id=%s, notes=%s, status=%s, createdOn=%s, updatedOn=%s]", id, notes,
-				status, createdOn, updatedOn);
+		return String.format("AppointmentActivity [id=%s, notes=%s, status=%s, createdOn=%s]", id, notes,
+				status, createdOn);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(createdOn, id, notes, status, updatedOn);
+		return Objects.hash(createdOn, id, notes, status);
 	}
 
 	@Override
@@ -126,7 +120,7 @@ public class AppointmentActivity {
 			return false;
 		AppointmentActivity other = (AppointmentActivity) obj;
 		return Objects.equals(createdOn, other.createdOn) && id == other.id && Objects.equals(notes, other.notes)
-				&& status == other.status && Objects.equals(updatedOn, other.updatedOn);
+				&& status == other.status;
 	}
 
 }

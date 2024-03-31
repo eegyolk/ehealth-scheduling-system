@@ -1,6 +1,8 @@
 package com.ehealthss.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,10 +17,11 @@ import java.util.List;
 import java.util.Objects;
 
 import com.ehealthss.model.enums.DoctorDepartment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "doctor")
-public class Doctor {
+public class Doctor implements Comparable<Doctor> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,23 +29,30 @@ public class Doctor {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phone;
+	
+	@Enumerated(EnumType.STRING)
 	private DoctorDepartment department;
+	
 	private Date createdOn;
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+	@JsonIgnore
 	private List<DoctorSchedule> doctorSchedules;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+	@JsonIgnore
 	private List<DoctorAttendance> doctorAttendances;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
+	@JsonIgnore
 	private List<Appointment> appointments;
 
 	public Doctor() {
@@ -183,4 +193,8 @@ public class Doctor {
 				&& Objects.equals(updatedOn, other.updatedOn) && Objects.equals(user, other.user);
 	}
 
+	@Override
+	public int compareTo(Doctor o) {
+		return o.getId().compareTo(this.getId());
+	}
 }

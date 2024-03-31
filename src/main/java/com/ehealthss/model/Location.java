@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,18 +31,23 @@ public class Location {
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+	@JsonIgnore
 	private List<LocationAvailability> locationAvailabilities;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+	@JsonIgnore
 	private List<Staff> staff;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+	@JsonIgnore
 	private List<DoctorSchedule> doctorSchedules;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+	@JsonIgnore
 	private List<DoctorAttendance> doctorAttendances;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+	@JsonIgnore
 	private List<Appointment> appointments;
 
 	public Location() {
