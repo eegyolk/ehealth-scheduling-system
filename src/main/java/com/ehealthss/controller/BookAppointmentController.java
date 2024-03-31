@@ -1,7 +1,5 @@
 package com.ehealthss.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,11 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ehealthss.model.Appointment;
-import com.ehealthss.model.Location;
 import com.ehealthss.model.User;
-import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.service.BookAppointmentService;
-import com.ehealthss.service.LocationService;
 import com.ehealthss.service.UserService;
 
 @Controller
@@ -31,23 +26,22 @@ public class BookAppointmentController {
 
 	private final BookAppointmentService bookAppointmentService;
 	private final UserService userService;
-	private final LocationService locationService;
 
 	Logger logger = LoggerFactory.getLogger(BookAppointmentController.class);
 
-	public BookAppointmentController(BookAppointmentService bookAppointmentService, UserService userService,
-			LocationService locationService) {
+	public BookAppointmentController(BookAppointmentService bookAppointmentService, UserService userService) {
+
 		this.bookAppointmentService = bookAppointmentService;
 		this.userService = userService;
-		this.locationService = locationService;
+
 	}
 
 	@GetMapping("")
-	public String index(Model uiModel, @AuthenticationPrincipal UserDetails userDetails) {
+	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
 		User currentUser = userService.findByLogin(userDetails.getUsername());
 
-		return bookAppointmentService.index(currentUser);
+		return bookAppointmentService.index(model, currentUser);
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)
