@@ -1,6 +1,4 @@
-$().ready(function() {
-	console.log("Initialize book-appointment jQuery");
-	
+$().ready(function() {	
 	initDateTimePicker();
 	initToolTip();
 	modalEvents();
@@ -130,7 +128,7 @@ $().ready(function() {
  
 			if (typeof(result) === 'object') {
 				$.ajax({
-				  	url: `/book-appointment/create/${result.doctorId}/${result.locationId}`,
+				  	url: `/book-appointment/create/appointment/${result.doctorId}/${result.locationId}`,
 				  	method: "POST",
 				  	headers: {
 						"Content-Type": "application/json",
@@ -141,6 +139,11 @@ $().ready(function() {
 					$("#divFeedback").html(`<div class="p-3 text-primary-emphasis border border-success-subtle bg-success-subtle">Your appointment has been created successfully.</div>`).addClass("p-2");
 					
 					setTimeout(function() {
+						// We destroy first then re-initialize the data table
+						// from /js/data-table.js file
+						window.tableAppointmentList.destroy();
+						window.initDataTableAppointmentList();
+						
 						$("#buttonCancel").prop("disabled", false);
 						$("#buttonSave").prop("disabled", false);
 						$("#buttonCancel").click();

@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "patient_setting")
 public class PatientSetting {
@@ -22,14 +24,17 @@ public class PatientSetting {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id")
+	@JsonIgnore
 	private Patient patient;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "preferred_doctor")
+	@JsonIgnore
 	private Doctor preferredDoctor;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "preferred_location")
+	@JsonIgnore
 	private Location preferredLocation;
 
 	private String preferredTime;

@@ -41,9 +41,11 @@ public class Patient {
 	private Date updatedOn;
 
 	@OneToOne(mappedBy = "patient")
+	@JsonIgnore
 	private PatientSetting patientSetting;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+	@JsonIgnore
 	private List<Appointment> appointments;
 
 	public Patient() {

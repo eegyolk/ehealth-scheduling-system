@@ -10,7 +10,7 @@ import com.ehealthss.model.enums.DoctorDepartment;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
-
+	
 	List<Doctor> findByDepartment(DoctorDepartment doctorDepartment);
 
 }
