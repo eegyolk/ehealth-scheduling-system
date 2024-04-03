@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
@@ -31,7 +29,6 @@ import com.ehealthss.service.DoctorService;
 import com.ehealthss.service.LocationService;
 
 import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.validation.Valid;
 
 @Service
@@ -42,8 +39,6 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 	private final LocationService locationService;
 	private final AppointmentService appointmentService;
 	private final AppointmentActivityService appointmentActivityService;
-
-	Logger logger = LoggerFactory.getLogger(BookAppointmentServiceImpl.class);
 
 	public BookAppointmentServiceImpl(DoctorService doctorService, LocationService locationService,
 			AppointmentService appointmentService, AppointmentActivityService appointmentActivityService) {
@@ -69,7 +64,26 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 
 		DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
 		model.addAttribute("doctorDepartments", doctorDepartments);
+		
+		// Get appointments by patient_id and status, order by created_on descending
+		List<Appointment> appointments = appointmentService.findByPatientIdAndStatusOrderByCreatedOnDesc(user.getPatient().getId(), AppointmentStatus.FULFILLED);
+		
+		Set<Doctor> assignedDoctors = new TreeSet<>();
+		Set<Location> assignedLocations = new TreeSet<>();
 
+		for (Appointment appointment : appointments) {
+			Doctor doctor = appointment.getDoctor();
+			doctor.setCreatedOn(appointment.getCreatedOn());
+			assignedDoctors.add(doctor);
+			
+			Location location = appointment.getLocation();
+			location.setCreatedOn(appointment.getCreatedOn());
+			assignedLocations.add(location);
+		}
+		
+		model.addAttribute("lastDoctorVisited", assignedDoctors);
+		model.addAttribute("lastClinicVisited", assignedLocations);
+		
 		return template;
 
 	}

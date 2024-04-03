@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "location")
-public class Location {
+public class Location implements Comparable<Location> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -202,6 +202,11 @@ public class Location {
 				&& Objects.equals(email, other.email) && id == other.id && Objects.equals(latitude, other.latitude)
 				&& Objects.equals(longitude, other.longitude) && Objects.equals(name, other.name)
 				&& Objects.equals(phone, other.phone) && Objects.equals(updatedOn, other.updatedOn);
+	}
+
+	@Override
+	public int compareTo(Location o) {
+		return o.getId().compareTo(this.getId());
 	}
 
 }

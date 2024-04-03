@@ -2,18 +2,18 @@
 	<div class="row mb-0">
 		<h4>Last Clinic Visited</h4>
 	</div>
-	<div class="row">
+	<div class="row overflow-auto">
 		<div class="list-group">
-			<div
+			<div th:each="location : ${lastClinicVisited}"
 				class="list-group-item list-group-item-action d-flex gap-3 py-3">
 				<i class="fa-solid fa-house-chimney-medical h4"></i>
 				<div class="row w-100">
 					<div class="col">
-						<h6 class="mb-0">WeCare 4U</h6>
-						<small class="mb-0 opacity-50">123 Abc Ave., Regina SK A1A 1A1</small>
+						<h6 class="mb-0" th:text="${location.name}"></h6>
+						<small class="mb-0 opacity-50" th:text="${location.address}"></small>
 					</div>
 					<div class="col-sm-auto">
-						<small class="mb-0 opacity-50"><i class="fa-solid fa-calendar-days"></i> 5d</small>
+						<small class="mb-0 opacity-50"><i class="fa-solid fa-calendar-days"></i> <span th:with="days=(((${#dates.createNow().getTime()} - ${location.createdOn.getTime()}) / 3600000) / 24)" th:text="${#numbers.formatDecimal(days, 1, 0)} + 'd'"></span></small>
 					</div>
 				</div>
 			</div>

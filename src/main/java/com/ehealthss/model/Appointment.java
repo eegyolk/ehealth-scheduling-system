@@ -44,16 +44,16 @@ public class Appointment {
 	private Date datetime;
 	private String description;
 	private String reason;
-	
+
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
-	
+
 	private boolean joinWaitlist;
 	private int slot;
-	
+
 	@CreationTimestamp
 	private Date createdOn;
-	
+
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")
@@ -198,7 +198,8 @@ public class Appointment {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(createdOn, datetime, description, id, reason, referenceNo, joinWaitlist, slot, status, updatedOn);
+		return Objects.hash(createdOn, datetime, description, id, reason, referenceNo, joinWaitlist, slot, status,
+				updatedOn);
 	}
 
 	@Override
@@ -213,7 +214,8 @@ public class Appointment {
 		return Objects.equals(createdOn, other.createdOn) && Objects.equals(datetime, other.datetime)
 				&& Objects.equals(description, other.description) && id == other.id
 				&& Objects.equals(reason, other.reason) && Objects.equals(referenceNo, other.referenceNo)
-				&& joinWaitlist == other.joinWaitlist && slot == other.slot && status == other.status && Objects.equals(updatedOn, other.updatedOn);
+				&& joinWaitlist == other.joinWaitlist && slot == other.slot && status == other.status
+				&& Objects.equals(updatedOn, other.updatedOn);
 	}
 
 }

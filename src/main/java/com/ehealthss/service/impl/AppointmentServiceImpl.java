@@ -1,6 +1,7 @@
 package com.ehealthss.service.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.ehealthss.model.Appointment;
+import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.repository.AppointmentRepository;
 import com.ehealthss.service.AppointmentService;
 
@@ -43,4 +45,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return appointmentRepository.findAll(input, specification);
 	}
 	
+	@Override
+	public List<Appointment> findByPatientIdAndStatusOrderByCreatedOnDesc(int patientId, AppointmentStatus status) {
+		return appointmentRepository.findByPatientIdAndStatusOrderByCreatedOnDesc(patientId, status);
+	}
 }
