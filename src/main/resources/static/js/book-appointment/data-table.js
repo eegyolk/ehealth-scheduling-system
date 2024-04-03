@@ -1,6 +1,6 @@
 $().ready(function() {
 	
-	window.initDataTableAppointmentList = function() {
+	window.initDataTableAppointmentList = function(referenceNo=null) {
 		window.tableAppointmentList = $("#tableAppointmentList").DataTable({
 			autoWidth: false,
 			info: false,
@@ -18,6 +18,10 @@ $().ready(function() {
 		    	url: "/book-appointment/fetch/appointments",
 		    	type: "POST",
 		    	data: function(data) {
+					if (referenceNo != null && referenceNo.length >= 3) {
+						data.search.value = referenceNo;	
+					}
+					 
 					return JSON.stringify(data);
 				},
 		    	beforeSend: function(request) {
@@ -41,7 +45,7 @@ $().ready(function() {
 				},
 				{
 					data: "referenceNo",
-					searchable: false,
+					searchable: true,
 					render: function(data, type, row) {
 						return `<small>${data}</small>`;
 					}
@@ -95,41 +99,24 @@ $().ready(function() {
 				$('[data-bs-toggle="tooltip"]').tooltip({
 					container: 'body'
 				});
-
           	},
 		});
 	};
 	
-	window.initDataTableAppointmentList();
+	window.initDataTableAppointmentList(null);
 	initToolTip();
+	initSearchByReferenceNo();
 	
 	function initToolTip() {
 		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))	
 	}
 	
-	function flatten(params) {
-		params.columns.forEach(function (column, index) {
-		    params['columns[' + index + '].data'] = column.data;
-		    params['columns[' + index + '].name'] = column.name;
-		    params['columns[' + index + '].searchable'] = column.searchable;
-		    params['columns[' + index + '].orderable'] = column.orderable;
-		    params['columns[' + index + '].search.regex'] = column.search.regex;
-		    params['columns[' + index + '].search.value'] = column.search.value;
-	  	});
-	  	delete params.columns;
-	
-	  	params.order.forEach(function (order, index) {
-		    params['order[' + index + '].column'] = order.column;
-		    params['order[' + index + '].dir'] = order.dir;
+	function initSearchByReferenceNo() {
+		$("#buttonSearch").click(function(ev) {
+			window.tableAppointmentList.destroy();
+			window.initDataTableAppointmentList($("#textReferenceNo").val());
 		});
-	  	delete params.order;
-	
-		params['search.regex'] = params.search.regex;
-		params['search.value'] = params.search.value;
-		delete params.search;
-		
-		return params;
 	}
 	
 	function datetimeMarkup(data) {

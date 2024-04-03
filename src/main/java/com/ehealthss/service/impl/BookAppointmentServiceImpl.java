@@ -97,13 +97,10 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		
 		Specification<Appointment> specification = (Specification<Appointment>) (root, query, builder) -> {
 			/**
-			 * This will create a criteria to select data for the currentUser only
+			 * Will produce additional criteria for filtering data with "patient_id" in table "appointment"
 			 */
 			Join<Appointment, Patient> appointmentPatient = root.join("patient");
-			Predicate criteria = builder.equal(appointmentPatient.get("id"), currentUser.getPatient().getId());
-			return criteria;
-			
-			//TODO: Add for search by reference no.
+			return builder.equal(appointmentPatient.get("id"), currentUser.getPatient().getId());
 		};
 
 		return appointmentService.findAll(input, specification);
