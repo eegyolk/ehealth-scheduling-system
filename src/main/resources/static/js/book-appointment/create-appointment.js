@@ -48,7 +48,7 @@ $().ready(function() {
 		// Department
 		$("#selectDepartment").change(function(ev) {
 			$.ajax({
-			  	url: "/doctors/fetchByDepartmentAndLocation",
+			  	url: "/book-appointment/fetchDoctorsByDepartmentAndLocation",
 			  	method: "POST",
 			  	data: {
 					_csrf : $("input[name=_csrf]").val(),
@@ -69,7 +69,7 @@ $().ready(function() {
 		// Doctor		
 		$("#selectDoctor").change(function(ev) {
 			$.ajax({
-			  	url: "/doctors/fetchSchedulesByDoctorAndLocation",
+			  	url: "/book-appointment/fetchDoctorSchedulesByDoctorAndLocation",
 			  	method: "POST",
 			  	data: {
 					_csrf : $("input[name=_csrf]").val(),

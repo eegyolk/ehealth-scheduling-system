@@ -1,6 +1,8 @@
 package com.ehealthss.service.impl;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.ehealthss.model.Appointment;
 import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
+import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
@@ -71,6 +74,44 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 
 	}
 
+	@Override
+	public Set<Doctor> fetchDoctorsByDepartmentAndLocation(DoctorDepartment doctorDepartment, int locationId) {
+		
+		List<Doctor> doctors = doctorService.findByDepartment(doctorDepartment);
+
+		Set<Doctor> doctorsByDepartmentAndLocation = new TreeSet<>();
+
+		for (Doctor doctor : doctors) {
+			List<DoctorSchedule> doctorSchedules = doctor.getDoctorSchedules();
+
+			for (DoctorSchedule doctorSchedule : doctorSchedules) {
+				if (locationId == doctorSchedule.getLocation().getId()) {
+					doctorsByDepartmentAndLocation.add(doctor);
+				}
+			}
+		}
+		
+		return doctorsByDepartmentAndLocation;
+		
+	}
+	
+	@Override
+	public Set<DoctorSchedule> fetchDoctorSchedulesByDoctorAndLocation(int doctorId, int locationId) {
+		
+		Doctor doctor = doctorService.getReferenceById(doctorId);
+
+		Set<DoctorSchedule> doctorScheduleByDoctorAndLocation = new TreeSet<>();
+
+		for (DoctorSchedule doctorSchedule : doctor.getDoctorSchedules()) {
+			if (locationId == doctorSchedule.getLocation().getId()) {
+				doctorScheduleByDoctorAndLocation.add(doctorSchedule);
+			}
+		}
+
+		return doctorScheduleByDoctorAndLocation;
+		
+	}
+	
 	@Override
 	@Transactional
 	public void create(User user, int doctorId, int locationId, Appointment appointment) {
