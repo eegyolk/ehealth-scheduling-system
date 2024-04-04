@@ -17,6 +17,8 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.ehealthss.model.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "appointment_activity")
@@ -27,10 +29,12 @@ public class AppointmentActivity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "appointment_id")
+	@JsonBackReference
 	private Appointment appointment;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	private String notes;

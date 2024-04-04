@@ -157,25 +157,8 @@ $().ready(function() {
 	}
 	
 	function actionMarkup(row) {
-		const title = row.description;
-		const clinic = `${row.location.name} - ${row.location.address}`;
-		const rawDepartment = row.doctor.department;
-		const doctor = `Dr. ${row.doctor.firstName} ${row.doctor.lastName}`;
-		const rawDatetime = new Date(row.datetime);
-		const reason = row.reason;
-		const joinWaitlist = row.joinWaitlist ? "Yes, I would like to join the waitlist." : "No, I do not wish to join the waitlist";
-		
-		const datetime = `${rawDatetime.toLocaleString().replace(",", "").replace(/(\:\d{2} AM)/, " AM").replace(/(\:\d{2} PM)/, " PM")}`;
-		
-		const departmentParts = rawDepartment.toLowerCase().split("_");
-		let department = "";
-		if (departmentParts.length === 1) {
-			department = departmentParts[0].charAt(0).toUpperCase() + departmentParts[0].slice(1);
-		} else if (departmentParts.length === 2) {
-			department = `${departmentParts[0].charAt(0).toUpperCase() + departmentParts[0].slice(1)} ${departmentParts[1].charAt(0).toUpperCase() + departmentParts[1].slice(1)}`;
-		}
-		
 		const disableCancel = ["FULFILLED", "CANCELLED"].includes(row.status);
+		const btoaData = window.btoa(JSON.stringify(row));
 		
 		return `
 			<div class="btn-group">
@@ -183,8 +166,8 @@ $().ready(function() {
 		    		Action
 		  		</button>
 		  		<ul class="dropdown-menu">
-		    		<li><a class="dropdown-item" href="#viewAppointment" data-appointment-id="${row.id}" data-bs-toggle="modal" data-bs-target="#viewAppointment"><small><i class="fa-solid fa-eye"></i> View</small></a></li>
-		    		<li><a class="dropdown-item ${disableCancel ? 'disabled' : ''}" href="#cancelAppointment" data-id="${row.id}", data-title="${title}" data-clinic="${clinic}" data-department="${department}" data-doctor="${doctor}" data-datetime="${datetime}" data-reason="${reason}" data-join-waitlist="${joinWaitlist}" data-bs-toggle="modal" data-bs-target="#cancelAppointment"><small><i class="fa-solid fa-eraser"></i> Cancel</small></a></li>
+		    		<li><a class="dropdown-item" href="#viewAppointment" data-btoa-data="${btoaData}" data-bs-toggle="modal" data-bs-target="#viewAppointment"><small><i class="fa-solid fa-eye"></i> View</small></a></li>
+		    		<li><a class="dropdown-item ${disableCancel ? 'disabled' : ''}" href="#cancelAppointment" data-btoa-data="${btoaData}" data-bs-toggle="modal" data-bs-target="#cancelAppointment"><small><i class="fa-solid fa-eraser"></i> Cancel</small></a></li>
 		  		</ul>
 			</div>
 		`;

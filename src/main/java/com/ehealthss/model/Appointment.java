@@ -20,6 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "appointment")
@@ -57,7 +58,7 @@ public class Appointment {
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")
-	@JsonIgnore
+	@JsonManagedReference
 	private List<AppointmentActivity> appointmentActivities;
 
 	public Appointment() {

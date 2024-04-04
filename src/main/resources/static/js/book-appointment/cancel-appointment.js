@@ -4,15 +4,37 @@ $().ready(function() {
 	
 	function modalEvents() {
 		$("#cancelAppointment").on("show.bs.modal", function(ev) {
-			$("#hiddenIdCA").val($(ev.relatedTarget).data("id"));			
-			$("#textTitleCA").val($(ev.relatedTarget).data("title"));
-			$("#textClinicCA").val($(ev.relatedTarget).data("clinic"));
-			$("#textDepartmentCA").val($(ev.relatedTarget).data("department"));
-			$("#textDoctorCA").val($(ev.relatedTarget).data("doctor"));
-			$("#textDatetimeCA").val($(ev.relatedTarget).data("datetime"));
-			$("#textReasonCA").val($(ev.relatedTarget).data("reason"));
-			$("#textJoinWaitlistCA").val($(ev.relatedTarget).data("join-waitlist"));
-		})
+			const btoaData = $(ev.relatedTarget).data("btoa-data");
+			const row = JSON.parse(window.atob(btoaData));
+			
+			const id = row.id;
+			const title = row.description;
+			const clinic = `${row.location.name} - ${row.location.address}`;
+			const rawDepartment = row.doctor.department;
+			const doctor = `Dr. ${row.doctor.firstName} ${row.doctor.lastName}`;
+			const rawDatetime = new Date(row.datetime);
+			const reason = row.reason;
+			const joinWaitlist = row.joinWaitlist ? "Yes, I would like to join the waitlist." : "No, I do not wish to join the waitlist";
+			
+			const departmentParts = rawDepartment.toLowerCase().split("_");
+			let department = "";
+			if (departmentParts.length === 1) {
+				department = departmentParts[0].charAt(0).toUpperCase() + departmentParts[0].slice(1);
+			} else if (departmentParts.length === 2) {
+				department = `${departmentParts[0].charAt(0).toUpperCase() + departmentParts[0].slice(1)} ${departmentParts[1].charAt(0).toUpperCase() + departmentParts[1].slice(1)}`;
+			}
+			
+			const datetime = `${rawDatetime.toLocaleString().replace(",", "").replace(/(\:\d{2} AM)/, " AM").replace(/(\:\d{2} PM)/, " PM")}`;
+			
+			$("#hiddenIdCA").val(id);			
+			$("#textTitleCA").val(title);
+			$("#textClinicCA").val(clinic);
+			$("#textDepartmentCA").val(department);
+			$("#textDoctorCA").val(doctor);
+			$("#textDatetimeCA").val(datetime);
+			$("#textReasonCA").val(reason);
+			$("#textJoinWaitlistCA").val(joinWaitlist);
+		});
 		
 		$("#cancelAppointment").on("hide.bs.modal", function(ev) {
 			$("#divFeedbackCA").html("").removeClass("p-2");
