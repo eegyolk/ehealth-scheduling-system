@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.ehealthss.model.Appointment;
+import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.User;
@@ -27,5 +28,7 @@ public interface BookAppointmentService {
 	void create(User user, int doctorId, int locationId, Appointment appointment);
 
 	DataTablesOutput<Appointment> fetchAppointments(User currentUser, @Valid DataTablesInput input);
-
+	
+	void cancel(User user, int appointmentId, AppointmentActivity appointmentActivity);
+	
 }

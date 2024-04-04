@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ehealthss.model.Appointment;
+import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.User;
@@ -55,29 +56,28 @@ public class BookAppointmentController {
 		User currentUser = userService.findByLogin(userDetails.getUsername());
 
 		return bookAppointmentService.index(model, currentUser);
-		
+
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/fetchDoctorsByDepartmentAndLocation")
 	public Set<Doctor> fetchDoctorsByDepartmentAndLocation(
 			@RequestParam(required = true) DoctorDepartment doctorDepartment,
 			@RequestParam(required = true) int locationId) {
-		
+
 		return bookAppointmentService.fetchDoctorsByDepartmentAndLocation(doctorDepartment, locationId);
-		
+
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/fetchDoctorSchedulesByDoctorAndLocation")
-	public Set<DoctorSchedule> fetchDoctorSchedulesByDoctorAndLocation(
-			@RequestParam(required = true) int doctorId,
+	public Set<DoctorSchedule> fetchDoctorSchedulesByDoctorAndLocation(@RequestParam(required = true) int doctorId,
 			@RequestParam(required = true) int locationId) {
-		
+
 		return bookAppointmentService.fetchDoctorSchedulesByDoctorAndLocation(doctorId, locationId);
-		
+
 	}
-	
+
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/create/appointment/{doctorId}/{locationId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public void createAppointment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int doctorId,
@@ -86,17 +86,28 @@ public class BookAppointmentController {
 		User currentUser = userService.findByLogin(userDetails.getUsername());
 
 		bookAppointmentService.create(currentUser, doctorId, locationId, appointment);
-		
+
 	}
-	
+
 	@ResponseBody
 	@PostMapping(value = "/fetch/appointments", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public DataTablesOutput<Appointment> fetchAppointments(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody DataTablesInput input) {
+	public DataTablesOutput<Appointment> fetchAppointments(@AuthenticationPrincipal UserDetails userDetails,
+			@Valid @RequestBody DataTablesInput input) {
 
 		User currentUser = userService.findByLogin(userDetails.getUsername());
-		
+
 		return bookAppointmentService.fetchAppointments(currentUser, input);
 
 	}
 
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping(value = "/cancel/appointment/{appointmentId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public void cancelAppointment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int appointmentId,
+			@RequestBody AppointmentActivity appointmentActivity) {
+
+		User currentUser = userService.findByLogin(userDetails.getUsername());
+
+		bookAppointmentService.cancel(currentUser, appointmentId, appointmentActivity);
+
+	}
 }

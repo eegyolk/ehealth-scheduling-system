@@ -162,4 +162,20 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		
 	}
 
+	@Override
+	@Transactional
+	public void cancel(User user, int appointmentId, AppointmentActivity appointmentActivity) {
+		
+		Appointment appointment = appointmentService.getReferenceById(appointmentId);
+		appointment.setStatus(AppointmentStatus.CANCELLED);
+		appointmentService.save(appointment);
+		
+		appointmentActivity.setAppointment(appointment);
+		appointmentActivity.setUser(user);
+		appointmentActivity.setStatus(AppointmentStatus.CANCELLED);
+		appointmentActivityService.save(appointmentActivity);
+		
+	}
+
+	
 }

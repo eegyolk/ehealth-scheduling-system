@@ -49,4 +49,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public List<Appointment> findByPatientIdAndStatusOrderByCreatedOnDesc(int patientId, AppointmentStatus status) {
 		return appointmentRepository.findByPatientIdAndStatusOrderByCreatedOnDesc(patientId, status);
 	}
+
+	@Override
+	public Appointment getReferenceById(int id) {
+		return appointmentRepository.getReferenceById(id);
+	}
 }

@@ -33,7 +33,7 @@ $().ready(function() {
 			$('#checkConfirmInformation').prop("checked", false);
 			$("#buttonCancel").prop("disabled", false);
 			$("#buttonSave").prop("disabled", false);
-		})
+		});
 	}
 	
 	function fieldsEvents() {

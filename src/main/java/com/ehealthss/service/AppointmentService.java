@@ -23,4 +23,6 @@ public interface AppointmentService {
 	
 	List<Appointment> findByPatientIdAndStatusOrderByCreatedOnDesc(int patientId, AppointmentStatus status);
 	
+	Appointment getReferenceById(int id);
+	
 }

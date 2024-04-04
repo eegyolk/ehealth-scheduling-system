@@ -1,0 +1,108 @@
+<div class="modal fade" id="cancelAppointment" tabindex="-1"
+	aria-labelledby="#cancelAppointmentLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#cancelAppointment Label">Cancel
+					Appointment</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="container">
+					<div id="divFeedbackCA" class="row mb-3"></div>
+
+					<input id="hiddenIdCA" type="hidden"/>
+					
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Title</div>
+						<div class="col">
+							<input id="textTitleCA" type="text" class="form-control" disabled />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Clinic</div>
+						<div class="col">
+							<input id="textClinicCA" type="text" class="form-control" disabled />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Department</div>
+						<div class="col">
+							<input id="textDepartmentCA" type="text" class="form-control"
+								disabled />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Doctor</div>
+						<div class="col">
+							<input id="textDoctorCA" type="text" class="form-control" disabled />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Datetime</div>
+						<div class="col">
+							<input id="textDatetimeCA" type="text" class="form-control"
+								disabled />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Reason</div>
+						<div class="col">
+							<textarea id="textReasonCA" class="form-control"
+								aria-label="Reason" disabled></textarea>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-3 pt-1">Join Waitlist</div>
+						<div class="col">
+							<input id="textJoinWaitlistCA" type="text" class="form-control"
+								disabled />
+						</div>
+					</div>
+					
+					<div class="row mb-3">
+						<div class="col-3 pt-1"><span class="text-danger me-1">*</span>Notes</div>
+						<div class="col">
+							<textarea id="textNotesCA" class="form-control"
+								aria-label="Notes" required></textarea>
+							<div id="textNotesCAFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-3 pt-1"></div>
+						<div class="col">
+							<input id="checkConfirmInformationCA" class="form-check-input"
+								type="checkbox" required /> <label class="form-check-label"
+								for="confirmInformationCA"><span class="text-danger me-1">*</span>Confirm
+								information for cancellation</label>
+							<div id="checkConfirmInformationCAFeedback"
+								class="invalid-feedback"></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}" />
+				<button id="buttonCancelCA" type="button" class="btn btn-danger"
+					data-bs-dismiss="modal">
+					<i class="bi bi-x-lg me-1"></i>Cancel
+				</button>
+				<button id="buttonSaveCA" type="button" class="btn btn-primary">
+					<i class="bi bi-save me-1"></i>Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
