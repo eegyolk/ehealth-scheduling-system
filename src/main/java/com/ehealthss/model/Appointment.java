@@ -19,7 +19,6 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.ehealthss.model.enums.AppointmentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity

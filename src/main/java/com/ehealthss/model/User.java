@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.ehealthss.model.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -44,6 +45,7 @@ public class User {
 	private Doctor doctor;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@JsonIgnore
 	private List<AppointmentActivity> appointmentActivities;
 
 	public User() {

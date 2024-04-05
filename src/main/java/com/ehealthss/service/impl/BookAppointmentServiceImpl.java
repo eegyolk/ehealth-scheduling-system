@@ -1,5 +1,6 @@
 package com.ehealthss.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -168,6 +169,7 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		
 		Appointment appointment = appointmentService.getReferenceById(appointmentId);
 		appointment.setStatus(AppointmentStatus.CANCELLED);
+		appointment.setUpdatedOn(new Date());
 		appointmentService.save(appointment);
 		
 		appointmentActivity.setAppointment(appointment);
