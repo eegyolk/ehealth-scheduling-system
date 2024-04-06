@@ -75,10 +75,11 @@ $().ready(function() {
 			$("#buttonSave").prop("disabled", true);
 					
 			const result = fieldsValidation();
-
+			const scheduleId = $("#hiddenScheduleId").val();
+			
 			if (typeof(result) === 'object') {
 				$.ajax({
-				  	url: `/attendance/create/${result.id}`,
+				  	url: `/attendance/create/${scheduleId}`,
 				  	method: "POST",
 				  	headers: {
 						"Content-Type": "application/json",
@@ -92,8 +93,8 @@ $().ready(function() {
 					setTimeout(function() {
 						// We destroy first then re-initialize the data table
 						// from /js/attendance/data-table.js file
-						//window.tableAttendanceList.destroy();
-						//window.initDataTableAttendanceList();
+						window.tableAttendanceList.destroy();
+						window.initDataTableAttendanceList();
 						
 						$("#buttonCancel").prop("disabled", false);
 						$("#buttonSave").prop("disabled", false);
@@ -120,7 +121,7 @@ $().ready(function() {
 	/* Returns Object, otherwise false on errors */
 	function fieldsValidation() {
 		let hasError = false;
-		const fields = { id : $("#hiddenScheduleId").val() };
+		const fields = {};
 		
 		const time = $('#selectTime');
 		const confirmInformation = $('#checkConfirmInformation');

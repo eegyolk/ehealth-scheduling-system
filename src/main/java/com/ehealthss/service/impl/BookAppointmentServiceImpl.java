@@ -155,8 +155,8 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 			/**
 			 * Will produce additional criteria for filtering data with "patient_id" in table "appointment"
 			 */
-			Join<Appointment, Patient> appointmentPatient = root.join("patient");
-			return builder.equal(appointmentPatient.get("id"), currentUser.getPatient().getId());
+			Join<Appointment, Patient> patient = root.join("patient");
+			return builder.equal(patient.get("id"), currentUser.getPatient().getId());
 		};
 
 		return appointmentService.findAll(input, specification);

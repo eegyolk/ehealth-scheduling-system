@@ -2,14 +2,21 @@ package com.ehealthss.repository;
 
 import java.util.Date;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import com.ehealthss.model.DoctorAttendance;
 
-@Repository
-public interface DoctorAttendanceRepository extends JpaRepository<DoctorAttendance, Integer> {
+import jakarta.validation.Valid;
 
-	DoctorAttendance findByDoctorIdAndLocationIdAndDate(int doctorId, int locationId, Date localDate);
+@Repository
+public interface DoctorAttendanceRepository extends DataTablesRepository<DoctorAttendance, Integer> {
+
+	DoctorAttendance findByDoctorIdAndLocationIdAndDate(int doctorId, int locationId, Date date);
+	
+	DataTablesOutput<DoctorAttendance> findAll(@Valid DataTablesInput input, Specification<DoctorAttendance> specification);
 
 }
