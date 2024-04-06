@@ -109,9 +109,9 @@ $().ready(function() {
 					$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:30 ${i < 12 ? 'AM' : 'PM'}`));
 				} else {
 					if (i === parseInt(end.split(":")[0]) && 30 === parseInt(end.split(":")[1])) {
-						$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
+						$("#selectTime").append($("<option></option>").attr("value", `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
 					} else if (i < parseInt(end.split(":")[0])) {							
-						$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
+						$("#selectTime").append($("<option></option>").attr("value", `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
 						$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:30 ${i < 12 ? 'AM' : 'PM'}`));
 					}
 				}

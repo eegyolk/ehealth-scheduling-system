@@ -1,6 +1,7 @@
 package com.ehealthss.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.sql.Date;
@@ -152,6 +153,15 @@ public class AttendanceServiceImpl implements AttendanceService {
 		};
 
 		return doctorAttendanceService.findAll(input, specification);
+	}
+
+	@Override
+	public void update(User user, int attendanceId, DoctorAttendance doctorAttendance) {
+		
+		DoctorAttendance currentDoctorAttendance = doctorAttendanceService.getReferenceById(attendanceId);
+		currentDoctorAttendance.setOutTime(doctorAttendance.getOutTime());
+		doctorAttendanceService.save(currentDoctorAttendance);
+		
 	}
 
 }

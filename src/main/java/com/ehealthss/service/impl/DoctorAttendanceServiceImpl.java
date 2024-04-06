@@ -41,4 +41,11 @@ public class DoctorAttendanceServiceImpl implements DoctorAttendanceService {
 		return doctorAttendanceRepository.findAll(input, specification);
 
 	}
+
+	@Override
+	public DoctorAttendance getReferenceById(int id) {
+		
+		return doctorAttendanceRepository.getReferenceById(id);
+		
+	}
 }

@@ -19,4 +19,6 @@ public interface AttendanceService {
 
 	DataTablesOutput<DoctorAttendance> fetchAttendances(User currentUser, @Valid DataTablesInput input);
 
+	void update(User user, int attendanceId, DoctorAttendance doctorAttendance);
+
 }

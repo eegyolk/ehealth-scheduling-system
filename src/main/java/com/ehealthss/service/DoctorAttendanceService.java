@@ -20,4 +20,6 @@ public interface DoctorAttendanceService {
 
 	DataTablesOutput<DoctorAttendance> findAll(@Valid DataTablesInput input, Specification<DoctorAttendance> specification);
 
+	DoctorAttendance getReferenceById(int id);
+	
 }

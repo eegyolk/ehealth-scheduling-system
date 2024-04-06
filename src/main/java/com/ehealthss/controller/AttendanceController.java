@@ -50,14 +50,15 @@ public class AttendanceController {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/create/{scheduleId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public void createAppointment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int scheduleId, @RequestBody DoctorAttendance doctorAttendance) {
+	public void createAttendance(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int scheduleId,
+			@RequestBody DoctorAttendance doctorAttendance) {
 
 		User currentUser = userService.findByLogin(userDetails.getUsername());
 
 		attendanceService.create(currentUser, scheduleId, doctorAttendance);
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping(value = "/fetch/attendances", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public DataTablesOutput<DoctorAttendance> fetchAttendances(@AuthenticationPrincipal UserDetails userDetails,
@@ -66,6 +67,17 @@ public class AttendanceController {
 		User currentUser = userService.findByLogin(userDetails.getUsername());
 
 		return attendanceService.fetchAttendances(currentUser, input);
+
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping(value = "/update/{attendanceId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public void updateAttendance(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int attendanceId,
+			@RequestBody DoctorAttendance doctorAttendance) {
+
+		User currentUser = userService.findByLogin(userDetails.getUsername());
+
+		attendanceService.update(currentUser, attendanceId, doctorAttendance);
 
 	}
 }

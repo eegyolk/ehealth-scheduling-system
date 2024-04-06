@@ -7,7 +7,7 @@ $().ready(function() {
 			const hasAttendance = $("#hiddenHasAttendance").val();
 			
 			if (hasAttendance) {
-				$("#divFeedback").html(`<div class="p-3 text-primary-emphasis border border-info-subtle bg-info-subtle">You already have clock-in for today.</div>`).addClass("p-2");
+				$("#divFeedback").html(`<div class="p-3 text-primary-emphasis border border-info-subtle bg-info-subtle">You already have clock-in/clock-out for today.</div>`).addClass("p-2");
 				$("#textDate").prop("disabled", true);
 				$("#selectTime").prop("disabled", true);
 				$("#checkConfirmInformation").prop("disabled", true);
@@ -49,9 +49,9 @@ $().ready(function() {
 							$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:30 ${i < 12 ? 'AM' : 'PM'}`));
 						} else {
 							if (i === parseInt(data.endTime.split(":")[0]) && 30 === parseInt(data.endTime.split(":")[1])) {
-								$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
-							} else if (i < parseInt(data.endTime.split(":")[0])) {							
-								$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
+								$("#selectTime").append($("<option></option>").attr("value", `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
+							} else if (i < parseInt(data.endTime.split(":")[0])) {						
+								$("#selectTime").append($("<option></option>").attr("value", `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
 								$("#selectTime").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:30 ${i < 12 ? 'AM' : 'PM'}`));
 							}
 						}
@@ -78,8 +78,8 @@ $().ready(function() {
 			$("#buttonCancel").prop("disabled", true);
 			$("#buttonSave").prop("disabled", true);
 					
-			const result = fieldsValidation();
 			const scheduleId = $("#hiddenScheduleId").val();
+			const result = fieldsValidation();
 			
 			if (typeof(result) === 'object') {
 				$.ajax({
@@ -147,7 +147,7 @@ $().ready(function() {
 	
 		feedback = $("#checkConfirmInformationFeedback");
 		if (confirmInformation.is(":checked") === false ) {
-			feedback.html("Please confirm time you provided").attr("style", "display: block");
+			feedback.html("Please confirm").attr("style", "display: block");
 			confirmInformation.attr("style", "border-color: #dc3545 !important");
 			hasError = true;
 		} else {

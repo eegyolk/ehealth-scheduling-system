@@ -1,5 +1,6 @@
 package com.ehealthss.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "doctor_attendance")
@@ -37,6 +39,8 @@ public class DoctorAttendance {
 	@CreationTimestamp
 	private Date createdOn;
 	
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	public DoctorAttendance() {
