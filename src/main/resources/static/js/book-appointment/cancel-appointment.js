@@ -36,7 +36,7 @@ $().ready(function() {
 			$("#textJoinWaitlistCA").val(joinWaitlist);
 		});
 		
-		$("#cancelAppointment").on("hide.bs.modal", function(ev) {
+		$("#cancelAppointment").on("hidden.bs.modal", function(ev) {
 			$("#divFeedbackCA").html("").removeClass("p-2");
 			$("#hiddenIdCA").val("");			
 			$("#textTitleCA").val("");
@@ -75,7 +75,7 @@ $().ready(function() {
 					
 					setTimeout(function() {
 						// We destroy first then re-initialize the data table
-						// from /js/data-table.js file
+						// from /js/book-appointment/data-table.js file
 						window.tableAppointmentList.destroy();
 						window.initDataTableAppointmentList();
 						

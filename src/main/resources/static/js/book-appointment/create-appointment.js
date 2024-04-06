@@ -20,7 +20,7 @@ $().ready(function() {
 	}
 	
 	function modalEvents() {
-		$("#createAppointment").on("hide.bs.modal", function(ev) {
+		$("#createAppointment").on("hidden.bs.modal", function(ev) {
 			$("#divFeedback").html("").removeClass("p-2");
 			$("#textTitle").val("");
 			$("#selectClinic").val("");
@@ -140,7 +140,7 @@ $().ready(function() {
 					
 					setTimeout(function() {
 						// We destroy first then re-initialize the data table
-						// from /js/data-table.js file
+						// from /js/book-appointment/data-table.js file
 						window.tableAppointmentList.destroy();
 						window.initDataTableAppointmentList();
 						
