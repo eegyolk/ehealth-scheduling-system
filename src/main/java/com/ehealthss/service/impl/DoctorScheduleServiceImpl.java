@@ -19,4 +19,9 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	public List<DoctorSchedule> findByDoctorId(int doctorId) {
 		return doctorScheduleRepository.findByDoctorId(doctorId);
 	}
+
+	@Override
+	public DoctorSchedule getReferenceById(int id) {
+		return doctorScheduleRepository.getReferenceById(id);
+	}
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{fragments/include :: include}"></head>
+<body>
+	<nav th:include="~{fragments/header :: header}"
+		class="navbar navbar-expand-sm navbar-tertiary fixed-top bg-white border-bottom py-2"></nav>
+
+	<main class="container-fluid ps-4 pe-4">
+		<div class="row bg-white p-3 rounded-3 mb-3">
+			<div class="col align-middle mt-2">
+				<h4>Attendance</h4>
+			</div>
+
+			<div class="col-md-auto mt-1">
+				<button id="buttonBack" type="button" class="btn btn-dark me-2">
+					<i class="bi bi-chevron-left me-1"></i>Back
+				</button>
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+					data-bs-target="#clockIn">
+					<i class="bi bi-plus-lg me-1"></i>Clock-In
+				</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col bg-white p-4 py-3 rounded-3 mb-3">
+				<!-- Attendance List -->
+				<div th:include="~{attendance/sections/attendance-list}"></div>
+			</div>
+		</div>
+	</main>
+
+	<!-- Modal -->
+	<div th:include="~{attendance/modals/clock-in}"></div>
+	<div th:include="~{attendance/modals/clock-out}"></div>
+
+	<script src="/js/header.js"></script>
+	<script src="/js/attendance/clock-in.js"></script>
+	<script src="/js/attendance/data-table.js"></script>
+	<script src="/js/attendance/clock-out.js"></script>
+</body>
+</html>

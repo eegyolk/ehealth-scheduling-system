@@ -11,4 +11,6 @@ public interface DoctorScheduleService {
 
 	List<DoctorSchedule> findByDoctorId(int doctorId);
 
+	DoctorSchedule getReferenceById(int id);
+
 }

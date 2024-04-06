@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "doctor_attendance")
 public class DoctorAttendance {
@@ -31,7 +33,10 @@ public class DoctorAttendance {
 	private String inTime;
 	private String outTime;
 	private String signature;
+	
+	@CreationTimestamp
 	private Date createdOn;
+	
 	private Date updatedOn;
 
 	public DoctorAttendance() {

@@ -9,15 +9,31 @@
 				<li class="nav-item px-2"><a
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Dashboard') ? 'fw-medium active' : '')"
 					href="/dashboard">Dashboard</a></li>
-				<li class="nav-item px-2"><a
+					
+				<li sec:authorize="hasRole('ROLE_PATIENT')" class="nav-item px-2"><a
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Book Appointment') ? 'fw-medium active' : '')"
 					href="/book-appointment">Book Appointment</a></li>
+					
+				<li sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Attendance') ? 'fw-medium active' : '')"
+					href="/attendance">Attendance</a></li>
+					
+				<li sec:authorize="hasRole('ROLE_STAFF')" class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Doctor Attendance') ? 'fw-medium active' : '')"
+					href="/doctor-attendance">Doctor Attendance</a></li>
+					
 				<li class="nav-item px-2"><a
-					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Doctor Clock-In') ? 'fw-medium active' : '')"
-					href="/doctor-clock-in">Doctor Clock-In</a></li>
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Doctor') ? 'fw-medium active' : '')"
+					href="/doctor">Doctor</a></li>
+					
+				<li class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Clinic') ? 'fw-medium active' : '')"
+					href="/location">Clinic</a></li>
+					
 				<li class="nav-item px-2"><a
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Help & Support') ? 'fw-medium active' : '')"
 					href="/help-and-support">Help & Support</a></li>
+					
 				<li class="nav-item px-2"><button type="button"
 						class="btn btn-primary rounded-circle">
 						<i class="bi bi-search"></i>
@@ -31,7 +47,7 @@
 						class="btn btn-primary rounded-circle">
 						<i class="bi bi-person-fill"></i>
 					</button></li>
-				<li class="nav-item px-2"><button id="fullscreenButton" type="button"
+				<li class="nav-item px-2"><button id="buttonFullscreen" type="button"
 						class="btn btn-primary rounded-circle">
 						<i class="bi bi-arrows-fullscreen"></i>
 					</button></li>
