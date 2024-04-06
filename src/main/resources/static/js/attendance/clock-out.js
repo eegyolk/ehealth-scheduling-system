@@ -43,7 +43,6 @@ $().ready(function() {
 						if (i === parseInt(scheduleTodayData.endTime.split(":")[0]) && 30 === parseInt(scheduleTodayData.endTime.split(":")[1])) {
 							$("#selectTimeCO").append($("<option></option>").attr("value", `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
 						} else if (i < parseInt(scheduleTodayData.endTime.split(":")[0])) {
-							console.log(3, `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`, `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`);
 							$("#selectTimeCO").append($("<option></option>").attr("value", `${hour}:00 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:00 ${i < 12 ? 'AM' : 'PM'}`));
 							$("#selectTimeCO").append($("<option></option>").attr("value", `${hour}:30 ${i < 12 ? 'AM' : 'PM'}`).text(`${hour}:30 ${i < 12 ? 'AM' : 'PM'}`));
 						}	
