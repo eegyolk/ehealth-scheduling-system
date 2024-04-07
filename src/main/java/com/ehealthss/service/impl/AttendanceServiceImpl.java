@@ -1,7 +1,6 @@
 package com.ehealthss.service.impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.sql.Date;
@@ -15,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.ehealthss.bean.AttendanceDTO;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.model.DoctorSchedule;
@@ -37,14 +37,14 @@ public class AttendanceServiceImpl implements AttendanceService {
 	private final DoctorScheduleService doctorScheduleService;
 	private final DoctorAttendanceService doctorAttendanceService;
 	private final LocationService locationService;
-
+	
 	public AttendanceServiceImpl(DoctorScheduleService doctorScheduleService,
 			DoctorAttendanceService doctorAttendanceService, LocationService locationService) {
 
 		this.doctorScheduleService = doctorScheduleService;
 		this.doctorAttendanceService = doctorAttendanceService;
 		this.locationService = locationService;
-
+		
 	}
 
 	@Override
@@ -98,12 +98,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public void create(User user, int scheduleId, DoctorAttendance doctorAttendance) {
+	public void create(User user, int scheduleId, AttendanceDTO attendanceDTO) {
 
 		DoctorSchedule doctorSchedule = doctorScheduleService.getReferenceById(scheduleId);
 
-		doctorAttendance.setDoctor(user.getDoctor());
-		doctorAttendance.setLocation(doctorSchedule.getLocation());
+		DoctorAttendance doctorAttendance = new DoctorAttendance(user.getDoctor(), doctorSchedule.getLocation(),
+				attendanceDTO.getDate(), attendanceDTO.getInTime(), attendanceDTO.getOutTime(),
+				attendanceDTO.getSignature());
 		doctorAttendanceService.save(doctorAttendance);
 
 	}
@@ -132,7 +133,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 						builder.equal(location.get("id"), fieldValue));
 
 			} else if (fieldNum == 2 && fieldValue.length() > 0) {
-				
+
 				/**
 				 * Will produce additional criteria for filtering data with "doctor_id" and
 				 * "date" in table "doctor_attendance"
@@ -157,12 +158,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public void update(User user, int attendanceId, DoctorAttendance doctorAttendance) {
-		
+	public void update(User user, int attendanceId, AttendanceDTO attendanceDTO) {
+
 		DoctorAttendance currentDoctorAttendance = doctorAttendanceService.getReferenceById(attendanceId);
-		currentDoctorAttendance.setOutTime(doctorAttendance.getOutTime());
+		currentDoctorAttendance.setOutTime(attendanceDTO.getOutTime());
 		doctorAttendanceService.save(currentDoctorAttendance);
-		
+
 	}
 
 }

@@ -187,8 +187,7 @@ $().ready(function() {
 					}
 				}
 			}
-		} else {
-			return `<small>-</small>`;
 		}
+		return `<small>-</small>`;
 	}
 });

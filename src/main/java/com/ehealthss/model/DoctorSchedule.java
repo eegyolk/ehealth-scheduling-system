@@ -32,6 +32,7 @@ public class DoctorSchedule implements Comparable<DoctorSchedule> {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
+	@JsonBackReference
 	private Location location;
 
 	@Enumerated(EnumType.STRING)
