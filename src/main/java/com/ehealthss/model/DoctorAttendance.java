@@ -16,6 +16,8 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "doctor_attendance")
 public class DoctorAttendance {
@@ -25,6 +27,7 @@ public class DoctorAttendance {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctor_id")
+	@JsonBackReference
 	private Doctor doctor;
 
 	@ManyToOne(fetch = FetchType.LAZY)

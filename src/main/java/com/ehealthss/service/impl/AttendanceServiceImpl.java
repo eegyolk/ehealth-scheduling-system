@@ -54,6 +54,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 		model.addAttribute("pageTitle", "Attendance");
 		model.addAttribute("withCalendarComponent", true);
+		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
 
 		LocalDate localDate = LocalDate.now();

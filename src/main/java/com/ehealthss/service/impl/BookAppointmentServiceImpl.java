@@ -58,6 +58,7 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 
 		model.addAttribute("pageTitle", "Book Appointment");
 		model.addAttribute("withCalendarComponent", true);
+		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
 
 		List<Location> locations = locationService.findAll();

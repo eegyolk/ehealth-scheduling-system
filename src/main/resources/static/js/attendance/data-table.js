@@ -1,6 +1,6 @@
 $().ready(function() {
 	
-	window.initDataTableAttendanceList = function(date=null) {
+	window.initDataTableAttendanceList = function() {
 		window.tableAttendanceList = $("#tableAttendanceList").DataTable({
 			autoWidth: false,
 			info: false,
@@ -152,7 +152,7 @@ $().ready(function() {
 		
 		$("#buttonSearch").click(function(ev) {
 			window.tableAttendanceList.destroy();
-			window.initDataTableAttendanceList($("#textReferenceNo").val());
+			window.initDataTableAttendanceList();
 		});
 	}
 

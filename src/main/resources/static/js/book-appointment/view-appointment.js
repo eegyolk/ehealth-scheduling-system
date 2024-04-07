@@ -47,7 +47,7 @@ $().ready(function() {
 			$("#tableBodyActivities").html(trHTML);
 		})
 		
-		$("#viewAppointment").on("hide.bs.modal", function(ev) {
+		$("#viewAppointment").on("hidden.bs.modal", function(ev) {
 			// Appointment Details
 			$("#divTitle").html("");
 			$("#divReason").html("");

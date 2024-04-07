@@ -1,0 +1,65 @@
+<div class="row align-items-center">
+	<div class="col ps-3">
+		<h4>Doctor Listing</h4>
+	</div>
+	<div class="col-6">
+		<div class="container text-center">
+			<div class="row mb-3 pt-2 justify-content-end">
+				<div class="col-auto">
+					<label class="col-form-label h6">Search By</label>
+				</div>
+				<div class="col-3">
+					<select id="selectBy" class="form-select" aria-label="Clinic"
+						required>
+						<option selected value="">...</option>
+						<option value="1">Name</option>
+						<option value="2">Department</option>
+					</select>
+				</div>
+				<div id="divByName" class="col-3 d-none">
+					<div class="input-group">
+						<input id="textName" type="text" class="form-control" /><span
+							class="input-group-text"><span
+							class="fa-solid fa-signature"></span></span>
+					</div>
+				</div>
+				<div id="divByDepartment" class="col-3 d-none">
+					<div class="input-group">
+						<select id="selectDepartment" class="form-select"
+							aria-label="Department">
+							<option selected value="">...</option>
+							<option th:each="department : ${doctorDepartments}"
+								th:value="${department}"
+								th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(department, '_', ' ')))}"></option>
+						</select><span class="input-group-text"><span
+							class="fa-solid fa-building"></span></span>
+					</div>
+				</div>
+				<div class="col-auto">
+					<button id="buttonSearch" type="button" class="btn btn-primary">
+						<i class="fa-solid fa-magnifying-glass me-1"></i>Search
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<table id="tableDoctorList" class="table table-striped">
+	<thead>
+		<tr>
+			<th class="h6" width="1%">#</th>
+			<th class="h6" width="10%">Practitioner</th>
+			<th class="h6" width="4%">Department</th>
+			<th class="h6" width="4%">Email</th>
+			<th class="h6" width="4%">Phone</th>
+			<th class="h6" width="4%">Schedule <i
+				class="bi bi-question-circle-fill ms-1" data-bs-toggle="tooltip"
+				data-bs-placement="right" data-bs-custom-class="custom-tooltip"
+				data-bs-title="Use the calendar icon to see the schedules."></i></th>
+			<th class="h6" width="4%">Today's Visit</th>
+			<th class="h6" width="1%"></th>
+			<th class="h6" width="1%"></th>
+		</tr>
+	</thead>
+</table>
