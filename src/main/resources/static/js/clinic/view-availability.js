@@ -41,7 +41,7 @@ $().ready(function() {
 					$("#divVADialog").removeClass("modal-dialog-centered modal-sm").addClass("modal-lg");
 					$("#divVAHeader").removeClass("d-none");
 					$("#divVABody").removeClass("d-none");
-				}, 1000);
+				}, 500);
 					
 			}).fail(function(err) {
 				console.log(err);
