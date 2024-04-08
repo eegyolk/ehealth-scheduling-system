@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.ehealthss.model.enums.DayOfWeek;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,12 +20,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "location_availability")
 public class LocationAvailability {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
+	@JsonIgnore
 	private Location location;
 
 	@Enumerated(EnumType.STRING)

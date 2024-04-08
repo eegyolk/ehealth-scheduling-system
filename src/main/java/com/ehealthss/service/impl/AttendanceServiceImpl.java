@@ -110,7 +110,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public DataTablesOutput<DoctorAttendance> fetchAttendances(User currentUser, @Valid DataTablesInput input) {
+	public DataTablesOutput<DoctorAttendance> fetchAttendances(User user, @Valid DataTablesInput input) {
 
 		Specification<DoctorAttendance> specification = (Specification<DoctorAttendance>) (root, query, builder) -> {
 
@@ -129,7 +129,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 				 */
 				Join<DoctorAttendance, Doctor> doctor = root.join("doctor");
 				Join<DoctorAttendance, Location> location = root.join("location");
-				return builder.and(builder.equal(doctor.get("id"), currentUser.getDoctor().getId()),
+				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
 						builder.equal(location.get("id"), fieldValue));
 
 			} else if (fieldNum == 2 && fieldValue.length() > 0) {
@@ -139,7 +139,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 				 * "date" in table "doctor_attendance"
 				 */
 				Join<DoctorAttendance, Doctor> doctor = root.join("doctor");
-				return builder.and(builder.equal(doctor.get("id"), currentUser.getDoctor().getId()),
+				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
 						builder.equal(root.get("date"), Date.valueOf(LocalDate.parse(fieldValue))));
 
 			} else {
@@ -149,7 +149,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 				 * "doctor_attendance"
 				 */
 				Join<DoctorAttendance, Doctor> doctor = root.join("doctor");
-				return builder.equal(doctor.get("id"), currentUser.getDoctor().getId());
+				return builder.equal(doctor.get("id"), user.getDoctor().getId());
 
 			}
 		};

@@ -1,0 +1,113 @@
+<div class="modal fade" id="viewAvailability" tabindex="-1"
+	aria-labelledby="#viewAvailabilityLabel" aria-hidden="true">
+	<div id="divVADialog" class="modal-dialog modal-dialog-centered modal-sm">
+		<div class="modal-content">
+			<div id="divVAHeader" class="modal-header d-none">
+				<h1 class="modal-title fs-5" id="#viewAvailabilityLabel">View
+					Availability</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div id="divVASpin" class="modal-body">
+				<div class="d-flex align-items-center">
+					<strong role="status">Please wait...</strong>
+					<div class="spinner-border ms-auto" aria-hidden="true"></div>
+				</div>
+			</div>
+
+			<div id="divVABody" class="modal-body d-none">
+				<div class="row ps-3 pe-3 overflow-auto">
+					<div class="accordion">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#accordionItemHealthcareProvider"
+									aria-expanded="true"
+									aria-controls="accordionItemHealthcareProvider">
+									Healthcare Provider</button>
+							</h2>
+							<div id="accordionItemHealthcareProvider"
+								class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<div class="row text-left">
+										<div class="col-6">
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Name</small>
+													<div id="divName" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Address</small>
+													<div id="divAddress" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-6">
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Email</small>
+													<div id="divEmail" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Phone</small>
+													<div id="divPhone" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#accordionItemAvailability"
+									aria-expanded="true" aria-controls="accordionItemAvailability">Availability</button>
+							</h2>
+							<div id="accordionItemAvailability"
+								class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th scope="col" class="col-md-auto"><small
+													class="opacity-50 fw-normal">DOW</small><i
+													class="bi bi-question-circle-fill ms-1"
+													data-bs-toggle="tooltip" data-bs-placement="right"
+													data-bs-custom-class="custom-tooltip"
+													data-bs-title="Day of the week"></i></th>
+												<th scope="col" class="col-md-auto"><small
+													class="opacity-50 fw-normal">All Day</small><i
+													class="bi bi-question-circle-fill ms-1"
+													data-bs-toggle="tooltip" data-bs-placement="right"
+													data-bs-custom-class="custom-tooltip"
+													data-bs-title="If yes, the clinic is open from 8:00 AM to 6:00 PM."></i></th>
+												<th scope="col" class="col-md-auto"><small
+													class="opacity-50 fw-normal">Time</small></th>
+											</tr>
+										</thead>
+										<tbody id="tableBodyAvailability"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
