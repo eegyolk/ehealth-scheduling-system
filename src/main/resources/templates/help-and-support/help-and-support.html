@@ -2,9 +2,169 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="~{fragments/include :: include}"></head>
 <body>
-	<nav th:include="~{fragments/header :: header}" class="navbar navbar-expand-sm navbar-tertiary fixed-top bg-white border-bottom py-2"></nav>
+	<nav th:include="~{fragments/header :: header}"
+		class="navbar navbar-expand-sm navbar-tertiary fixed-top bg-white border-bottom py-2"></nav>
+
+	<main class="container-fluid ps-4 pe-4">
+		<div class="row bg-white p-3 rounded-3 mb-3">
+			<div class="col align-middle mt-2">
+				<h4>Help & Support</h4>
+			</div>
+
+			<div class="col-md-auto mt-1">
+				<button id="buttonBack" type="button" class="btn btn-dark me-2">
+					<i class="bi bi-chevron-left me-1"></i>Back
+				</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col bg-white p-4 py-3 rounded-3 mb-3">
+				<div class="mb-4 mt-4">Welcome to the Help and Support section
+					of the eHealth Scheduling System. Here you'll find detailed
+					information and guidance on using our platform effectively.</div>
+				<div class="accordion" id="accordionHelp">
+					<!-- Getting Started -->
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingGettingStarted">
+							<button class="accordion-button" type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#collapseGettingStarted" aria-expanded="true"
+								aria-controls="collapseGettingStarted">Getting Started
+							</button>
+						</h2>
+						<div id="collapseGettingStarted"
+							class="accordion-collapse collapse show"
+							aria-labelledby="headingGettingStarted"
+							data-bs-parent="#accordionHelp">
+							<div class="accordion-body">
+								<ul>
+									<li><strong>User Registration</strong>: Learn how to
+										register an account and get started with the eHealth
+										Scheduling System.</li>
+									<li><strong>Dashboard Overview</strong>: Get familiar with
+										the main dashboard interface and its features.</li>
+									<li><strong>Appointment Booking</strong>: Step-by-step
+										instructions on how to schedule appointments with healthcare
+										providers online.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<!-- Features Overview -->
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingFeatures">
+							<button class="accordion-button" type="button"
+								data-bs-toggle="collapse" data-bs-target="#collapseFeatures"
+								aria-expanded="true" aria-controls="collapseFeatures">
+								Features Overview</button>
+						</h2>
+						<div id="collapseFeatures"
+							class="accordion-collapse collapse show"
+							aria-labelledby="headingFeatures" data-bs-parent="#accordionHelp">
+							<div class="accordion-body">
+								<ul>
+									<li><strong>Real-Time Availability</strong>: Understand
+										how to check real-time availability of healthcare
+										professionals and avoid scheduling conflicts.</li>
+									<li><strong>Waitlist Management</strong>: Learn how to
+										efficiently manage waitlists and receive notifications for
+										earlier appointment openings.</li>
+									<li><strong>Patient Access</strong>: Access your
+										appointment history, upcoming schedules, and manage
+										appointments easily.</li>
+									<li><strong>Customizable Settings</strong>: Customize
+										scheduling preferences, appointment durations, types, and
+										locations to suit your needs.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<!-- Frequently Asked Questions (FAQs) -->
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingFAQs">
+							<button class="accordion-button" type="button"
+								data-bs-toggle="collapse" data-bs-target="#collapseFAQs"
+								aria-expanded="true" aria-controls="collapseFAQs">
+								Frequently Asked Questions (FAQs)</button>
+						</h2>
+						<div id="collapseFAQs" class="accordion-collapse collapse show"
+							aria-labelledby="headingFAQs" data-bs-parent="#accordionHelp">
+							<div class="accordion-body">
+								<ul>
+									<li><strong>General FAQs</strong>: Find answers to common
+										questions about the eHealth Scheduling System.</li>
+									<li><strong>Technical Support</strong>: Get help with
+										technical issues, troubleshooting, and platform usage queries.</li>
+									<li><strong>Privacy and Security</strong>: Learn about our
+										commitment to protecting your privacy and keeping your data
+										secure.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<!-- Contact Us -->
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingContact">
+							<button class="accordion-button" type="button"
+								data-bs-toggle="collapse" data-bs-target="#collapseContact"
+								aria-expanded="true" aria-controls="collapseContact">
+								Contact Us</button>
+						</h2>
+						<div id="collapseContact" class="accordion-collapse collapse show"
+							aria-labelledby="headingContact" data-bs-parent="#accordionHelp">
+							<div class="accordion-body">
+								<ul>
+									<li><strong>Support Team</strong>: Reach out to our
+										support team for assistance with any inquiries or issues.</li>
+									<li><strong>Feedback and Suggestions</strong>: Share your
+										feedback and suggestions to help us improve the eHealth
+										Scheduling System.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<!-- Resources -->
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingResources">
+							<button class="accordion-button" type="button"
+								data-bs-toggle="collapse" data-bs-target="#collapseResources"
+								aria-expanded="true" aria-controls="collapseResources">
+								Resources</button>
+						</h2>
+						<div id="collapseResources"
+							class="accordion-collapse collapse show"
+							aria-labelledby="headingResources"
+							data-bs-parent="#accordionHelp">
+							<div class="accordion-body">
+								<ul>
+									<li><strong>User Guides</strong>: Access comprehensive
+										user guides and tutorials for using specific features of the
+										platform.</li>
+									<li><strong>Video Tutorials</strong>: Watch video
+										tutorials for visual guidance on using the eHealth Scheduling
+										System.</li>
+									<li><strong>Documentation</strong>: Explore detailed
+										documentation for developers and system administrators.</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mb-4 mt-4">
+					<p>For further assistance or inquiries, please don't hesitate
+						to contact our support team at support@example.com or call us at
+						[123-456-7890].</p>
+					<p>Thank you for choosing the eHealth Scheduling System!</p>
+				</div>
+			</div>
+		</div>
+	</main>
 
 	<script src="/js/header.js"></script>
-
 </body>
 </html>
