@@ -42,6 +42,7 @@ public class ClinicServiceImpl implements ClinicService {
 		model.addAttribute("withCalendarComponent", false);
 		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
+		model.addAttribute("withMapComponent", true);
 
 		return template;
 
