@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import com.ehealthss.model.enums.DoctorDepartment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "doctor")
@@ -45,11 +44,11 @@ public class Doctor implements Comparable<Doctor> {
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
-	@JsonManagedReference
+	@JsonIgnore
 	private List<DoctorSchedule> doctorSchedules;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
-	@JsonManagedReference
+	@JsonIgnore
 	private List<DoctorAttendance> doctorAttendances;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor")
@@ -198,4 +197,5 @@ public class Doctor implements Comparable<Doctor> {
 	public int compareTo(Doctor o) {
 		return o.getId().compareTo(this.getId());
 	}
+	
 }

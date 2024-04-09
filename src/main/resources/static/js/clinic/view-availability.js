@@ -53,6 +53,7 @@ $().ready(function() {
 			$("#divVADialog").addClass("modal-dialog-centered modal-sm").removeClass("modal-lg");
 			$("#divVAHeader").addClass("d-none");
 			$("#divVABody").addClass("d-none");
+			$("#tableBodyAvailability").html("");
 		});
 	}
 	

@@ -15,24 +15,24 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.ehealthss.model.enums.DayOfWeek;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "doctor_schedule")
 public class DoctorSchedule implements Comparable<DoctorSchedule> {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctor_id")
-	@JsonBackReference
+	@JsonIgnore
 	private Doctor doctor;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
-	@JsonBackReference
+	@JsonIgnore
 	private Location location;
 
 	@Enumerated(EnumType.STRING)

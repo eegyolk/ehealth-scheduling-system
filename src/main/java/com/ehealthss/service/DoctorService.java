@@ -4,24 +4,22 @@ import java.util.List;
 
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.ehealthss.model.Doctor;
-import com.ehealthss.model.User;
-import com.ehealthss.model.enums.DoctorDepartment;
+import com.ehealthss.bean.DoctorDTO;
+import com.ehealthss.bean.DoctorScheduleDTO;
 
 import jakarta.validation.Valid;
 
 @Service
 public interface DoctorService {
 
-	List<Doctor> findByDepartment(DoctorDepartment doctorDepartment);
+	String index(Model model, UserDetails userDetails);
 
-	Doctor getReferenceById(int id);
+	DataTablesOutput<DoctorDTO> findAll(@Valid DataTablesInput input);
 
-	String index(Model model, User user);
-	
-	DataTablesOutput<Doctor> findAll(User user, @Valid DataTablesInput input);
-	
+	List<DoctorScheduleDTO> fetchSchedules(int doctorId);
+
 }

@@ -1,6 +1,7 @@
 package com.ehealthss.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
@@ -18,5 +19,7 @@ public interface DoctorAttendanceRepository extends DataTablesRepository<DoctorA
 	DoctorAttendance findByDoctorIdAndLocationIdAndDate(int doctorId, int locationId, Date date);
 	
 	DataTablesOutput<DoctorAttendance> findAll(@Valid DataTablesInput input, Specification<DoctorAttendance> specification);
+	
+	List<DoctorAttendance> findByDoctorIdAndDate(int doctorId, Date date);
 
 }

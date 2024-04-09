@@ -1,5 +1,7 @@
 package com.ehealthss.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
@@ -9,15 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ehealthss.model.Doctor;
-import com.ehealthss.model.User;
+import com.ehealthss.bean.DoctorDTO;
+import com.ehealthss.bean.DoctorScheduleDTO;
 import com.ehealthss.service.DoctorService;
-import com.ehealthss.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -26,34 +28,28 @@ import jakarta.validation.Valid;
 public class DoctorController {
 
 	@Autowired
-	private final DoctorService doctorService;
-	private final UserService userService;
-	
-	public DoctorController(DoctorService doctorService, UserService userService) {
-		
-		this.doctorService = doctorService;
-		this.userService = userService;
-		
-	}
-	
+	private DoctorService doctorService;
+
 	@GetMapping("")
 	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return doctorService.index(model, currentUser);
+		return doctorService.index(model, userDetails);
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping(value = "/fetch/doctors", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public DataTablesOutput<Doctor> fetchAttendances(@AuthenticationPrincipal UserDetails userDetails,
-			@Valid @RequestBody DataTablesInput input) {
+	public DataTablesOutput<DoctorDTO> fetchAttendances(@Valid @RequestBody DataTablesInput input) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return doctorService.findAll(currentUser, input);
+		return doctorService.findAll(input);
 
 	}
-	
+
+	@ResponseBody
+	@PostMapping(value = "/fetch/schedule/{doctorId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public List<DoctorScheduleDTO> fetchSchedules(@PathVariable int doctorId) {
+
+		return doctorService.fetchSchedules(doctorId);
+
+	}
 }

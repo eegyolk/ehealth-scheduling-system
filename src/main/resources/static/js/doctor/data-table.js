@@ -164,30 +164,37 @@ $().ready(function() {
 			} else if (departmentParts.length === 2) {
 				department = `${departmentParts[0].charAt(0).toUpperCase() + departmentParts[0].slice(1)} ${departmentParts[1].charAt(0).toUpperCase() + departmentParts[1].slice(1)}`;
 			}
-			
 			return `<small>${department}</small>`;
 	}
 	
 	function scheduleMarkup(row) {
 		const btoaData = window.btoa(JSON.stringify(row));
-		return `<a href="#" class="pe-auto" data-bs-toggle="modal" data-bs-target="#viewSchedule" data-btoa-data="${btoaData}"><i class="fa-solid fa-calendar-days button text-primary fs-4"></i></a>`;
+		return `
+			<div class="text-center">
+				<a href="#" class="pe-auto" data-bs-toggle="modal" data-bs-target="#viewSchedule" data-btoa-data="${btoaData}">
+					<i class="fa-solid fa-calendar-days button text-primary fs-4"></i>
+				</a>
+			</div>
+		`;
 	}
 	
 	function todayMarkup(row) {
 		const attendances = row.doctorAttendances;
 		if (attendances.length > 0) {
-			const dt = new Date();
-			for (let i = 0; i < attendances.length; i++) {
-				const date = attendances[i].date.split("T")[0];
-				if (date.toString() === `${dt.getFullYear()}-${(dt.getMonth() + 1) > 10 ? (dt.getMonth() + 1) : "0" + (dt.getMonth() + 1)}-${dt.getDate() > 10 ? dt.getDate() : "0" + dt.getDate()}`) {
-					if (attendances[i].inTime != null && attendances[i].outTime === null) {
-						return `<span class="badge text-bg-success">Doctor is IN</span> @ <small>${attendances[i].location.name}</small>`;	
-					} else {
-						return `<span class="badge text-bg-danger">Doctor is OUT</span> @ <small>${attendances[i].location.name}</small>`;
-					}
-				}
+			if (attendances[0].inTime != null && (attendances[0].outTime === null || attendances[0].outTime.length === 0)) {
+				return `
+					<div class="text-center">
+						<span class="badge text-bg-success">Doctor is IN</span> @ <small>${attendances[0].location.name}</small>
+					</div>
+				`;	
+			} else {
+				return `
+					<div class="text-center">
+						<span class="badge text-bg-danger">Doctor is OUT</span> @ <small>${attendances[0].location.name}</small>
+					</div>
+				`;
 			}
 		}
-		return `<small>-</small>`;
+		return `<div class="text-center"><small>-</small></div>`;
 	}
 });

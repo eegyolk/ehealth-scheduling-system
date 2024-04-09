@@ -30,8 +30,8 @@ public class SecurityConfig {
 		).formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.loginPage("/login")
 				.defaultSuccessUrl("/dashboard", true).permitAll().failureUrl("/login?error=true"))
 				.logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.permitAll()
-						.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl("/login?logout=true")
-						.permitAll());
+						.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+						.logoutSuccessUrl("/login?logout=true").permitAll());
 		return http.build();
 	}
 

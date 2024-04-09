@@ -1,19 +1,29 @@
 package com.ehealthss.service.impl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.ehealthss.bean.DoctorAttendanceDTO;
+import com.ehealthss.bean.DoctorDTO;
+import com.ehealthss.bean.DoctorScheduleDTO;
 import com.ehealthss.model.Doctor;
-import com.ehealthss.model.User;
+import com.ehealthss.model.DoctorAttendance;
+import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.enums.DoctorDepartment;
+import com.ehealthss.repository.DoctorAttendanceRepository;
 import com.ehealthss.repository.DoctorRepository;
+import com.ehealthss.repository.DoctorScheduleRepository;
 import com.ehealthss.service.DoctorService;
 
 import jakarta.validation.Valid;
@@ -24,18 +34,14 @@ public class DoctorServiceImpl implements DoctorService {
 	@Autowired
 	DoctorRepository doctorRepository;
 
-	@Override
-	public List<Doctor> findByDepartment(DoctorDepartment doctorDepartment) {
-		return doctorRepository.findByDepartment(doctorDepartment);
-	}
+	@Autowired
+	DoctorScheduleRepository doctorScheduleRepository;
+
+	@Autowired
+	DoctorAttendanceRepository doctorAttendanceRepository;
 
 	@Override
-	public Doctor getReferenceById(int id) {
-		return doctorRepository.getReferenceById(id);
-	}
-
-	@Override
-	public String index(Model model, User user) {
+	public String index(Model model, UserDetails userDetails) {
 
 		String template = "doctor/doctor";
 
@@ -52,7 +58,7 @@ public class DoctorServiceImpl implements DoctorService {
 	}
 
 	@Override
-	public DataTablesOutput<Doctor> findAll(User user, @Valid DataTablesInput input) {
+	public DataTablesOutput<DoctorDTO> findAll(@Valid DataTablesInput input) {
 
 		Specification<Doctor> specification = (Specification<Doctor>) (root, query, builder) -> {
 
@@ -81,15 +87,65 @@ public class DoctorServiceImpl implements DoctorService {
 				return builder.equal(root.get("department"), fieldValue);
 
 			} else {
-				
+
 				return null;
-				
+
 			}
 
 		};
-		
-		return doctorRepository.findAll(input, specification);
+
+		return convertToDataTablesOutputDoctorDTO(doctorRepository.findAll(input, specification));
 
 	}
 
+	@Override
+	public List<DoctorScheduleDTO> fetchSchedules(int doctorId) {
+
+		List<DoctorSchedule> doctorSchedules = doctorScheduleRepository.findByDoctorId(doctorId);
+
+		return doctorSchedules.stream().map(this::convertToDoctorScheduleDTO).collect(Collectors.toList());
+
+	}
+
+	private DataTablesOutput<DoctorDTO> convertToDataTablesOutputDoctorDTO(DataTablesOutput<Doctor> doctor) {
+
+		DataTablesOutput<DoctorDTO> dataTablesOutputDoctorDTO = new DataTablesOutput<>();
+
+		dataTablesOutputDoctorDTO.setDraw(doctor.getDraw());
+		dataTablesOutputDoctorDTO.setError(doctor.getError());
+		dataTablesOutputDoctorDTO.setRecordsFiltered(doctor.getRecordsFiltered());
+		dataTablesOutputDoctorDTO.setRecordsTotal(doctor.getRecordsTotal());
+		dataTablesOutputDoctorDTO.setSearchPanes(doctor.getSearchPanes());
+		dataTablesOutputDoctorDTO
+				.setData(doctor.getData().stream().map(this::convertToDoctorDTO).collect(Collectors.toList()));
+		return dataTablesOutputDoctorDTO;
+
+	}
+
+	private DoctorDTO convertToDoctorDTO(Doctor doctor) {
+
+		List<DoctorAttendance> doctorAttendances = doctorAttendanceRepository.findByDoctorIdAndDate(doctor.getId(),
+				Date.valueOf(LocalDate.now()));
+
+		return new DoctorDTO(doctor.getId(), null, doctor.getFirstName(), doctor.getLastName(), doctor.getEmail(),
+				doctor.getPhone(), doctor.getDepartment(), null, null, null,
+				doctorAttendances.stream().map(this::convertToDoctorAttendanceDTO).collect(Collectors.toList()), null);
+
+	}
+
+	private DoctorAttendanceDTO convertToDoctorAttendanceDTO(DoctorAttendance doctorAttendance) {
+
+		return new DoctorAttendanceDTO(doctorAttendance.getId(), null, doctorAttendance.getLocation(),
+				doctorAttendance.getDate(), doctorAttendance.getInTime(), doctorAttendance.getOutTime(), null, null,
+				null);
+
+	}
+
+	private DoctorScheduleDTO convertToDoctorScheduleDTO(DoctorSchedule doctorSchedule) {
+
+		return new DoctorScheduleDTO(doctorSchedule.getId(), null, doctorSchedule.getLocation(),
+				doctorSchedule.getDayOfWeek(), doctorSchedule.getStartTime(), doctorSchedule.getEndTime(),
+				doctorSchedule.getSlot(), doctorSchedule.getDuration(), null, null);
+
+	}
 }

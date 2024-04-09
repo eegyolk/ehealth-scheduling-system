@@ -9,5 +9,5 @@ public class EhealthSchedulingSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EhealthSchedulingSystemApplication.class, args);
 	}
-
+	
 }
