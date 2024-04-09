@@ -1,29 +1,33 @@
 package com.ehealthss.service.impl;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.ehealthss.bean.AttendanceDTO;
+import com.ehealthss.bean.DoctorAttendanceDTO;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.User;
+import com.ehealthss.repository.DoctorAttendanceRepository;
+import com.ehealthss.repository.DoctorScheduleRepository;
+import com.ehealthss.repository.LocationRepository;
+import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.AttendanceService;
-import com.ehealthss.service.DoctorAttendanceService;
-import com.ehealthss.service.DoctorScheduleService;
-import com.ehealthss.service.LocationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,21 +38,19 @@ import jakarta.validation.Valid;
 public class AttendanceServiceImpl implements AttendanceService {
 
 	@Autowired
-	private final DoctorScheduleService doctorScheduleService;
-	private final DoctorAttendanceService doctorAttendanceService;
-	private final LocationService locationService;
-	
-	public AttendanceServiceImpl(DoctorScheduleService doctorScheduleService,
-			DoctorAttendanceService doctorAttendanceService, LocationService locationService) {
+	UserRepository userRepository;
 
-		this.doctorScheduleService = doctorScheduleService;
-		this.doctorAttendanceService = doctorAttendanceService;
-		this.locationService = locationService;
-		
-	}
+	@Autowired
+	DoctorScheduleRepository doctorScheduleRepository;
+
+	@Autowired
+	DoctorAttendanceRepository doctorAttendanceRepository;
+
+	@Autowired
+	LocationRepository locationRepository;
 
 	@Override
-	public String index(Model model, User user) {
+	public String index(Model model, UserDetails userDetails) {
 
 		String template = "attendance/attendance";
 
@@ -62,7 +64,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 		model.addAttribute("dateToday", formatter.format(localDate));
 
 		// Get doctor schedules
-		List<DoctorSchedule> doctorSchedules = doctorScheduleService.findByDoctorId(user.getDoctor().getId());
+		User user = userRepository.findByUsername(userDetails.getUsername());
+		List<DoctorSchedule> doctorSchedules = doctorScheduleRepository.findByDoctorId(user.getDoctor().getId());
 
 		for (DoctorSchedule doctorSchedule : doctorSchedules) {
 
@@ -72,11 +75,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 				try {
 
 					// Check if doctor has attendance today
-					DoctorAttendance doctorAttendance = doctorAttendanceService.findByDoctorIdAndLocationIdAndDate(
+					DoctorAttendance doctorAttendance = doctorAttendanceRepository.findByDoctorIdAndLocationIdAndDate(
 							doctorSchedule.getDoctor().getId(), doctorSchedule.getLocation().getId(),
 							Date.valueOf(localDate));
 
-					if (doctorAttendance != null) {
+					if (doctorAttendance != null) {						
 						model.addAttribute("hasAttendance", true);
 					}
 
@@ -90,7 +93,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 			}
 		}
 
-		List<Location> locations = locationService.findAll();
+		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);
 
 		return template;
@@ -98,19 +101,22 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public void create(User user, int scheduleId, AttendanceDTO attendanceDTO) {
+	public void create(UserDetails userDetails, int scheduleId, AttendanceDTO attendanceDTO) {
 
-		DoctorSchedule doctorSchedule = doctorScheduleService.getReferenceById(scheduleId);
+		DoctorSchedule doctorSchedule = doctorScheduleRepository.getReferenceById(scheduleId);
+		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		DoctorAttendance doctorAttendance = new DoctorAttendance(user.getDoctor(), doctorSchedule.getLocation(),
 				attendanceDTO.getDate(), attendanceDTO.getInTime(), attendanceDTO.getOutTime(),
 				attendanceDTO.getSignature());
-		doctorAttendanceService.save(doctorAttendance);
+		doctorAttendanceRepository.save(doctorAttendance);
 
 	}
 
 	@Override
-	public DataTablesOutput<DoctorAttendance> fetchAttendances(User user, @Valid DataTablesInput input) {
+	public DataTablesOutput<DoctorAttendanceDTO> fetchAttendances(UserDetails userDetails, @Valid DataTablesInput input) {
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		Specification<DoctorAttendance> specification = (Specification<DoctorAttendance>) (root, query, builder) -> {
 
@@ -154,16 +160,40 @@ public class AttendanceServiceImpl implements AttendanceService {
 			}
 		};
 
-		return doctorAttendanceService.findAll(input, specification);
+		return recreateDataTablesOutputDoctorAttendance(doctorAttendanceRepository.findAll(input, specification));
+		
 	}
 
 	@Override
-	public void update(User user, int attendanceId, AttendanceDTO attendanceDTO) {
+	public void update(int attendanceId, AttendanceDTO attendanceDTO) {
 
-		DoctorAttendance currentDoctorAttendance = doctorAttendanceService.getReferenceById(attendanceId);
+		DoctorAttendance currentDoctorAttendance = doctorAttendanceRepository.getReferenceById(attendanceId);
+
 		currentDoctorAttendance.setOutTime(attendanceDTO.getOutTime());
-		doctorAttendanceService.save(currentDoctorAttendance);
+		doctorAttendanceRepository.save(currentDoctorAttendance);
 
 	}
 
+	private DataTablesOutput<DoctorAttendanceDTO> recreateDataTablesOutputDoctorAttendance(DataTablesOutput<DoctorAttendance> doctorAttendances) {
+
+		DataTablesOutput<DoctorAttendanceDTO> dataTablesOutputDoctorAttendanceDTO = new DataTablesOutput<DoctorAttendanceDTO>();
+
+		dataTablesOutputDoctorAttendanceDTO.setDraw(doctorAttendances.getDraw());
+		dataTablesOutputDoctorAttendanceDTO.setError(doctorAttendances.getError());
+		dataTablesOutputDoctorAttendanceDTO.setRecordsFiltered(doctorAttendances.getRecordsFiltered());
+		dataTablesOutputDoctorAttendanceDTO.setRecordsTotal(doctorAttendances.getRecordsTotal());
+		dataTablesOutputDoctorAttendanceDTO.setSearchPanes(doctorAttendances.getSearchPanes());
+		dataTablesOutputDoctorAttendanceDTO
+				.setData(doctorAttendances.getData().stream().map(this::convertToDoctorAttendanceDTO).collect(Collectors.toList()));
+		return dataTablesOutputDoctorAttendanceDTO;
+
+	}
+	
+	private DoctorAttendanceDTO convertToDoctorAttendanceDTO(DoctorAttendance doctorAttendance) {
+
+		return new DoctorAttendanceDTO(doctorAttendance.getId(), null, doctorAttendance.getLocation(),
+				doctorAttendance.getDate(), doctorAttendance.getInTime(), doctorAttendance.getOutTime(), null, null,
+				null);
+
+	}
 }

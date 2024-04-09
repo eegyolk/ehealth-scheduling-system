@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ehealthss.bean.AttendanceDTO;
-import com.ehealthss.model.DoctorAttendance;
-import com.ehealthss.model.User;
+import com.ehealthss.bean.DoctorAttendanceDTO;
 import com.ehealthss.service.AttendanceService;
-import com.ehealthss.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -30,22 +28,12 @@ import jakarta.validation.Valid;
 public class AttendanceController {
 
 	@Autowired
-	private final AttendanceService attendanceService;
-	private final UserService userService;
-
-	public AttendanceController(AttendanceService attendanceService, UserService userService) {
-
-		this.attendanceService = attendanceService;
-		this.userService = userService;
-
-	}
+	private AttendanceService attendanceService;
 
 	@GetMapping("")
 	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return attendanceService.index(model, currentUser);
+		return attendanceService.index(model, userDetails);
 
 	}
 
@@ -54,31 +42,24 @@ public class AttendanceController {
 	public void createAttendance(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int scheduleId,
 			@RequestBody AttendanceDTO attendanceDTO) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		attendanceService.create(currentUser, scheduleId, attendanceDTO);
+		attendanceService.create(userDetails, scheduleId, attendanceDTO);
 
 	}
 
 	@ResponseBody
 	@PostMapping(value = "/fetch/attendances", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public DataTablesOutput<DoctorAttendance> fetchAttendances(@AuthenticationPrincipal UserDetails userDetails,
+	public DataTablesOutput<DoctorAttendanceDTO> fetchAttendances(@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody DataTablesInput input) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return attendanceService.fetchAttendances(currentUser, input);
+		return attendanceService.fetchAttendances(userDetails, input);
 
 	}
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/update/{attendanceId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public void updateAttendance(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int attendanceId,
-			@RequestBody AttendanceDTO attendanceDTO) {
+	public void updateAttendance(@PathVariable int attendanceId, @RequestBody AttendanceDTO attendanceDTO) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		attendanceService.update(currentUser, attendanceId, attendanceDTO);
+		attendanceService.update(attendanceId, attendanceDTO);
 
 	}
 }
