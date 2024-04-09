@@ -1,7 +1,9 @@
 package com.ehealthss.service.impl;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -23,11 +26,12 @@ import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.model.enums.DoctorDepartment;
-import com.ehealthss.service.AppointmentActivityService;
-import com.ehealthss.service.AppointmentService;
+import com.ehealthss.repository.AppointmentActivityRepository;
+import com.ehealthss.repository.AppointmentRepository;
+import com.ehealthss.repository.DoctorRepository;
+import com.ehealthss.repository.LocationRepository;
+import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.BookAppointmentService;
-import com.ehealthss.service.DoctorService;
-import com.ehealthss.service.LocationService;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.validation.Valid;
@@ -36,23 +40,22 @@ import jakarta.validation.Valid;
 public class BookAppointmentServiceImpl implements BookAppointmentService {
 
 	@Autowired
-	private final DoctorService doctorService;
-	private final LocationService locationService;
-	private final AppointmentService appointmentService;
-	private final AppointmentActivityService appointmentActivityService;
-
-	public BookAppointmentServiceImpl(DoctorService doctorService, LocationService locationService,
-			AppointmentService appointmentService, AppointmentActivityService appointmentActivityService) {
-
-		this.doctorService = doctorService;
-		this.locationService = locationService;
-		this.appointmentService = appointmentService;
-		this.appointmentActivityService = appointmentActivityService;
-
-	}
+	LocationRepository locationRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	DoctorRepository doctorRepository;
+	
+	@Autowired
+	AppointmentRepository appointmentRepository;
+	
+	@Autowired
+	AppointmentActivityRepository appointmentActivityRepository;
 
 	@Override
-	public String index(Model model, User user) {
+	public String index(Model model, UserDetails userDetails) {
 
 		String template = "book-appointment/book-appointment";
 
@@ -61,15 +64,17 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
 
-		List<Location> locations = locationService.findAll();
+		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);
 
 		DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
 		model.addAttribute("doctorDepartments", doctorDepartments);
-		
+
 		// Get appointments by patient_id and status, order by created_on descending
-		List<Appointment> appointments = appointmentService.findByPatientIdAndStatusOrderByCreatedOnDesc(user.getPatient().getId(), AppointmentStatus.FULFILLED);
-		
+		User user = userRepository.findByUsername(userDetails.getUsername());
+		List<Appointment> appointments = appointmentRepository
+				.findByPatientIdAndStatusOrderByCreatedOnDesc(user.getPatient().getId(), AppointmentStatus.FULFILLED);
+
 		Set<Doctor> assignedDoctors = new TreeSet<>();
 		Set<Location> assignedLocations = new TreeSet<>();
 
@@ -77,23 +82,23 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 			Doctor doctor = appointment.getDoctor();
 			doctor.setCreatedOn(appointment.getCreatedOn());
 			assignedDoctors.add(doctor);
-			
+
 			Location location = appointment.getLocation();
 			location.setCreatedOn(appointment.getCreatedOn());
 			assignedLocations.add(location);
 		}
-		
+
 		model.addAttribute("lastDoctorVisited", assignedDoctors);
 		model.addAttribute("lastClinicVisited", assignedLocations);
-		
+
 		return template;
 
 	}
 
 	@Override
 	public Set<Doctor> fetchDoctorsByDepartmentAndLocation(DoctorDepartment doctorDepartment, int locationId) {
-		
-		List<Doctor> doctors = doctorService.findByDepartment(doctorDepartment);
+
+		List<Doctor> doctors = doctorRepository.findByDepartment(doctorDepartment);
 
 		Set<Doctor> doctorsByDepartmentAndLocation = new TreeSet<>();
 
@@ -106,15 +111,15 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 				}
 			}
 		}
-		
+
 		return doctorsByDepartmentAndLocation;
-		
+
 	}
-	
+
 	@Override
 	public Set<DoctorSchedule> fetchDoctorSchedulesByDoctorAndLocation(int doctorId, int locationId) {
-		
-		Doctor doctor = doctorService.getReferenceById(doctorId);
+
+		Doctor doctor = doctorRepository.getReferenceById(doctorId);
 
 		Set<DoctorSchedule> doctorScheduleByDoctorAndLocation = new TreeSet<>();
 
@@ -125,60 +130,75 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		}
 
 		return doctorScheduleByDoctorAndLocation;
-		
+
 	}
-	
+
 	@Override
 	@Transactional
-	public void create(User user, int doctorId, int locationId, Appointment appointment) {
+	public void create(UserDetails userDetails, int doctorId, int locationId, Appointment appointment) {
 
-		Doctor doctor = doctorService.getReferenceById(doctorId);
-		Location location = locationService.getReferenceById(locationId);
+		Doctor doctor = doctorRepository.getReferenceById(doctorId);
+		Location location = locationRepository.getReferenceById(locationId);
+		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		appointment.setPatient(user.getPatient());
 		appointment.setDoctor(doctor);
 		appointment.setLocation(location);
-		appointment.setReferenceNo(
-				appointmentService.generateReferenceNo(user.getPatient().getId(), doctorId, locationId));
+		appointment.setReferenceNo(generateReferenceNo(user.getPatient().getId(), doctorId, locationId));
 		appointment.setStatus(AppointmentStatus.PENDING);
-		Appointment newAppointment = appointmentService.save(appointment);
+		Appointment newAppointment = appointmentRepository.save(appointment);
 
 		AppointmentActivity appointmentActivity = new AppointmentActivity(newAppointment, user,
 				"Newly created appointment.", AppointmentStatus.PENDING);
-		appointmentActivityService.save(appointmentActivity);
+		appointmentActivityRepository.save(appointmentActivity);
 
 	}
 
 	@Override
-	public DataTablesOutput<Appointment> fetchAppointments(User currentUser, @Valid @RequestBody DataTablesInput input) {
-		
+	public DataTablesOutput<Appointment> fetchAppointments(UserDetails userDetails,
+			@Valid @RequestBody DataTablesInput input) {
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
 		Specification<Appointment> specification = (Specification<Appointment>) (root, query, builder) -> {
 			/**
-			 * Will produce additional criteria for filtering data with "patient_id" in table "appointment"
+			 * Will produce additional criteria for filtering data with "patient_id" in
+			 * table "appointment"
 			 */
 			Join<Appointment, Patient> patient = root.join("patient");
-			return builder.equal(patient.get("id"), currentUser.getPatient().getId());
+			return builder.equal(patient.get("id"), user.getPatient().getId());
 		};
 
-		return appointmentService.findAll(input, specification);
-		
+		return appointmentRepository.findAll(input, specification);
+
 	}
 
 	@Override
 	@Transactional
-	public void cancel(User user, int appointmentId, AppointmentActivity appointmentActivity) {
-		
-		Appointment appointment = appointmentService.getReferenceById(appointmentId);
+	public void cancel(UserDetails userDetails, int appointmentId, AppointmentActivity appointmentActivity) {
+
+		Appointment appointment = appointmentRepository.getReferenceById(appointmentId);
 		appointment.setStatus(AppointmentStatus.CANCELLED);
 		appointment.setUpdatedOn(new Date());
-		appointmentService.save(appointment);
-		
+		appointmentRepository.save(appointment);
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
 		appointmentActivity.setAppointment(appointment);
 		appointmentActivity.setUser(user);
 		appointmentActivity.setStatus(AppointmentStatus.CANCELLED);
-		appointmentActivityService.save(appointmentActivity);
-		
+		appointmentActivityRepository.save(appointmentActivity);
+
 	}
 
-	
+	private String generateReferenceNo(int patientId, int doctorId, int locationId) {
+		Random rand = new Random();
+		int low = 10;
+		int high = 100;
+		int randNum = rand.nextInt(high - low) + low;
+		LocalDate dt = LocalDate.now();
+		return String.join("", "REF", String.valueOf(dt.getYear()).substring(2), String.valueOf(dt.getMonthValue()),
+				String.valueOf(dt.getDayOfMonth()), String.valueOf(dt.getDayOfYear()), String.valueOf(patientId),
+				String.valueOf(doctorId), String.valueOf(locationId), String.valueOf(randNum));
+	}
 }

@@ -24,10 +24,8 @@ import com.ehealthss.model.Appointment;
 import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorSchedule;
-import com.ehealthss.model.User;
 import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.service.BookAppointmentService;
-import com.ehealthss.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -36,22 +34,12 @@ import jakarta.validation.Valid;
 public class BookAppointmentController {
 
 	@Autowired
-	private final BookAppointmentService bookAppointmentService;
-	private final UserService userService;
-
-	public BookAppointmentController(BookAppointmentService bookAppointmentService, UserService userService) {
-
-		this.bookAppointmentService = bookAppointmentService;
-		this.userService = userService;
-
-	}
+	private BookAppointmentService bookAppointmentService;
 
 	@GetMapping("")
 	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return bookAppointmentService.index(model, currentUser);
+		return bookAppointmentService.index(model, userDetails);
 
 	}
 
@@ -79,9 +67,7 @@ public class BookAppointmentController {
 	public void createAppointment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int doctorId,
 			@PathVariable int locationId, @RequestBody Appointment appointment) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		bookAppointmentService.create(currentUser, doctorId, locationId, appointment);
+		bookAppointmentService.create(userDetails, doctorId, locationId, appointment);
 
 	}
 
@@ -90,9 +76,7 @@ public class BookAppointmentController {
 	public DataTablesOutput<Appointment> fetchAppointments(@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody DataTablesInput input) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return bookAppointmentService.fetchAppointments(currentUser, input);
+		return bookAppointmentService.fetchAppointments(userDetails, input);
 
 	}
 
@@ -101,9 +85,7 @@ public class BookAppointmentController {
 	public void cancelAppointment(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int appointmentId,
 			@RequestBody AppointmentActivity appointmentActivity) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		bookAppointmentService.cancel(currentUser, appointmentId, appointmentActivity);
+		bookAppointmentService.cancel(userDetails, appointmentId, appointmentActivity);
 
 	}
 }
