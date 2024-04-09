@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.ehealthss.bean.AttendanceDTO;
 import com.ehealthss.bean.DoctorAttendanceDTO;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorAttendance;
@@ -79,7 +78,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 							doctorSchedule.getDoctor().getId(), doctorSchedule.getLocation().getId(),
 							Date.valueOf(localDate));
 
-					if (doctorAttendance != null) {						
+					if (doctorAttendance != null) {
 						model.addAttribute("hasAttendance", true);
 					}
 
@@ -101,20 +100,20 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public void create(UserDetails userDetails, int scheduleId, AttendanceDTO attendanceDTO) {
+	public void create(UserDetails userDetails, int scheduleId, DoctorAttendance doctorAttendance) {
 
 		DoctorSchedule doctorSchedule = doctorScheduleRepository.getReferenceById(scheduleId);
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
-		DoctorAttendance doctorAttendance = new DoctorAttendance(user.getDoctor(), doctorSchedule.getLocation(),
-				attendanceDTO.getDate(), attendanceDTO.getInTime(), attendanceDTO.getOutTime(),
-				attendanceDTO.getSignature());
+		doctorAttendance.setDoctor(user.getDoctor());
+		doctorAttendance.setLocation(doctorSchedule.getLocation());
 		doctorAttendanceRepository.save(doctorAttendance);
 
 	}
 
 	@Override
-	public DataTablesOutput<DoctorAttendanceDTO> fetchAttendances(UserDetails userDetails, @Valid DataTablesInput input) {
+	public DataTablesOutput<DoctorAttendanceDTO> fetchAttendances(UserDetails userDetails,
+			@Valid DataTablesInput input) {
 
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
@@ -161,34 +160,35 @@ public class AttendanceServiceImpl implements AttendanceService {
 		};
 
 		return recreateDataTablesOutputDoctorAttendance(doctorAttendanceRepository.findAll(input, specification));
-		
+
 	}
 
 	@Override
-	public void update(int attendanceId, AttendanceDTO attendanceDTO) {
+	public void update(int attendanceId, DoctorAttendance doctorAttendance) {
 
-		DoctorAttendance currentDoctorAttendance = doctorAttendanceRepository.getReferenceById(attendanceId);
+		DoctorAttendance existingDoctorAttendance = doctorAttendanceRepository.getReferenceById(attendanceId);
 
-		currentDoctorAttendance.setOutTime(attendanceDTO.getOutTime());
-		doctorAttendanceRepository.save(currentDoctorAttendance);
+		existingDoctorAttendance.setOutTime(doctorAttendance.getOutTime());
+		doctorAttendanceRepository.save(existingDoctorAttendance);
 
 	}
 
-	private DataTablesOutput<DoctorAttendanceDTO> recreateDataTablesOutputDoctorAttendance(DataTablesOutput<DoctorAttendance> doctorAttendances) {
+	private DataTablesOutput<DoctorAttendanceDTO> recreateDataTablesOutputDoctorAttendance(
+			DataTablesOutput<DoctorAttendance> doctorAttendances) {
 
-		DataTablesOutput<DoctorAttendanceDTO> dataTablesOutputDoctorAttendanceDTO = new DataTablesOutput<DoctorAttendanceDTO>();
+		DataTablesOutput<DoctorAttendanceDTO> dataTablesOutputDoctorAttendanceDTO = new DataTablesOutput<>();
 
 		dataTablesOutputDoctorAttendanceDTO.setDraw(doctorAttendances.getDraw());
 		dataTablesOutputDoctorAttendanceDTO.setError(doctorAttendances.getError());
 		dataTablesOutputDoctorAttendanceDTO.setRecordsFiltered(doctorAttendances.getRecordsFiltered());
 		dataTablesOutputDoctorAttendanceDTO.setRecordsTotal(doctorAttendances.getRecordsTotal());
 		dataTablesOutputDoctorAttendanceDTO.setSearchPanes(doctorAttendances.getSearchPanes());
-		dataTablesOutputDoctorAttendanceDTO
-				.setData(doctorAttendances.getData().stream().map(this::convertToDoctorAttendanceDTO).collect(Collectors.toList()));
+		dataTablesOutputDoctorAttendanceDTO.setData(doctorAttendances.getData().stream()
+				.map(this::convertToDoctorAttendanceDTO).collect(Collectors.toList()));
 		return dataTablesOutputDoctorAttendanceDTO;
 
 	}
-	
+
 	private DoctorAttendanceDTO convertToDoctorAttendanceDTO(DoctorAttendance doctorAttendance) {
 
 		return new DoctorAttendanceDTO(doctorAttendance.getId(), null, doctorAttendance.getLocation(),

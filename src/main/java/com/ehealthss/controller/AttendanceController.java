@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.ehealthss.bean.AttendanceDTO;
 import com.ehealthss.bean.DoctorAttendanceDTO;
+import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.service.AttendanceService;
 
 import jakarta.validation.Valid;
@@ -40,9 +40,9 @@ public class AttendanceController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/create/{scheduleId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public void createAttendance(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int scheduleId,
-			@RequestBody AttendanceDTO attendanceDTO) {
+			@RequestBody DoctorAttendance doctorAttendance) {
 
-		attendanceService.create(userDetails, scheduleId, attendanceDTO);
+		attendanceService.create(userDetails, scheduleId, doctorAttendance);
 
 	}
 
@@ -57,9 +57,9 @@ public class AttendanceController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(value = "/update/{attendanceId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public void updateAttendance(@PathVariable int attendanceId, @RequestBody AttendanceDTO attendanceDTO) {
+	public void updateAttendance(@PathVariable int attendanceId, @RequestBody DoctorAttendance doctorAttendance) {
 
-		attendanceService.update(attendanceId, attendanceDTO);
+		attendanceService.update(attendanceId, doctorAttendance);
 
 	}
 }
