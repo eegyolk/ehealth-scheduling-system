@@ -1,6 +1,8 @@
 package com.ehealthss.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,7 @@ import com.ehealthss.service.HelpAndSupportService;
 public class HelpAndSupportController {
 
 	@Autowired
-	private final HelpAndSupportService helpAndSupportService;
+	private HelpAndSupportService helpAndSupportService;
 	
 	public HelpAndSupportController(HelpAndSupportService helpAndSupportService) {
 		
@@ -22,9 +24,9 @@ public class HelpAndSupportController {
 	}
 	
 	@GetMapping("")
-	public String index(Model model) {
+	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-		return helpAndSupportService.index(model);
+		return helpAndSupportService.index(model, userDetails);
 
 	}
 	

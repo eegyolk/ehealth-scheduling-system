@@ -1,5 +1,6 @@
 package com.ehealthss.service.impl;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -9,7 +10,7 @@ import com.ehealthss.service.HelpAndSupportService;
 public class HelpAndSupportServiceImpl implements HelpAndSupportService {
 
 	@Override
-	public String index(Model model) {
+	public String index(Model model, UserDetails userDetails) {
 
 		String template = "help-and-support/help-and-support";
 
