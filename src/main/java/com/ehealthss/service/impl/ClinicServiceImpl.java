@@ -7,15 +7,15 @@ import org.springframework.data.jpa.datatables.mapping.Column;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.ehealthss.model.Location;
 import com.ehealthss.model.LocationAvailability;
-import com.ehealthss.model.User;
+import com.ehealthss.repository.LocationAvailabilityRepository;
+import com.ehealthss.repository.LocationRepository;
 import com.ehealthss.service.ClinicService;
-import com.ehealthss.service.LocationAvailabilityService;
-import com.ehealthss.service.LocationService;
 
 import jakarta.validation.Valid;
 
@@ -23,18 +23,13 @@ import jakarta.validation.Valid;
 public class ClinicServiceImpl implements ClinicService {
 
 	@Autowired
-	private final LocationService locationService;
-	private final LocationAvailabilityService locationAvailabilityService;
+	LocationRepository locationRepository;
 	
-	public ClinicServiceImpl(LocationService locationService, LocationAvailabilityService locationAvailabilityService) {
-		
-		this.locationService = locationService;
-		this.locationAvailabilityService = locationAvailabilityService;
-		
-	}
+	@Autowired
+	LocationAvailabilityRepository locationAvailabilityRepository;
 
 	@Override
-	public String index(Model model, User user) {
+	public String index(Model model, UserDetails userDetails) {
 
 		String template = "clinic/clinic";
 
@@ -50,7 +45,7 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	public DataTablesOutput<Location> fetchLocations(@Valid DataTablesInput input) {
-		
+
 		Specification<Location> specification = (Specification<Location>) (root, query, builder) -> {
 
 			Column searchByFieldName = input.getColumns().get(7);
@@ -75,22 +70,22 @@ public class ClinicServiceImpl implements ClinicService {
 				return builder.like(root.get("address"), "%" + fieldValue + "%");
 
 			} else {
-				
+
 				return null;
-				
+
 			}
 
 		};
 
-		return locationService.findAll(input, specification);
-		
+		return locationRepository.findAll(input, specification);
+
 	}
 
 	@Override
 	public List<LocationAvailability> fetchAvailability(int locationId) {
-		
-		return locationAvailabilityService.findByLocationId(locationId);
-		
+
+		return locationAvailabilityRepository.findByLocationId(locationId);
+
 	}
-	
+
 }

@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ehealthss.model.Location;
 import com.ehealthss.model.LocationAvailability;
-import com.ehealthss.model.User;
 import com.ehealthss.service.ClinicService;
-import com.ehealthss.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -30,25 +28,15 @@ import jakarta.validation.Valid;
 public class ClinicController {
 
 	@Autowired
-	private final ClinicService clinicService;
-	private final UserService userService;
-	
-	public ClinicController(ClinicService clinicService, UserService userService) {
-		
-		this.clinicService = clinicService;
-		this.userService = userService;
-		
-	}
-	
+	private ClinicService clinicService;
+
 	@GetMapping("")
 	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
-
-		return clinicService.index(model, currentUser);
+		return clinicService.index(model, userDetails);
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping(value = "/fetch/clinics", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public DataTablesOutput<Location> fetchLocations(@Valid @RequestBody DataTablesInput input) {
@@ -56,7 +44,7 @@ public class ClinicController {
 		return clinicService.fetchLocations(input);
 
 	}
-	
+
 	@ResponseBody
 	@PostMapping(value = "/fetch/availability/{locationId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public List<LocationAvailability> fetchAvailability(@PathVariable int locationId) {
@@ -64,5 +52,5 @@ public class ClinicController {
 		return clinicService.fetchAvailability(locationId);
 
 	}
-	
+
 }
