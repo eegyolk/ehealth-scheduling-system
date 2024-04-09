@@ -1,5 +1,6 @@
 package com.ehealthss.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +15,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.ehealthss.service.AuthenticationUserDetailsService;
+import com.ehealthss.service.AuthUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
+	@Autowired
+	private AuthUserDetailsService authUserDetailsService;
+	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -33,25 +37,32 @@ public class SecurityConfig {
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 						.logoutSuccessUrl("/login?logout=true").permitAll());
 		return http.build();
+		
 	}
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
+		
 		return new BCryptPasswordEncoder();
+		
 	}
 
 	@Bean
 	UserDetailsService userDetailsService() {
-		return new AuthenticationUserDetailsService();
+		
+		return authUserDetailsService;
+		
 	}
 
 	@Bean
 	AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
+		
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		
 		authenticationProvider.setUserDetailsService(userDetailsService);
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
-
 		return new ProviderManager(authenticationProvider);
+		
 	}
 
 }
