@@ -19,25 +19,30 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.ehealthss.model.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "appointment")
 public class Appointment {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id")
+	@JsonIgnore
 	private Patient patient;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctor_id")
+	@JsonIgnore
 	private Doctor doctor;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
+	@JsonIgnore
 	private Location location;
 
 	private String referenceNo;
@@ -57,7 +62,7 @@ public class Appointment {
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")
-	@JsonManagedReference
+	@JsonIgnore
 	private List<AppointmentActivity> appointmentActivities;
 
 	public Appointment() {

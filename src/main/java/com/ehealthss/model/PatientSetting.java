@@ -1,5 +1,8 @@
 package com.ehealthss.model;
 
+import java.util.Date;
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,32 +12,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-import java.util.Date;
-import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "patient_setting")
 public class PatientSetting {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id")
-	@JsonIgnore
 	private Patient patient;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "preferred_doctor")
-	@JsonIgnore
 	private Doctor preferredDoctor;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "preferred_location")
-	@JsonIgnore
 	private Location preferredLocation;
 
 	private String preferredTime;
@@ -120,12 +115,12 @@ public class PatientSetting {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		PatientSetting other = (PatientSetting) obj;
 		return Objects.equals(createdOn, other.createdOn) && id == other.id
 				&& Objects.equals(preferredTime, other.preferredTime) && Objects.equals(updatedOn, other.updatedOn);

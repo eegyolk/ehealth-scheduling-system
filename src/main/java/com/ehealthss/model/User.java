@@ -79,7 +79,7 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -153,12 +153,12 @@ public class User {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		User other = (User) obj;
 		return Objects.equals(createdOn, other.createdOn) && id == other.id && Objects.equals(password, other.password)
 				&& type == other.type && Objects.equals(updatedOn, other.updatedOn)

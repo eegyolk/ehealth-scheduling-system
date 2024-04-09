@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "staff")
 public class Staff {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -30,6 +30,7 @@ public class Staff {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
+	@JsonIgnore
 	private Location location;
 
 	private String firstName;
@@ -136,12 +137,12 @@ public class Staff {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		Staff other = (Staff) obj;
 		return Objects.equals(createdOn, other.createdOn) && Objects.equals(email, other.email)
 				&& Objects.equals(firstName, other.firstName) && id == other.id

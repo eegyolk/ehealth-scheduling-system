@@ -1,5 +1,9 @@
 package com.ehealthss.model;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
 import com.ehealthss.model.enums.PatientGender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,14 +17,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
 @Entity
 @Table(name = "patient")
 public class Patient {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -41,7 +41,6 @@ public class Patient {
 	private Date updatedOn;
 
 	@OneToOne(mappedBy = "patient")
-	@JsonIgnore
 	private PatientSetting patientSetting;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
@@ -182,12 +181,12 @@ public class Patient {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		Patient other = (Patient) obj;
 		return Objects.equals(address, other.address) && Objects.equals(birthDate, other.birthDate)
 				&& Objects.equals(createdOn, other.createdOn) && Objects.equals(email, other.email)

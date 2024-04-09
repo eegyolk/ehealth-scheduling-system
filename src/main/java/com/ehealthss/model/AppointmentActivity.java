@@ -1,5 +1,13 @@
 package com.ehealthss.model;
 
+import java.util.Date;
+import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.ehealthss.model.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -11,35 +19,29 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.util.Date;
-import java.util.Objects;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.ehealthss.model.enums.AppointmentStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 @Table(name = "appointment_activity")
 public class AppointmentActivity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "appointment_id")
-	@JsonBackReference
+	@JsonIgnore
 	private Appointment appointment;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	private String notes;
-	
+
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
-	
+
 	@CreationTimestamp
 	private Date createdOn;
 
@@ -103,8 +105,8 @@ public class AppointmentActivity {
 
 	@Override
 	public String toString() {
-		return String.format("AppointmentActivity [id=%s, notes=%s, status=%s, createdOn=%s]", id, notes,
-				status, createdOn);
+		return String.format("AppointmentActivity [id=%s, notes=%s, status=%s, createdOn=%s]", id, notes, status,
+				createdOn);
 	}
 
 	@Override
@@ -114,12 +116,12 @@ public class AppointmentActivity {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		AppointmentActivity other = (AppointmentActivity) obj;
 		return Objects.equals(createdOn, other.createdOn) && id == other.id && Objects.equals(notes, other.notes)
 				&& status == other.status;
