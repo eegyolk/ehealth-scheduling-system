@@ -1,5 +1,6 @@
 package com.ehealthss.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -7,28 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ehealthss.model.User;
-import com.ehealthss.service.UserService;
+import com.ehealthss.service.DashboardService;
 
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {
 
-	private final UserService userService;
-
-	public DashboardController(UserService userService) {
-		this.userService = userService;
-	}
+	@Autowired
+	private DashboardService dashboardService;
 
 	@GetMapping("")
-	public String index(Model uiModel, @AuthenticationPrincipal UserDetails userDetails) {
+	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-		User currentUser = userService.findByLogin(userDetails.getUsername());
+		return dashboardService.index(model, userDetails);
 
-		uiModel.addAttribute("pageTitle", "Dashboard");
-		uiModel.addAttribute("withCalendarComponent", false);
-		
-		return "dashboard/dashboard";
 	}
 
 }

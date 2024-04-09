@@ -17,12 +17,6 @@ public class HelpAndSupportController {
 	@Autowired
 	private HelpAndSupportService helpAndSupportService;
 	
-	public HelpAndSupportController(HelpAndSupportService helpAndSupportService) {
-		
-		this.helpAndSupportService = helpAndSupportService;
-		
-	}
-	
 	@GetMapping("")
 	public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
