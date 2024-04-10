@@ -1,0 +1,61 @@
+<div class="row align-items-center">
+	<div class="col ps-3">
+		<h4>Doctor Attendance Listing</h4>
+	</div>
+	<div class="col-6">
+		<div class="container text-center">
+			<div class="row mb-3 pt-2 justify-content-end">
+				<div class="col-auto">
+					<label class="col-form-label h6">Search By</label>
+				</div>
+				<div class="col-3">
+					<select id="selectBy" class="form-select" aria-label="Clinic"
+						required>
+						<option selected value="">...</option>
+						<option value="1">Name</option>
+						<option value="2">Date</option>
+					</select>
+				</div>
+				<div id="divByName" class="col-3 d-none">
+					<div class="input-group">
+						<input id="textName" type="text" class="form-control" /><span
+							class="input-group-text"><span
+							class="fa-solid fa-signature"></span></span>
+					</div>
+				</div>
+				<div id="divByDate" class="col-3 d-none">
+					<div class="input-group" id="datetimepicker1"
+						data-td-target-input="nearest" data-td-target-toggle="nearest">
+						<input id="textDate" type="text" class="form-control" readonly />
+						<span class="input-group-text" data-td-target="#datetimepicker1"
+							data-td-toggle="datetimepicker"> <span
+							class="fas fa-calendar"></span>
+						</span>
+					</div>
+				</div>
+				<div class="col-auto">
+					<button id="buttonSearch" type="button" class="btn btn-primary">
+						<i class="fa-solid fa-magnifying-glass me-1"></i>Search
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<table id="tableDoctorAttendanceList" class="table table-striped">
+	<thead>
+		<tr>
+			<th class="h6 text-start" width="2%">#</th>
+			<th class="h6 text-start" width="10%">Practitioner</th>
+			<th class="h6 text-start" width="10%">Clinic</th>
+			<th class="h6 text-start" width="5%">Date</th>
+			<th class="h6 text-start" width="5%">In-Time</th>
+			<th class="h6 text-start" width="5%">Out-Time</th>
+			<th class="h6 text-start" width="5%">Created On</th>
+			<th class="h6 text-start" width="5%">Updated On</th>
+			<th class="h6" width="1%"></th>
+			<th class="h6" width="1%"></th>
+		</tr>
+	</thead>
+</table>
