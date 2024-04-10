@@ -16,8 +16,6 @@ import jakarta.validation.Valid;
 @Repository
 public interface AppointmentRepository extends DataTablesRepository<Appointment, Integer> {
 
-	DataTablesOutput<Appointment> findAll(@Valid DataTablesInput input, Specification<Appointment> specification);
-
 	List<Appointment> findByPatientIdAndStatusOrderByCreatedOnDesc(int patientId, AppointmentStatus status);
 
 }

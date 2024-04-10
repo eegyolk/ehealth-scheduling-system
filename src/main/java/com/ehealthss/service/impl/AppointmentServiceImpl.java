@@ -1,0 +1,272 @@
+package com.ehealthss.service.impl;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.datatables.mapping.Column;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+import com.ehealthss.bean.AppointmentDTO;
+import com.ehealthss.model.Appointment;
+import com.ehealthss.model.Doctor;
+import com.ehealthss.model.Location;
+import com.ehealthss.model.Patient;
+import com.ehealthss.model.User;
+import com.ehealthss.model.enums.AppointmentStatus;
+import com.ehealthss.model.enums.UserType;
+import com.ehealthss.repository.AppointmentRepository;
+import com.ehealthss.repository.LocationRepository;
+import com.ehealthss.repository.UserRepository;
+import com.ehealthss.service.AppointmentService;
+
+import jakarta.persistence.criteria.Join;
+import jakarta.validation.Valid;
+
+@Service
+public class AppointmentServiceImpl implements AppointmentService {
+
+	@Autowired
+	LocationRepository locationRepository;
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	AppointmentRepository appointmentRepository;
+
+	@Override
+	public String index(Model model, UserDetails userDetails) {
+
+		String template = "appointment/appointment";
+
+		model.addAttribute("pageTitle", "Appointment");
+		model.addAttribute("withCalendarComponent", true);
+		model.addAttribute("withFontAwesome", true);
+		model.addAttribute("withTableComponent", true);
+		model.addAttribute("withMapComponent", false);
+
+		List<Location> locations = locationRepository.findAll();
+		model.addAttribute("locations", locations);
+
+		AppointmentStatus[] appointmentStatuses = AppointmentStatus.class.getEnumConstants();
+		model.addAttribute("appointmentStatuses", appointmentStatuses);
+
+		return template;
+
+	}
+
+	@Override
+	public DataTablesOutput<AppointmentDTO> fetchAppointments(UserDetails userDetails, @Valid DataTablesInput input) {
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
+		System.out.println(userDetails);
+		System.out.println(user);
+
+		Specification<Appointment> specification = (Specification<Appointment>) (root, query, builder) -> {
+
+			Column searchByFieldName = input.getColumns().get(11);
+			Column searchByFieldValue = input.getColumns().get(12);
+
+			int fieldNum = searchByFieldName.getSearch().getValue() == "" ? 0
+					: Integer.valueOf(searchByFieldName.getSearch().getValue());
+			String fieldValue = searchByFieldValue.getSearch().getValue();
+
+			if (fieldNum == 1 && fieldValue.length() > 0) { // By Reference No.
+
+				if (user.getType() == UserType.STAFF) {
+
+					/**
+					 * Joins the Appointment entity with Location to filter appointments based on
+					 * location ID. Returns criteria for appointments matching staff location ID and
+					 * appointment reference number containing the provided fieldValue.
+					 */
+					Join<Appointment, Location> location = root.join("location");
+					return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
+							builder.like(root.get("referenceNo"), "%" + fieldValue + "%"));
+
+				} else { // DOCTOR
+
+					/**
+					 * Joins the Appointment entity with Doctor to filter appointments based on
+					 * doctor ID. Returns criteria for appointments matching doctor ID and
+					 * appointment reference number containing the provided fieldValue.
+					 */
+					Join<Appointment, Doctor> doctor = root.join("doctor");
+					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+							builder.like(root.get("referenceNo"), "%" + fieldValue + "%"));
+				}
+
+			} else if (fieldNum == 2 && fieldValue.length() > 0) { // By Patient
+
+				if (user.getType() == UserType.STAFF) {
+
+					/**
+					 * Joins the Appointment entity with Location and Patient entities to filter
+					 * appointments based on location and patient name. Returns criteria for
+					 * appointments matching staff location ID and patient's first or last name
+					 * containing the provided fieldValue.
+					 */
+					Join<Appointment, Location> location = root.join("location");
+					Join<Appointment, Patient> patient = root.join("patient");
+					return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
+							builder.or(builder.like(patient.get("firstName"), "%" + fieldValue + "%"),
+									builder.like(patient.get("lastName"), "%" + fieldValue + "%")));
+
+				} else { // DOCTOR
+
+					/**
+					 * Joins the Appointment entity with Doctor and Patient entities to filter
+					 * appointments based on doctor and patient name. Returns criteria for
+					 * appointments matching doctor ID and patient's first or last name containing
+					 * the provided fieldValue.
+					 */
+					Join<Appointment, Doctor> doctor = root.join("doctor");
+					Join<Appointment, Patient> patient = root.join("patient");
+					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+							builder.or(builder.like(patient.get("firstName"), "%" + fieldValue + "%"),
+									builder.like(patient.get("lastName"), "%" + fieldValue + "%")));
+				}
+
+			} else if (fieldNum == 3 && fieldValue.length() > 0) { // STAFF only, By Practitioner
+
+				/**
+				 * Joins the Appointment entity with Location and Doctor to filter appointments
+				 * based on location and doctor name. Returns criteria for appointments matching
+				 * staff location ID and doctor's first or last name containing the provided
+				 * fieldValue.
+				 */
+				Join<Appointment, Location> location = root.join("location");
+				Join<Appointment, Doctor> doctor = root.join("doctor");
+				return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
+						builder.or(builder.like(doctor.get("firstName"), "%" + fieldValue + "%"),
+								builder.like(doctor.get("lastName"), "%" + fieldValue + "%")));
+
+			} else if (fieldNum == 4 && fieldValue.length() > 0) { // DOCTOR only, By Clinic
+
+				/**
+				 * Joins the Appointment entity with Doctor and Location to filter appointments
+				 * based on doctor and location IDs. Returns criteria for appointments matching
+				 * doctor ID and location ID equal to the provided fieldValue.
+				 */
+				Join<Appointment, Doctor> doctor = root.join("doctor");
+				Join<Appointment, Location> location = root.join("location");
+				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+						builder.equal(location.get("id"), fieldValue));
+
+			} else if (fieldNum == 5 && fieldValue.length() > 0) { // By Date
+
+				if (user.getType() == UserType.STAFF) {
+
+					/**
+					 * Joins the Appointment entity with Location to filter appointments based on
+					 * location ID. Returns criteria for appointments matching staff location ID and
+					 * appointment date equal to the provided fieldValue.
+					 */
+					Join<Appointment, Location> location = root.join("location");
+					return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()), builder
+							.equal(root.get("datetime").as(Date.class), Date.valueOf(LocalDate.parse(fieldValue))));
+
+				} else { // DOCTOR
+
+					/**
+					 * Joins the Appointment entity with Doctor to filter appointments based on
+					 * doctor ID. Returns criteria for appointments matching doctor ID and
+					 * appointment date equal to the provided fieldValue.
+					 */
+					Join<Appointment, Doctor> doctor = root.join("doctor");
+					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()), builder
+							.equal(root.get("datetime").as(Date.class), Date.valueOf(LocalDate.parse(fieldValue))));
+
+				}
+
+			} else if (fieldNum == 6 && fieldValue.length() > 0) { // By Status
+
+				if (user.getType() == UserType.STAFF) {
+
+					/**
+					 * Joins the Appointment entity with Location to filter appointments based on
+					 * location ID. Returns criteria for appointments matching location ID and
+					 * appointment status equal to the provided fieldValue.
+					 */
+					Join<Appointment, Location> location = root.join("location");
+					return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
+							builder.equal(root.get("status"), fieldValue));
+
+				} else { // DOCTOR
+
+					/**
+					 * Joins the Appointment entity with Doctor to filter appointments based on
+					 * doctor ID. Returns criteria for appointments matching doctor ID and
+					 * appointment status equal to the provided fieldValue.
+					 */
+					Join<Appointment, Doctor> doctor = root.join("doctor");
+					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+							builder.equal(root.get("status"), fieldValue));
+
+				}
+
+			} else {
+
+				if (user.getType() == UserType.STAFF) {
+
+					/**
+					 * Joins the Appointment entity with Location to filter appointments based on
+					 * location ID. Returns criteria for appointments matching staff location ID.
+					 */
+					Join<Appointment, Location> location = root.join("location");
+					return builder.equal(location.get("id"), user.getStaff().getLocation().getId());
+
+				} else { // DOCTOR
+
+					/**
+					 * Joins the Appointment entity with Doctor to filter appointments based on
+					 * doctor ID. Returns criteria for appointments matching doctor ID.
+					 */
+					Join<Appointment, Doctor> doctor = root.join("doctor");
+					return builder.equal(doctor.get("id"), user.getDoctor().getId());
+
+				}
+
+			}
+
+		};
+
+		return recreateDataTablesOutputDoctorAttendance(appointmentRepository.findAll(input, specification));
+
+	}
+
+	private DataTablesOutput<AppointmentDTO> recreateDataTablesOutputDoctorAttendance(
+			DataTablesOutput<Appointment> appointments) {
+
+		DataTablesOutput<AppointmentDTO> dataTablesOutputAppointmentDTO = new DataTablesOutput<>();
+
+		dataTablesOutputAppointmentDTO.setDraw(appointments.getDraw());
+		dataTablesOutputAppointmentDTO.setError(appointments.getError());
+		dataTablesOutputAppointmentDTO.setRecordsFiltered(appointments.getRecordsFiltered());
+		dataTablesOutputAppointmentDTO.setRecordsTotal(appointments.getRecordsTotal());
+		dataTablesOutputAppointmentDTO.setSearchPanes(appointments.getSearchPanes());
+		dataTablesOutputAppointmentDTO.setData(
+				appointments.getData().stream().map(this::convertToAppointmentDTO).collect(Collectors.toList()));
+		return dataTablesOutputAppointmentDTO;
+
+	}
+
+	private AppointmentDTO convertToAppointmentDTO(Appointment appointment) {
+
+		return new AppointmentDTO(appointment.getId(), appointment.getPatient(), appointment.getDoctor(),
+				appointment.getLocation(), appointment.getReferenceNo(), appointment.getDatetime(),
+				appointment.getDescription(), appointment.getReason(), appointment.getStatus(),
+				appointment.isJoinWaitlist(), appointment.getSlot(), appointment.getCreatedOn(),
+				appointment.getUpdatedOn(), null);
+
+	}
+
+}

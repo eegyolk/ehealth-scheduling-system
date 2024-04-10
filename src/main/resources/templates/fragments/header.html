@@ -14,6 +14,14 @@
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Book Appointment') ? 'fw-medium active' : '')"
 					href="/book-appointment">Book Appointment</a></li>
 					
+				<li sec:authorize="hasRole('ROLE_STAFF')" class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Appointment') ? 'fw-medium active' : '')"
+					href="/appointment">Appointment</a></li>
+					
+				<li sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item px-2"><a
+					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Appointment') ? 'fw-medium active' : '')"
+					href="/appointment">Appointment</a></li>
+					
 				<li sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item px-2"><a
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Attendance') ? 'fw-medium active' : '')"
 					href="/attendance">Attendance</a></li>

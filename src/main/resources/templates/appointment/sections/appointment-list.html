@@ -1,0 +1,109 @@
+<div class="row align-items-center">
+	<div class="col ps-3">
+		<h4>Appointment Listing</h4>
+	</div>
+	<div class="col-6">
+		<div class="container text-center">
+			<div class="row mb-3 pt-2 justify-content-end">
+				<div class="col-auto">
+					<label class="col-form-label h6">Search By</label>
+				</div>
+				<div class="col-3">
+					<select id="selectBy" class="form-select" aria-label="Clinic"
+						required>
+						<option selected value="">...</option>
+						<option value="1">Reference No.</option>
+						<option value="2">Patient</option>
+						<option sec:authorize="hasRole('ROLE_STAFF')" value="3">Practitioner</option>
+						<option sec:authorize="hasRole('ROLE_DOCTOR')" value="4">Clinic</option>
+						<option value="5">Date</option>
+						<option value="6">Status</option>
+					</select>
+				</div>
+				<div id="divByReferenceNo" class="col-3 d-none">
+					<div class="input-group">
+						<input id="textReferenceNo" type="text" class="form-control" /><span
+							class="input-group-text"><span
+							class="fa-solid fa-asterisk"></span></span>
+					</div>
+				</div>
+				<div id="divByPatient" class="col-3 d-none">
+					<div class="input-group">
+						<input id="textPatient" type="text" class="form-control" /><span
+							class="input-group-text"><span
+							class="fa-solid fa-asterisk"></span></span>
+					</div>
+				</div>
+				<div sec:authorize="hasRole('ROLE_STAFF')" id="divByPractitioner"
+					class="col-3 d-none">
+					<div class="input-group">
+						<input id="textPractitioner" type="text" class="form-control" /><span
+							class="input-group-text"><span
+							class="fa-solid fa-signature"></span></span>
+					</div>
+				</div>
+				<div sec:authorize="hasRole('ROLE_DOCTOR')" id="divByClinic"
+					class="col-3 d-none">
+					<div class="input-group">
+						<select id="selectClinic" class="form-select" aria-label="Clinic"
+							required>
+							<option selected value="">...</option>
+							<option th:each="location : ${locations}"
+								th:value="${location.id}" th:text="${location.name}"></option>
+						</select><span class="input-group-text"><span
+							class="fa-solid fa-house-chimney-medical"></span></span>
+					</div>
+				</div>
+				<div id="divByDate" class="col-3 d-none">
+					<div class="input-group" id="datetimepicker1"
+						data-td-target-input="nearest" data-td-target-toggle="nearest">
+						<input id="textDate" type="text" class="form-control" readonly />
+						<span class="input-group-text" data-td-target="#datetimepicker1"
+							data-td-toggle="datetimepicker"> <span
+							class="fas fa-calendar"></span>
+						</span>
+					</div>
+				</div>
+				<div id="divByStatus" class="col-3 d-none">
+					<div class="input-group">
+						<select id="selectStatus" class="form-select" aria-label="Clinic"
+							required>
+							<option selected value="">...</option>
+							<option th:each="status : ${appointmentStatuses}"
+								th:value="${status}"
+								th:text="${#strings.capitalize(#strings.toLowerCase(status))}"></option>
+						</select><span class="input-group-text" data-td-target="#datetimepicker1"
+							data-td-toggle="datetimepicker"> <span
+							class="fa-solid fa-circle-info"></span>
+						</span>
+					</div>
+				</div>
+				<div class="col-auto">
+					<button id="buttonSearch" type="button" class="btn btn-primary">
+						<i class="fa-solid fa-magnifying-glass me-1"></i>Search
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<table id="tableAppointmentList" class="table table-striped">
+	<thead>
+		<tr>
+			<th class="h6 text-start" width="2%">#</th>
+			<th class="h6 text-start" width="5%">Reference No.</th>
+			<th class="h6 text-start" width="5%">Patient</th>
+			<th class="h6 text-start" width="5%">Practitioner</th>
+			<th class="h6 text-start" width="5%">Clinic</th>
+			<th class="h6 text-start" width="5%">Datetime</th>
+			<th class="h6 text-start" width="4%">Status</th>
+			<th class="h6 text-start" width="2%">Slot</th>
+			<th class="h6 text-start" width="5%">Created On</th>
+			<th class="h6 text-start" width="5%">Updated On</th>
+			<th class="h6 text-start" width="1%"></th>
+			<th class="h6 text-start" width="1%"></th>
+			<th class="h6 text-start" width="1%"></th>
+		</tr>
+	</thead>
+</table>
