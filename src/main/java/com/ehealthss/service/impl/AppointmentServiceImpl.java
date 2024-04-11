@@ -14,8 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.ehealthss.bean.AppointmentActivityDTO;
 import com.ehealthss.bean.AppointmentDTO;
 import com.ehealthss.model.Appointment;
+import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
@@ -243,6 +245,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	}
 
+	@Override
+	public AppointmentDTO fetchAppointment(int appointmentId) {
+
+		Appointment appointment = appointmentRepository.getReferenceById(appointmentId);
+
+		return convertToAppointmentDTO(appointment, true);
+
+	}
+
 	private DataTablesOutput<AppointmentDTO> recreateDataTablesOutputDoctorAttendance(
 			DataTablesOutput<Appointment> appointments) {
 
@@ -253,19 +264,28 @@ public class AppointmentServiceImpl implements AppointmentService {
 		dataTablesOutputAppointmentDTO.setRecordsFiltered(appointments.getRecordsFiltered());
 		dataTablesOutputAppointmentDTO.setRecordsTotal(appointments.getRecordsTotal());
 		dataTablesOutputAppointmentDTO.setSearchPanes(appointments.getSearchPanes());
-		dataTablesOutputAppointmentDTO.setData(
-				appointments.getData().stream().map(this::convertToAppointmentDTO).collect(Collectors.toList()));
+		dataTablesOutputAppointmentDTO.setData(appointments.getData().stream()
+				.map(appointment -> convertToAppointmentDTO(appointment, false)).collect(Collectors.toList()));
 		return dataTablesOutputAppointmentDTO;
 
 	}
 
-	private AppointmentDTO convertToAppointmentDTO(Appointment appointment) {
+	private AppointmentDTO convertToAppointmentDTO(Appointment appointment, boolean isWithActivity) {
 
-		return new AppointmentDTO(appointment.getId(), appointment.getPatient(), appointment.getDoctor(),
-				appointment.getLocation(), appointment.getReferenceNo(), appointment.getDatetime(),
-				appointment.getDescription(), appointment.getReason(), appointment.getStatus(),
-				appointment.isJoinWaitlist(), appointment.getSlot(), appointment.getCreatedOn(),
-				appointment.getUpdatedOn(), null);
+		return new AppointmentDTO(appointment.getId(), isWithActivity == true ? null : appointment.getPatient(),
+				isWithActivity == true ? null : appointment.getDoctor(),
+				isWithActivity == true ? null : appointment.getLocation(), appointment.getReferenceNo(),
+				appointment.getDatetime(), appointment.getDescription(), appointment.getReason(),
+				appointment.getStatus(), appointment.isJoinWaitlist(), appointment.getSlot(),
+				appointment.getCreatedOn(), appointment.getUpdatedOn(),
+				isWithActivity == true ? appointment.getAppointmentActivities().stream().map(this::convertToAppointmentActivityDTO).collect(Collectors.toList()) : null);
+
+	}
+
+	private AppointmentActivityDTO convertToAppointmentActivityDTO(AppointmentActivity appointmentActivity) {
+
+		return new AppointmentActivityDTO(appointmentActivity.getId(), null, appointmentActivity.getUser(),
+				appointmentActivity.getNotes(), appointmentActivity.getStatus(), appointmentActivity.getCreatedOn());
 
 	}
 

@@ -17,4 +17,6 @@ public interface AppointmentService {
 
 	DataTablesOutput<AppointmentDTO> fetchAppointments(UserDetails userDetails, @Valid DataTablesInput input);
 
+	AppointmentDTO fetchAppointment(int appointmentId);
+
 }

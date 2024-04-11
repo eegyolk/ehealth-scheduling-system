@@ -1,0 +1,274 @@
+<div class="modal fade" id="viewAppointment" tabindex="-1"
+	aria-labelledby="#viewAppointmentLabel" aria-hidden="true">
+	<div id="divVADialog" class="modal-dialog modal-dialog-centered modal-sm">
+		<div class="modal-content">
+			<div id="divVAHeader" class="modal-header d-none">
+				<h1 class="modal-title fs-5" id="#viewAppointmentLabel">View
+					Appointment</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div id="divVASpin" class="modal-body">
+				<div class="d-flex align-items-center">
+					<strong role="status">Please wait...</strong>
+					<div class="spinner-border ms-auto" aria-hidden="true"></div>
+				</div>
+			</div>
+			
+			<div id="divVABody" class="modal-body d-none">
+				<div class="row ps-3 pe-3 overflow-auto">
+					<div class="accordion">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#accordionItemAppointmentDetails"
+									aria-expanded="true"
+									aria-controls="accordionItemAppointmentDetails">
+									Appointment Details</button>
+							</h2>
+							<div id="accordionItemAppointmentDetails"
+								class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<div class="row text-left">
+										<div class="col-6">
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Title</small>
+													<div id="divTitle" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-auto">
+													<small class="opacity-50">Reason</small>
+													<div id="divReason" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-6">
+											
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Datetime</small>
+													<div id="divDatetime" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Joined Waitlist?</small>
+													<div id="divJoinWaitlist" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-auto">
+													<small class="opacity-50">Last Update</small>
+													<div id="divLastUpdate" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#accordionItemPatientInformation"
+									aria-expanded="true"
+									aria-controls="accordionItemPatientInformation">
+									Patient Information</button>
+							</h2>
+							<div id="aaccordionItemPatientInformation"
+								class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<div class="row text-left">
+										<div class="col-6">
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Name</small>
+													<div id="divPatientName" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Gender</small>
+													<div id="divPatientGender" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+											
+											<div class="row">
+												<div class="col-auto">
+													<small class="opacity-50">Birth Date</small>
+													<div id="divPatientBirthDate" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-6">
+											
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Address</small>
+													<div id="divPatientAddress" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Email</small>
+													<div id="divPatientEmail" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-auto">
+													<small class="opacity-50">Phone</small>
+													<div id="divPatientPhone" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#accordionItemHealthcareProvider"
+									aria-expanded="true"
+									aria-controls="accordionItemHealthcareProvider">
+									Healthcare Provider</button>
+							</h2>
+							<div id="accordionItemHealthcareProvider"
+								class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<div class="row text-left">
+										<div class="col-6">
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Name</small>
+													<div id="divClinicName" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Address</small>
+													<div id="divClinicAddress" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Email</small>
+													<div id="divClinicEmail" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-auto">
+													<small class="opacity-50">Phone</small>
+													<div id="divClinicPhone" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-6">
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Practitioner</small>
+													<div id="divDoctorName" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Department</small>
+													<div id="divDoctorDepartment" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row mb-1">
+												<div class="col-auto">
+													<small class="opacity-50">Email</small>
+													<div id="divDoctorEmail" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-auto">
+													<small class="opacity-50">Phone</small>
+													<div id="divDoctorPhone" class="fs-6 fw-medium"></div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#accordionItemActivities" aria-expanded="true"
+									aria-controls="accordionItemActivities">Activites</button>
+							</h2>
+							<div id="accordionItemActivities"
+								class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th scope="col" class="col"><small class="opacity-50 fw-normal">Created By</small></th>
+												<th scope="col" class="col-2"><small class="opacity-50 fw-normal">Status</small></th>
+												<th scope="col" class="col-md-auto"><small class="opacity-50 fw-normal">Notes</small></th>
+											</tr>
+										</thead>
+										<tbody id="tableBodyActivities"></tbody>
+									</table>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div id="divVAFooter" class="modal-footer d-none">
+				<div class="container">
+					<div class="row text-center">
+						<div class="col-4 ">
+							<small>Reference No.</small>
+							<div id="divReferenceNo" class="h4"></div>
+						</div>
+
+						<div class="col-4">
+							<small>Slot No.</small>
+							<div id="divSlotNo" class="h4"></div>
+						</div>
+
+						<div class="col-4">
+							<small>Status</small>
+							<div id="divStatus" class="h4"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

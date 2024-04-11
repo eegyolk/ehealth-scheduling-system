@@ -3,7 +3,6 @@ package com.ehealthss.bean;
 import java.util.Date;
 import java.util.List;
 
-import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
@@ -24,14 +23,14 @@ public class AppointmentDTO {
 	private int slot;
 	private Date createdOn;
 	private Date updatedOn;
-	private List<AppointmentActivity> appointmentActivities;
+	private List<AppointmentActivityDTO> appointmentActivities;
 
 	public AppointmentDTO() {
 	}
 
 	public AppointmentDTO(Integer id, Patient patient, Doctor doctor, Location location, String referenceNo,
 			Date datetime, String description, String reason, AppointmentStatus status, boolean joinWaitlist, int slot,
-			Date createdOn, Date updatedOn, List<AppointmentActivity> appointmentActivities) {
+			Date createdOn, Date updatedOn, List<AppointmentActivityDTO> appointmentActivities) {
 		this.id = id;
 		this.patient = patient;
 		this.doctor = doctor;
@@ -152,11 +151,11 @@ public class AppointmentDTO {
 		this.updatedOn = updatedOn;
 	}
 
-	public List<AppointmentActivity> getAppointmentActivities() {
+	public List<AppointmentActivityDTO> getAppointmentActivities() {
 		return appointmentActivities;
 	}
 
-	public void setAppointmentActivities(List<AppointmentActivity> appointmentActivities) {
+	public void setAppointmentActivities(List<AppointmentActivityDTO> appointmentActivities) {
 		this.appointmentActivities = appointmentActivities;
 	}
 
