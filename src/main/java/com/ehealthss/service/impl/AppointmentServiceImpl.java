@@ -58,8 +58,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);
 
-		AppointmentStatus[] appointmentStatuses = AppointmentStatus.class.getEnumConstants();
-		model.addAttribute("appointmentStatuses", appointmentStatuses);
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
+		if (user.getType() == UserType.DOCTOR) {
+
+			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
+					AppointmentStatus.FULFILLED };
+			model.addAttribute("appointmentStatuses", appointmentStatuses);
+
+		} else {
+
+			AppointmentStatus[] appointmentStatuses = AppointmentStatus.class.getEnumConstants();
+			model.addAttribute("appointmentStatuses", appointmentStatuses);
+
+		}
 
 		return template;
 
@@ -103,6 +115,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 					 */
 					Join<Appointment, Doctor> doctor = root.join("doctor");
 					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+							root.get("status").in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
+									AppointmentStatus.FULFILLED),
 							builder.like(root.get("referenceNo"), "%" + fieldValue + "%"));
 				}
 
@@ -133,6 +147,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 					Join<Appointment, Doctor> doctor = root.join("doctor");
 					Join<Appointment, Patient> patient = root.join("patient");
 					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+							root.get("status").in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
+									AppointmentStatus.FULFILLED),
 							builder.or(builder.like(patient.get("firstName"), "%" + fieldValue + "%"),
 									builder.like(patient.get("lastName"), "%" + fieldValue + "%")));
 				}
@@ -160,7 +176,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 				 */
 				Join<Appointment, Doctor> doctor = root.join("doctor");
 				Join<Appointment, Location> location = root.join("location");
-				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+				return builder.and(
+						builder.equal(doctor.get("id"), user.getDoctor().getId()), root.get("status")
+								.in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED, AppointmentStatus.FULFILLED),
 						builder.equal(location.get("id"), fieldValue));
 
 			} else if (fieldNum == 5 && fieldValue.length() > 0) { // By Date
@@ -184,8 +202,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 					 * appointment date equal to the provided fieldValue.
 					 */
 					Join<Appointment, Doctor> doctor = root.join("doctor");
-					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()), builder
-							.equal(root.get("datetime").as(Date.class), Date.valueOf(LocalDate.parse(fieldValue))));
+					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+							root.get("status").in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
+									AppointmentStatus.FULFILLED),
+							builder.equal(root.get("datetime").as(Date.class),
+									Date.valueOf(LocalDate.parse(fieldValue))));
 
 				}
 
@@ -233,7 +254,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 					 * doctor ID. Returns criteria for appointments matching doctor ID.
 					 */
 					Join<Appointment, Doctor> doctor = root.join("doctor");
-					return builder.equal(doctor.get("id"), user.getDoctor().getId());
+					return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()), root.get("status")
+							.in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED, AppointmentStatus.FULFILLED));
 
 				}
 
@@ -272,13 +294,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	private AppointmentDTO convertToAppointmentDTO(Appointment appointment, boolean isWithActivity) {
 
-		return new AppointmentDTO(appointment.getId(), isWithActivity == true ? null : appointment.getPatient(),
-				isWithActivity == true ? null : appointment.getDoctor(),
-				isWithActivity == true ? null : appointment.getLocation(), appointment.getReferenceNo(),
+		return new AppointmentDTO(appointment.getId(), isWithActivity ? null : appointment.getPatient(),
+				isWithActivity ? null : appointment.getDoctor(),
+				isWithActivity ? null : appointment.getLocation(), appointment.getReferenceNo(),
 				appointment.getDatetime(), appointment.getDescription(), appointment.getReason(),
 				appointment.getStatus(), appointment.isJoinWaitlist(), appointment.getSlot(),
 				appointment.getCreatedOn(), appointment.getUpdatedOn(),
-				isWithActivity == true ? appointment.getAppointmentActivities().stream().map(this::convertToAppointmentActivityDTO).collect(Collectors.toList()) : null);
+				isWithActivity
+						? appointment.getAppointmentActivities().stream().map(this::convertToAppointmentActivityDTO)
+								.collect(Collectors.toList())
+						: null);
 
 	}
 
