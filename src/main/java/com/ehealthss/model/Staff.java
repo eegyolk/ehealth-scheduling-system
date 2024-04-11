@@ -3,8 +3,12 @@ package com.ehealthss.model;
 import java.util.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +41,12 @@ public class Staff {
 	private String lastName;
 	private String email;
 	private String phone;
+	
+	@CreationTimestamp
 	private Date createdOn;
+	
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	public Staff() {

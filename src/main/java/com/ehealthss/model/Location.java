@@ -4,8 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +32,12 @@ public class Location implements Comparable<Location> {
 	private String address;
 	private Double latitude;
 	private Double longitude;
+	
+	@CreationTimestamp
 	private Date createdOn;
+	
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "location")

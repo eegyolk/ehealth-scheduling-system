@@ -3,9 +3,13 @@ package com.ehealthss.model;
 import java.util.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.ehealthss.model.enums.DayOfWeek;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -36,7 +40,12 @@ public class LocationAvailability {
 	private boolean allDay;
 	private String startTime;
 	private String endTime;
+	
+	@CreationTimestamp
 	private Date createdOn;
+	
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	public LocationAvailability() {

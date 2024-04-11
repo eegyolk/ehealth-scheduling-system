@@ -4,9 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.ehealthss.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,7 +36,11 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserType type;
 
+	@CreationTimestamp
 	private Date createdOn;
+	
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")

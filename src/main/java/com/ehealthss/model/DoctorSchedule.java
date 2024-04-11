@@ -1,5 +1,6 @@
 package com.ehealthss.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,6 +14,9 @@ import jakarta.persistence.Table;
 
 import java.util.Date;
 import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.ehealthss.model.enums.DayOfWeek;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,7 +46,12 @@ public class DoctorSchedule implements Comparable<DoctorSchedule> {
 	private String endTime;
 	private int slot;
 	private int duration;
+	
+	@CreationTimestamp
 	private Date createdOn;
+	
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	public DoctorSchedule() {

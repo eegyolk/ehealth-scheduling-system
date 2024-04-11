@@ -1,5 +1,6 @@
 package com.ehealthss.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +60,8 @@ public class Appointment {
 	@CreationTimestamp
 	private Date createdOn;
 
+	@Column(insertable = false)
+	@UpdateTimestamp
 	private Date updatedOn;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")
