@@ -12,6 +12,7 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.ehealthss.bean.AppointmentActivityDTO;
@@ -24,6 +25,7 @@ import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.model.enums.UserType;
+import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
 import com.ehealthss.repository.LocationRepository;
 import com.ehealthss.repository.UserRepository;
@@ -43,6 +45,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Autowired
 	AppointmentRepository appointmentRepository;
+	
+	@Autowired
+	AppointmentActivityRepository appointmentActivityRepository;
 
 	@Override
 	public String index(Model model, UserDetails userDetails) {
@@ -276,6 +281,22 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	}
 
+	@Override
+	@Transactional
+	public void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivity appointmentActivity) {
+
+		Appointment appointment = appointmentRepository.getReferenceById(appointmentId);
+		appointment.setStatus(appointmentActivity.getStatus());
+		appointmentRepository.save(appointment);
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
+		appointmentActivity.setAppointment(appointment);
+		appointmentActivity.setUser(user);
+		appointmentActivityRepository.save(appointmentActivity);
+
+	}
+	
 	private DataTablesOutput<AppointmentDTO> recreateDataTablesOutputDoctorAttendance(
 			DataTablesOutput<Appointment> appointments) {
 

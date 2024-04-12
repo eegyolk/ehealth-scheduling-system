@@ -3,6 +3,7 @@ package com.ehealthss.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ehealthss.bean.AppointmentDTO;
+import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.service.AppointmentService;
 
 import jakarta.validation.Valid;
@@ -51,4 +54,13 @@ public class AppointmentController {
 
 	}
 
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping(value = "/update/status/{appointmentId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public void updateStatus(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int appointmentId,
+			@RequestBody AppointmentActivity appointmentActivity) {
+
+		appointmentService.updateStatus(userDetails, appointmentId, appointmentActivity);
+
+	}
+	
 }

@@ -111,7 +111,7 @@ $().ready(function() {
 			$("#divDoctorPhone").html("");
 			
 			// Activities
-			$("#tableBodyActivities").html(trHTML);
+			$("#tableBodyActivities").html("");
 		});
 	}
 	

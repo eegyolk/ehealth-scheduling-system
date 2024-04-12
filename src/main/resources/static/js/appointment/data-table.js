@@ -286,7 +286,12 @@ $().ready(function() {
 	}
 	
 	function actionMarkup(row) {
-		const disableEdit = ["FULFILLED", "CANCELLED"].includes(row.status);
+		let disableEdit = ["FULFILLED", "CANCELLED"].includes(row.status); // ROLE_STAFF as default
+		
+		if ($("#hiddenAuthorizeRole").val() === "ROLE_DOCTOR") {
+			disableEdit = ["FULFILLED", "BOOKED"].includes(row.status);
+		}
+		
 		const btoaData = window.btoa(JSON.stringify(row));
 		
 		return `
@@ -296,7 +301,7 @@ $().ready(function() {
 		  		</button>
 		  		<ul class="dropdown-menu">
 		    		<li><a class="dropdown-item" href="#viewAppointment" data-btoa-data="${btoaData}" data-bs-toggle="modal" data-bs-target="#viewAppointment"><small><i class="fa-solid fa-eye"></i> View</small></a></li>
-		    		<li><a class="dropdown-item ${disableEdit ? 'disabled' : ''}" href="#editAppointment" data-btoa-data="${btoaData}" data-bs-toggle="modal" data-bs-target="#editAppointment"><small><i class="fa-solid fa-eraser"></i> Edit</small></a></li>
+		    		<li><a class="dropdown-item ${disableEdit ? 'disabled' : ''}" href="#updateStatus" data-id="${row.id}" data-status="${row.status}" data-slot="${row.slot}" data-join-waitlist="${row.joinWaitlist}" data-bs-toggle="modal" data-bs-target="#updateStatus"><small><i class="fa-solid fa-pen-to-square"></i> Update</small></a></li>
 		  		</ul>
 			</div>
 		`;

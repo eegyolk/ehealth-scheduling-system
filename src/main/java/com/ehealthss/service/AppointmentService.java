@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.ehealthss.bean.AppointmentDTO;
+import com.ehealthss.model.AppointmentActivity;
 
 import jakarta.validation.Valid;
 
@@ -18,5 +19,7 @@ public interface AppointmentService {
 	DataTablesOutput<AppointmentDTO> fetchAppointments(UserDetails userDetails, @Valid DataTablesInput input);
 
 	AppointmentDTO fetchAppointment(int appointmentId);
+
+	void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivity appointmentActivity);
 
 }
