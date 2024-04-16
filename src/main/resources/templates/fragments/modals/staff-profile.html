@@ -1,0 +1,66 @@
+<div class="modal fade" id="staffProfile" tabindex="-1"
+	aria-labelledby="#staffProfileLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#staffProfileLabel">Profile</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="container">
+					<div id="divProfileFeedback" class="row mb-3"></div>
+
+					<input id="hiddenPatientId" type="hidden" />
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">First Name</div>
+						<div class="col-8">
+							<input id="textFirstName" type="text" class="form-control" required />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Last Name</div>
+						<div class="col-8">
+							<input id="textLastName" type="text" class="form-control" required />
+						</div>
+					</div>
+					
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Email</div>
+						<div class="col-8">
+							<input id="textEmail" type="text" class="form-control" required />
+						</div>
+					</div>
+					
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Phone</div>
+						<div class="col-8">
+							<input id="textPhone" type="text" class="form-control" required />
+						</div>
+					</div>
+					
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Assigned Clinic</div>
+						<div class="col-8">
+							<input id="textAssignedClinic" type="text" class="form-control" readonly />
+						</div>
+					</div>
+					
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button id="buttonCancelProfile" type="button" class="btn btn-danger"
+					data-bs-dismiss="modal">
+					<i class="bi bi-x-lg me-1"></i>Cancel
+				</button>
+				<button id="buttonSaveProfile" type="button" class="btn btn-primary">
+					<i class="bi bi-save me-1"></i>Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

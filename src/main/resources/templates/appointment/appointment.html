@@ -25,6 +25,9 @@
 			</div>
 		</div>
 	</main>
+	
+	<!-- Footer -->
+	<div th:include="~{fragments/footer}"></div>
 
 	<input sec:authorize="hasRole('ROLE_STAFF')" id="hiddenAuthorizeRole"
 		type="hidden" class="form-control" value="ROLE_STAFF" />

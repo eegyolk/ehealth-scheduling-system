@@ -1,0 +1,5 @@
+<!-- Modal -->
+<div th:include="~{fragments/modals/account}"></div>
+<div sec:authorize="hasRole('ROLE_DOCTOR')" th:include="~{fragments/modals/doctor-profile}"></div>
+<div sec:authorize="hasRole('ROLE_PATIENT')" th:include="~{fragments/modals/patient-profile}"></div>
+<div sec:authorize="hasRole('ROLE_STAFF')" th:include="~{fragments/modals/staff-profile}"></div>

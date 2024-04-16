@@ -1,0 +1,68 @@
+<div class="modal fade" id="account" tabindex="-1"
+	aria-labelledby="#accountLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#accountLabel">Account</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="container">
+					<div id="divAccountFeedback" class="row mb-3"></div>
+
+					<input id="hiddenUserId" type="hidden" />
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Username</div>
+						<div class="col-8">
+							<input id="textUsername" type="text" class="form-control"
+								readonly />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">
+							<span class="text-danger me-1">*</span>Password
+						</div>
+						<div class="col-8">
+							<input id="textPassword" type="password" class="form-control"
+								required />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">
+							<span class="text-danger me-1">*</span>New Password
+						</div>
+						<div class="col-8">
+							<input id="textPassword" type="password" class="form-control"
+								required />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">
+							<span class="text-danger me-1">*</span>Confirm New
+						</div>
+						<div class="col-8">
+							<input id="textConfirmPassword" type="password"
+								class="form-control" required />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button id="buttonCancelAccount" type="button" class="btn btn-danger"
+					data-bs-dismiss="modal">
+					<i class="bi bi-x-lg me-1"></i>Cancel
+				</button>
+				<button id="buttonSaveAccount" type="button" class="btn btn-primary">
+					<i class="bi bi-save me-1"></i>Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
