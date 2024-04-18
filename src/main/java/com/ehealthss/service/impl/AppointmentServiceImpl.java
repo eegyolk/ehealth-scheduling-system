@@ -38,10 +38,10 @@ import jakarta.validation.Valid;
 public class AppointmentServiceImpl implements AppointmentService {
 
 	@Autowired
-	LocationRepository locationRepository;
-
-	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	LocationRepository locationRepository;
 
 	@Autowired
 	AppointmentRepository appointmentRepository;
@@ -59,24 +59,23 @@ public class AppointmentServiceImpl implements AppointmentService {
 		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
 		model.addAttribute("withMapComponent", false);
-
-		List<Location> locations = locationRepository.findAll();
-		model.addAttribute("locations", locations);
-
+		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		if (user.getType() == UserType.DOCTOR) {
-
 			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
 					AppointmentStatus.FULFILLED };
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
-
-		} else {
-
+			model.addAttribute("doctorProfile", user.getDoctor());
+			
+		} else if (user.getType() == UserType.STAFF) {
 			AppointmentStatus[] appointmentStatuses = AppointmentStatus.class.getEnumConstants();
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
-
+			model.addAttribute("staffProfile", user.getStaff());
 		}
+
+		List<Location> locations = locationRepository.findAll();
+		model.addAttribute("locations", locations);
 
 		return template;
 

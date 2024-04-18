@@ -13,8 +13,11 @@ import org.springframework.ui.Model;
 
 import com.ehealthss.model.Location;
 import com.ehealthss.model.LocationAvailability;
+import com.ehealthss.model.User;
+import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.LocationAvailabilityRepository;
 import com.ehealthss.repository.LocationRepository;
+import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.ClinicService;
 
 import jakarta.validation.Valid;
@@ -22,6 +25,9 @@ import jakarta.validation.Valid;
 @Service
 public class ClinicServiceImpl implements ClinicService {
 
+	@Autowired
+	UserRepository userRepository;
+	
 	@Autowired
 	LocationRepository locationRepository;
 	
@@ -39,6 +45,18 @@ public class ClinicServiceImpl implements ClinicService {
 		model.addAttribute("withTableComponent", true);
 		model.addAttribute("withMapComponent", true);
 
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
+		if (user.getType() == UserType.PATIENT) {
+			model.addAttribute("patientProfile", user.getPatient());
+			
+		} else if (user.getType() == UserType.DOCTOR) {
+			model.addAttribute("doctorProfile", user.getDoctor());
+			
+		} else if (user.getType() == UserType.STAFF) {
+			model.addAttribute("staffProfile", user.getStaff());
+		}
+		
 		return template;
 
 	}

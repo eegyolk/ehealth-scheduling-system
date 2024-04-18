@@ -45,6 +45,9 @@ public class DoctorAttendanceServiceImpl implements DoctorAttendanceService {
 		model.addAttribute("withTableComponent", true);
 		model.addAttribute("withMapComponent", false);
 
+		User user = userRepository.findByUsername(userDetails.getUsername());
+		model.addAttribute("staffProfile", user.getStaff());
+		
 		return template;
 
 	}

@@ -20,10 +20,13 @@ import com.ehealthss.bean.DoctorScheduleDTO;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.model.DoctorSchedule;
+import com.ehealthss.model.User;
 import com.ehealthss.model.enums.DoctorDepartment;
+import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.DoctorAttendanceRepository;
 import com.ehealthss.repository.DoctorRepository;
 import com.ehealthss.repository.DoctorScheduleRepository;
+import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.DoctorService;
 
 import jakarta.validation.Valid;
@@ -31,6 +34,9 @@ import jakarta.validation.Valid;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
+	@Autowired
+	UserRepository userRepository;
+	
 	@Autowired
 	DoctorRepository doctorRepository;
 
@@ -49,10 +55,22 @@ public class DoctorServiceImpl implements DoctorService {
 		model.addAttribute("withCalendarComponent", false);
 		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
+		
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
+		if (user.getType() == UserType.PATIENT) {
+			model.addAttribute("patientProfile", user.getPatient());
+			
+		} else if (user.getType() == UserType.DOCTOR) {
+			model.addAttribute("doctorProfile", user.getDoctor());
+			
+		} else if (user.getType() == UserType.STAFF) {
+			model.addAttribute("staffProfile", user.getStaff());
+		}
 
 		DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
 		model.addAttribute("doctorDepartments", doctorDepartments);
-
+		
 		return template;
 
 	}

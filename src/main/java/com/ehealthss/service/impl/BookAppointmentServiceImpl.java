@@ -40,10 +40,10 @@ import jakarta.validation.Valid;
 public class BookAppointmentServiceImpl implements BookAppointmentService {
 
 	@Autowired
-	LocationRepository locationRepository;
+	UserRepository userRepository;
 	
 	@Autowired
-	UserRepository userRepository;
+	LocationRepository locationRepository;
 	
 	@Autowired
 	DoctorRepository doctorRepository;
@@ -63,6 +63,9 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		model.addAttribute("withCalendarComponent", true);
 		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
+		
+		User user = userRepository.findByUsername(userDetails.getUsername());
+		model.addAttribute("patientProfile", user.getPatient());
 
 		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);
@@ -71,7 +74,6 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		model.addAttribute("doctorDepartments", doctorDepartments);
 
 		// Get appointments by patient_id and status, order by created_on descending
-		User user = userRepository.findByUsername(userDetails.getUsername());
 		List<Appointment> appointments = appointmentRepository
 				.findByPatientIdAndStatusOrderByCreatedOnDesc(user.getPatient().getId(), AppointmentStatus.FULFILLED);
 

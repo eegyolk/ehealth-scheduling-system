@@ -57,13 +57,15 @@ public class AttendanceServiceImpl implements AttendanceService {
 		model.addAttribute("withCalendarComponent", true);
 		model.addAttribute("withFontAwesome", true);
 		model.addAttribute("withTableComponent", true);
+		
+		User user = userRepository.findByUsername(userDetails.getUsername());
+		model.addAttribute("doctorProfile", user.getDoctor());
 
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");
 		model.addAttribute("dateToday", formatter.format(localDate));
 
 		// Get doctor schedules
-		User user = userRepository.findByUsername(userDetails.getUsername());
 		List<DoctorSchedule> doctorSchedules = doctorScheduleRepository.findByDoctorId(user.getDoctor().getId());
 
 		for (DoctorSchedule doctorSchedule : doctorSchedules) {
