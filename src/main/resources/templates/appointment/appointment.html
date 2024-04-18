@@ -25,19 +25,14 @@
 			</div>
 		</div>
 	</main>
-	
-	<!-- Footer -->
-	<div th:include="~{fragments/footer}"></div>
-
-	<input sec:authorize="hasRole('ROLE_STAFF')" id="hiddenAuthorizeRole"
-		type="hidden" class="form-control" value="ROLE_STAFF" />
-	<input sec:authorize="hasRole('ROLE_DOCTOR')" id="hiddenAuthorizeRole"
-		type="hidden" class="form-control" value="ROLE_DOCTOR" />
 
 	<!-- Modal -->
 	<div th:include="~{appointment/modals/view-appointment}"></div>
 	<div th:include="~{appointment/modals/update-status}"></div>
 
+	<!-- Footer -->
+	<div th:include="~{fragments/footer}"></div>
+	
 	<script src="/js/header.js"></script>
 	<script src="/js/appointment/data-table.js"></script>
 	<script src="/js/appointment/view-appointment.js"></script>

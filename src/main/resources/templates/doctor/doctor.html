@@ -25,16 +25,13 @@
 			</div>
 		</div>
 	</main>
-
-	<!-- Footer -->
-	<div th:include="~{fragments/footer}"></div>
-	
-	<input type="hidden" th:name="${_csrf.parameterName}"
-		th:value="${_csrf.token}" />
 		
 	<!-- Modal -->
 	<div th:include="~{doctor/modals/view-schedule}"></div>
 
+	<!-- Footer -->
+	<div th:include="~{fragments/footer}"></div>
+	
 	<script src="/js/header.js"></script>
 	<script src="/js/doctor/data-table.js"></script>
 	<script src="/js/doctor/view-schedule.js"></script>

@@ -16,19 +16,19 @@
 
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Username</div>
-						<div class="col-8">
-							<input id="textUsername" type="text" class="form-control"
-								readonly />
+						<div class="col-8 pt-1">
+							<span sec:authentication="name" class="fw-bold"></span>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<div class="col-4 pt-1">
-							<span class="text-danger me-1">*</span>Password
+							<span class="text-danger me-1">*</span>Old Password
 						</div>
 						<div class="col-8">
-							<input id="textPassword" type="password" class="form-control"
-								required />
+							<input id="textOldPassword" type="password" class="form-control"
+								minlength="6" maxlength="8" required />
+							<div id="textOldPasswordFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
 
@@ -37,8 +37,9 @@
 							<span class="text-danger me-1">*</span>New Password
 						</div>
 						<div class="col-8">
-							<input id="textPassword" type="password" class="form-control"
-								required />
+							<input id="textNewPassword" type="password" class="form-control"
+								minlength="6" maxlength="8" required />
+							<div id="textNewPasswordFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
 
@@ -47,16 +48,17 @@
 							<span class="text-danger me-1">*</span>Confirm New
 						</div>
 						<div class="col-8">
-							<input id="textConfirmPassword" type="password"
-								class="form-control" required />
+							<input id="textConfirmNew" type="password" class="form-control"
+								minlength="6" maxlength="8" required />
+							<div id="textConfirmNewFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="modal-footer">
-				<button id="buttonCancelAccount" type="button" class="btn btn-danger"
-					data-bs-dismiss="modal">
+				<button id="buttonCancelAccount" type="button"
+					class="btn btn-danger" data-bs-dismiss="modal">
 					<i class="bi bi-x-lg me-1"></i>Cancel
 				</button>
 				<button id="buttonSaveAccount" type="button" class="btn btn-primary">
