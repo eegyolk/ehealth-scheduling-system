@@ -26,6 +26,7 @@ import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.model.enums.DoctorDepartment;
+import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
 import com.ehealthss.repository.DoctorRepository;
@@ -66,6 +67,9 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		model.addAttribute("patientProfile", user.getPatient());
+		
+		PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
+		model.addAttribute("patientGenders", patientGenders);
 
 		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);

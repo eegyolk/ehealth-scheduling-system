@@ -22,6 +22,7 @@ import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.DoctorDepartment;
+import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.DoctorAttendanceRepository;
 import com.ehealthss.repository.DoctorRepository;
@@ -59,6 +60,8 @@ public class DoctorServiceImpl implements DoctorService {
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		if (user.getType() == UserType.PATIENT) {
+			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
+			model.addAttribute("patientGenders", patientGenders);
 			model.addAttribute("patientProfile", user.getPatient());
 			
 		} else if (user.getType() == UserType.DOCTOR) {

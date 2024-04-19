@@ -33,7 +33,6 @@ public class DashboardServiceImpl implements DashboardService {
 		if (user.getType() == UserType.PATIENT) {
 			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
 			model.addAttribute("patientGenders", patientGenders);
-			
 			model.addAttribute("patientProfile", user.getPatient());
 			
 		} else if (user.getType() == UserType.DOCTOR) {
