@@ -22,6 +22,7 @@ import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.User;
+import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.repository.DoctorAttendanceRepository;
 import com.ehealthss.repository.DoctorScheduleRepository;
 import com.ehealthss.repository.LocationRepository;
@@ -60,6 +61,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		model.addAttribute("doctorProfile", user.getDoctor());
+		
+		DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
+		model.addAttribute("doctorDepartments", doctorDepartments);
 
 		LocalDate localDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/YYYY");

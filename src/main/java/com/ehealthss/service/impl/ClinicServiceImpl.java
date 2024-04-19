@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.LocationAvailability;
 import com.ehealthss.model.User;
+import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.LocationAvailabilityRepository;
@@ -50,13 +51,20 @@ public class ClinicServiceImpl implements ClinicService {
 
 		if (user.getType() == UserType.PATIENT) {
 			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
+			
 			model.addAttribute("patientGenders", patientGenders);
 			model.addAttribute("patientProfile", user.getPatient());
 			
 		} else if (user.getType() == UserType.DOCTOR) {
+			DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
+			
+			model.addAttribute("doctorDepartments", doctorDepartments);
 			model.addAttribute("doctorProfile", user.getDoctor());
 			
 		} else if (user.getType() == UserType.STAFF) {
+			List<Location> locations = locationRepository.findAll();
+			
+			model.addAttribute("locations", locations);
 			model.addAttribute("staffProfile", user.getStaff());
 		}
 		

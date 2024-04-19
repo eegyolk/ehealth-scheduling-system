@@ -2,6 +2,7 @@ package com.ehealthss.service.impl;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.ehealthss.model.DoctorAttendance;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.User;
 import com.ehealthss.repository.DoctorAttendanceRepository;
+import com.ehealthss.repository.LocationRepository;
 import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.DoctorAttendanceService;
 
@@ -31,6 +33,9 @@ public class DoctorAttendanceServiceImpl implements DoctorAttendanceService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	LocationRepository locationRepository;
+	
 	@Autowired
 	DoctorAttendanceRepository doctorAttendanceRepository;
 
@@ -45,6 +50,9 @@ public class DoctorAttendanceServiceImpl implements DoctorAttendanceService {
 		model.addAttribute("withTableComponent", true);
 		model.addAttribute("withMapComponent", false);
 
+		List<Location> locations = locationRepository.findAll();
+		model.addAttribute("locations", locations);
+		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		model.addAttribute("staffProfile", user.getStaff());
 		

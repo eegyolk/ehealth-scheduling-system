@@ -24,6 +24,7 @@ import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.AppointmentStatus;
+import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
@@ -65,11 +66,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 		if (user.getType() == UserType.DOCTOR) {
 			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
 					AppointmentStatus.FULFILLED };
+			DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
+			
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
+			model.addAttribute("doctorDepartments", doctorDepartments);
 			model.addAttribute("doctorProfile", user.getDoctor());
 			
 		} else if (user.getType() == UserType.STAFF) {
 			AppointmentStatus[] appointmentStatuses = AppointmentStatus.class.getEnumConstants();
+			
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
 			model.addAttribute("staffProfile", user.getStaff());
 		}
