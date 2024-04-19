@@ -5,3 +5,4 @@
 <div sec:authorize="hasRole('ROLE_STAFF')" th:include="~{fragments/modals/staff-profile}"></div>
 
 <script src="/js/fragments/account.js"></script>
+<script sec:authorize="hasRole('ROLE_PATIENT')" src="/js/fragments/patient-profile.js"></script>

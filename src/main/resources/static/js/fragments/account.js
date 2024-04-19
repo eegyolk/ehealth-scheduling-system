@@ -5,7 +5,6 @@ $().ready(function() {
 	function modalEvents() {
 		$("#account").on("hidden.bs.modal", function(ev) {
 			$("#divAccountFeedback").html("").removeClass("p-2");
-			$("#hiddenUserId").val("");
 			$("#textOldPassword").val("").removeAttr("style");
 			$("#textOldPasswordFeedback").html("").removeAttr("style");
 			$("#textNewPassword").val("").removeAttr("style");
@@ -22,7 +21,6 @@ $().ready(function() {
 			$("#buttonCancelAccount").prop("disabled", true);
 			$("#buttonSaveAccount").prop("disabled", true);
 					
-			const userId = $("#hiddenUserId").val();
 			const result = fieldsValidation();
  
 			if (typeof(result) === 'object') {

@@ -17,35 +17,35 @@
 					<div class="row mb-3">
 						<div class="col-4 pt-1">First Name</div>
 						<div class="col-8">
-							<input id="textFirstName" type="text" class="form-control" required />
+							<input id="textFirstName" type="text" class="form-control" th:value="${doctorProfile.firstName}" required />
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Last Name</div>
 						<div class="col-8">
-							<input id="textLastName" type="text" class="form-control" required />
+							<input id="textLastName" type="text" class="form-control" th:value="${doctorProfile.lastName}" required />
 						</div>
 					</div>
 					
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Email</div>
 						<div class="col-8">
-							<input id="textEmail" type="text" class="form-control" required />
+							<input id="textEmail" type="text" class="form-control" th:value="${doctorProfile.email}" required />
 						</div>
 					</div>
 					
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Phone</div>
 						<div class="col-8">
-							<input id="textPhone" type="text" class="form-control" required />
+							<input id="textPhone" type="text" class="form-control" th:value="${doctorProfile.phone}" required />
 						</div>
 					</div>
 					
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Department</div>
 						<div class="col-8">
-							<input id="textDepartment" type="text" class="form-control" required />
+							<input id="textDepartment" type="text" class="form-control" th:value="${doctorProfile.department}" required />
 						</div>
 					</div>
 					

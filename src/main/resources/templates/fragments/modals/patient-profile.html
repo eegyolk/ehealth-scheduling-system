@@ -12,62 +12,88 @@
 				<div class="container">
 					<div id="divProfileFeedback" class="row mb-3"></div>
 
-					<input id="hiddenPatientId" type="hidden" />
-
 					<div class="row mb-3">
 						<div class="col-4 pt-1">First Name</div>
 						<div class="col-8">
-							<input id="textFirstName" type="text" class="form-control" required />
+							<input id="textFirstName" type="text" class="form-control"
+								th:value="${patientProfile.firstName}" required />
+							<div id="textFirstNameFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Last Name</div>
 						<div class="col-8">
-							<input id="textLastName" type="text" class="form-control" required />
+							<input id="textLastName" type="text" class="form-control"
+								th:value="${patientProfile.lastName}" required />
+							<div id="textLastNameFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
-					
+
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Email</div>
 						<div class="col-8">
-							<input id="textEmail" type="text" class="form-control" required />
+							<input id="textEmail" type="email" class="form-control"
+								th:value="${patientProfile.email}" required />
+							<div id="textEmailFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
-					
+
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Phone</div>
 						<div class="col-8">
-							<input id="textPhone" type="text" class="form-control" required />
+							<input id="textPhone" type="text" class="form-control"
+								th:value="${patientProfile.phone}" required />
+							<div id="textPhoneFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
-					
+
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Gender</div>
 						<div class="col-8">
-							<input id="textGender" type="text" class="form-control" required />
+							<select id="selectGender" class="form-select" aria-label="Clinic"
+								required>
+								<option selected disabled value="">...</option>
+								<option th:selected="${patientProfile.gender == patientGender}"
+									th:each="patientGender : ${patientGenders}"
+									th:value="${patientGender}" th:text="${patientGender}"></option>
+							</select>
+							<div id="selectGenderFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
-					
+
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Birth Date</div>
 						<div class="col-8">
-							<input id="textBirthDate" type="text" class="form-control" required />
+							<div class="input-group" id="datetimepicker1"
+								data-td-target-input="nearest" data-td-target-toggle="nearest">
+								<input id="textBirthDate" type="text" class="form-control"
+									th:value="${#dates.format(patientProfile.birthDate, 'yyyy-MM-dd')}"
+									readonly required /> <span class="input-group-text"
+									data-td-target="#datetimepicker1"
+									data-td-toggle="datetimepicker"> <span
+									class="fas fa-calendar"></span>
+								</span>
+								<div id="textBirthDateFeedback" class="invalid-feedback"></div>
+							</div>
 						</div>
 					</div>
-					
+
 					<div class="row mb-3">
 						<div class="col-4 pt-1">Address</div>
 						<div class="col-8">
-							<input id="textAddress" type="text" class="form-control" required />
+							<textarea id="textAddress" class="form-control"
+								aria-label="Address" th:text="${patientProfile.address}"
+								required></textarea>
+							<div id="textAddressFeedback" class="invalid-feedback"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="modal-footer">
-				<button id="buttonCancelProfile" type="button" class="btn btn-danger"
-					data-bs-dismiss="modal">
+				<button id="buttonCancelProfile" type="button"
+					class="btn btn-danger" data-bs-dismiss="modal">
 					<i class="bi bi-x-lg me-1"></i>Cancel
 				</button>
 				<button id="buttonSaveProfile" type="button" class="btn btn-primary">

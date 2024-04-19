@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.ehealthss.model.User;
+import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.DashboardService;
@@ -30,6 +31,9 @@ public class DashboardServiceImpl implements DashboardService {
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		if (user.getType() == UserType.PATIENT) {
+			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
+			model.addAttribute("patientGenders", patientGenders);
+			
 			model.addAttribute("patientProfile", user.getPatient());
 			
 		} else if (user.getType() == UserType.DOCTOR) {

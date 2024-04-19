@@ -1,71 +1,36 @@
-package com.ehealthss.model;
+package com.ehealthss.bean;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
+import com.ehealthss.model.Appointment;
+import com.ehealthss.model.PatientSetting;
+import com.ehealthss.model.User;
 import com.ehealthss.model.enums.PatientGender;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+public class PatientDTO {
 
-@Entity
-@Table(name = "patient")
-public class Patient {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@JsonIgnore
 	private User user;
-
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phone;
-	
-	@Enumerated(EnumType.STRING)
 	private PatientGender gender;
-	
 	private Date birthDate;
 	private String address;
-	
-	@CreationTimestamp
 	private Date createdOn;
-	
-	@Column(insertable = false)
-	@UpdateTimestamp
 	private Date updatedOn;
-
-	@OneToOne(mappedBy = "patient")
 	private PatientSetting patientSetting;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
-	@JsonIgnore
 	private List<Appointment> appointments;
-
-	public Patient() {
+	
+	public PatientDTO() {
 	}
 
-	public Patient(User user, String firstName, String lastName, String email, String phone, PatientGender gender,
-			Date birthDate, String address, PatientSetting patientSetting) {
+	public PatientDTO(Integer id, User user, String firstName, String lastName, String email, String phone,
+			PatientGender gender, Date birthDate, String address, Date createdOn, Date updatedOn,
+			PatientSetting patientSetting, List<Appointment> appointments) {
+		this.id = id;
 		this.user = user;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -74,7 +39,10 @@ public class Patient {
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.address = address;
+		this.createdOn = createdOn;
+		this.updatedOn = updatedOn;
 		this.patientSetting = patientSetting;
+		this.appointments = appointments;
 	}
 
 	public Integer getId() {
@@ -184,29 +152,9 @@ public class Patient {
 	@Override
 	public String toString() {
 		return String.format(
-				"Patient [id=%s, firstName=%s, lastName=%s, email=%s, phone=%s, gender=%s, birthDate=%s, address=%s, createdOn=%s, updatedOn=%s]",
-				id, firstName, lastName, email, phone, gender, birthDate, address, createdOn, updatedOn);
+				"PatientDTO [id=%s, user=%s, firstName=%s, lastName=%s, email=%s, phone=%s, gender=%s, birthDate=%s, address=%s, createdOn=%s, updatedOn=%s, patientSetting=%s, appointments=%s]",
+				id, user, firstName, lastName, email, phone, gender, birthDate, address, createdOn, updatedOn,
+				patientSetting, appointments);
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(address, birthDate, createdOn, email, firstName, gender, id, lastName, phone, updatedOn);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
-			return false;
-		}
-		Patient other = (Patient) obj;
-		return Objects.equals(address, other.address) && Objects.equals(birthDate, other.birthDate)
-				&& Objects.equals(createdOn, other.createdOn) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && gender == other.gender && id == other.id
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(phone, other.phone)
-				&& Objects.equals(updatedOn, other.updatedOn);
-	}
-
+	
 }
