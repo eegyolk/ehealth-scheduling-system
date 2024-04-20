@@ -74,12 +74,12 @@ public class DoctorServiceImpl implements DoctorService {
 			model.addAttribute("doctorProfile", user.getDoctor());
 			
 		} else if (user.getType() == UserType.STAFF) {
-			List<Location> locations = locationRepository.findAll();
-			
-			model.addAttribute("locations", locations);
 			model.addAttribute("staffProfile", user.getStaff());
 		}
 
+		List<Location> locations = locationRepository.findAll();
+		model.addAttribute("locations", locations);
+		
 		DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
 		model.addAttribute("doctorDepartments", doctorDepartments);
 		

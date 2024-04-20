@@ -62,11 +62,11 @@ public class ClinicServiceImpl implements ClinicService {
 			model.addAttribute("doctorProfile", user.getDoctor());
 			
 		} else if (user.getType() == UserType.STAFF) {
-			List<Location> locations = locationRepository.findAll();
-			
-			model.addAttribute("locations", locations);
 			model.addAttribute("staffProfile", user.getStaff());
 		}
+		
+		List<Location> locations = locationRepository.findAll();
+		model.addAttribute("locations", locations);
 		
 		return template;
 
