@@ -69,6 +69,7 @@ public class DoctorServiceImpl implements DoctorService {
 			
 			model.addAttribute("patientGenders", patientGenders);
 			model.addAttribute("patientProfile", user.getPatient());
+			model.addAttribute("patientSettings", user.getPatient().getPatientSetting());
 			
 		} else if (user.getType() == UserType.DOCTOR) {
 			model.addAttribute("doctorProfile", user.getDoctor());

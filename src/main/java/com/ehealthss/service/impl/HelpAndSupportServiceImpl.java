@@ -44,6 +44,7 @@ public class HelpAndSupportServiceImpl implements HelpAndSupportService {
 			
 			model.addAttribute("patientGenders", patientGenders);
 			model.addAttribute("patientProfile", user.getPatient());
+			model.addAttribute("patientSettings", user.getPatient().getPatientSetting());
 			model.addAttribute("doctorDepartments", doctorDepartments);
 			
 		} else if (user.getType() == UserType.DOCTOR) {

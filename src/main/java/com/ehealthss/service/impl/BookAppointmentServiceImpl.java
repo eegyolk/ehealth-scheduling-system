@@ -67,6 +67,7 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		model.addAttribute("patientProfile", user.getPatient());
+		model.addAttribute("patientSettings", user.getPatient().getPatientSetting());
 		
 		PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
 		model.addAttribute("patientGenders", patientGenders);
