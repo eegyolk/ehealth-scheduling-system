@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 		staff.setFirstName(staffDTO.getFirstName());
 		staff.setLastName(staffDTO.getLastName());
 		staff.setEmail(staffDTO.getEmail());
-		staff.setPhone(staffDTO.getEmail());
+		staff.setPhone(staffDTO.getPhone());
 		staffRepository.save(staff);
 		
 	}
