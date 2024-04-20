@@ -1,17 +1,17 @@
 $().ready(function() {
-	let currentFirstName;
-	let currentLastName;
-	let currentEmail;
-	let currentPhone;
-	let currentGender;
-	let currentBirthDate;
-	let currentAddress;
-		
-	modalEvents();
-	initDateTimePicker();
-	buttonEvents();
+	//modalEvents();
+	//initDateTimePicker();
+	//buttonEvents();
 	
 	function modalEvents() {
+		let currentFirstName;
+		let currentLastName;
+		let currentEmail;
+		let currentPhone;
+		let currentGender;
+		let currentBirthDate;
+		let currentAddress;
+			
 		$("#patientProfile").on("shown.bs.modal", function(ev) {
 			currentFirstName = $("#textFirstName").val();
 			currentLastName = $("#textLastName").val();
@@ -23,6 +23,7 @@ $().ready(function() {
 		});
 		
 		$("#patientProfile").on("hidden.bs.modal", function(ev) {
+			console.log(currentFirstName);
 			$("#divProfileFeedback").html("").removeClass("p-2");
 			$("#textFirstName").val(currentFirstName).removeAttr("style");
 			$("#textFirstNameFeedback").html("").removeAttr("style");
@@ -60,6 +61,7 @@ $().ready(function() {
 			const result = fieldsValidation();
  
 			if (typeof(result) === 'object') {
+				console.lo
 				$.ajax({
 				  	url: `/user/update/patient`,
 				  	method: "POST",
@@ -71,14 +73,6 @@ $().ready(function() {
 				}).done(function(data) {
 					$("#divProfileFeedback").html(`<div class="p-3 text-primary-emphasis border border-success-subtle bg-success-subtle">Your profile has been updated successfully.</div>`).addClass("p-2");
 					
-					currentFirstName = $("#textFirstName").val();
-					currentLastName = $("#textLastName").val();
-					currentEmail = $("#textEmail").val();
-					currentPhone = $("#textPhone").val();
-					currentGender = $("#selectGender").find(":selected").val();
-					currentBirthDate = $("#textBirthDate").val();
-					currentAddress = $("#textAddress").val();
-			
 					setTimeout(function() {						
 						$("#buttonCancelProfile").prop("disabled", false);
 						$("#buttonSaveProfile").prop("disabled", false);

@@ -53,7 +53,7 @@
 						<div class="col-8">
 							<select id="selectGender" class="form-select" aria-label="Clinic"
 								required>
-								<option selected disabled value="">...</option>
+								<option selected value="">...</option>
 								<option th:selected="${patientProfile.gender == patientGender}"
 									th:each="patientGender : ${patientGenders}"
 									th:value="${patientGender}" th:text="${patientGender}"></option>

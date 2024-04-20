@@ -3,26 +3,21 @@ $().ready(function() {
 	let currentLastName;
 	let currentEmail;
 	let currentPhone;
-	let currentGender;
-	let currentBirthDate;
-	let currentAddress;
+	let currentDepartment;
 		
 	modalEvents();
-	initDateTimePicker();
 	buttonEvents();
 	
 	function modalEvents() {
-		$("#patientProfile").on("shown.bs.modal", function(ev) {
+		$("#doctorProfile").on("shown.bs.modal", function(ev) {
 			currentFirstName = $("#textFirstName").val();
 			currentLastName = $("#textLastName").val();
 			currentEmail = $("#textEmail").val();
 			currentPhone = $("#textPhone").val();
-			currentGender = $("#selectGender").find(":selected").val();
-			currentBirthDate = $("#textBirthDate").val();
-			currentAddress = $("#textAddress").val();
+			currentDepartment = $("#selectDepartment").find(":selected").val();
 		});
 		
-		$("#patientProfile").on("hidden.bs.modal", function(ev) {
+		$("#doctorProfile").on("hidden.bs.modal", function(ev) {
 			$("#divProfileFeedback").html("").removeClass("p-2");
 			$("#textFirstName").val(currentFirstName).removeAttr("style");
 			$("#textFirstNameFeedback").html("").removeAttr("style");
@@ -32,23 +27,10 @@ $().ready(function() {
 			$("#textEmailFeedback").html("").removeAttr("style");
 			$("#textPhone").val(currentPhone).removeAttr("style");
 			$("#textPhoneFeedback").html("").removeAttr("style");
-			$("#selectGender").val(currentGender).removeAttr("style");
-			$("#selectGenderFeedback").html("").removeAttr("style");
-			$("#textBirthDate").val(currentBirthDate).removeAttr("style");
-			$("#textBirthDateFeedback").html("").removeAttr("style");
-			$("#textAddress").val(currentAddress).removeAttr("style");
-			$("#textAddressFeedback").html("").removeAttr("style");
+			$("#selectDepartment").val(currentDepartment).removeAttr("style");
+			$("#selectDepartmentFeedback").html("").removeAttr("style");
 			$("#buttonCancelProfile").prop("disabled", false);
 			$("#buttonSaveProfile").prop("disabled", false);
-		});
-	}
-	
-	function initDateTimePicker() {
-		window.datePicker = new tempusDominus.TempusDominus(document.getElementById("datetimepicker1"), {
-			allowInputToggle: true,
-			display: { components: { clock: false } },
-			localization: { format: 'yyyy-MM-dd' },
-  			useCurrent: false
 		});
 	}
 	
@@ -61,7 +43,7 @@ $().ready(function() {
  
 			if (typeof(result) === 'object') {
 				$.ajax({
-				  	url: `/user/update/patient`,
+				  	url: `/user/update/doctor`,
 				  	method: "POST",
 				  	headers: {
 						"Content-Type": "application/json",
@@ -71,14 +53,12 @@ $().ready(function() {
 				}).done(function(data) {
 					$("#divProfileFeedback").html(`<div class="p-3 text-primary-emphasis border border-success-subtle bg-success-subtle">Your profile has been updated successfully.</div>`).addClass("p-2");
 					
-					currentFirstName = $("#textFirstName").val();
-					currentLastName = $("#textLastName").val();
-					currentEmail = $("#textEmail").val();
-					currentPhone = $("#textPhone").val();
-					currentGender = $("#selectGender").find(":selected").val();
-					currentBirthDate = $("#textBirthDate").val();
-					currentAddress = $("#textAddress").val();
-			
+					currentFirstName = result.firstName;
+					currentLastName = result.lastName;
+					currentEmail = result.email;
+					currentPhone = result.phone;
+					currentDepartment = result.department;
+					
 					setTimeout(function() {						
 						$("#buttonCancelProfile").prop("disabled", false);
 						$("#buttonSaveProfile").prop("disabled", false);
@@ -111,9 +91,7 @@ $().ready(function() {
 		const lastName = $("#textLastName");
 		const email = $("#textEmail");
 		const phone = $("#textPhone");
-		const gender = $("#selectGender");
-		const birthDate = $("#textBirthDate");
-		const address = $("#textAddress");
+		const department = $("#selectDepartment");
 		
 		let feedback = $("#textFirstNameFeedback");
 		if (firstName.val().trim().length === 0) {
@@ -159,37 +137,15 @@ $().ready(function() {
 			fields['phone'] = phone.val().trim();
 		}
 		
-		feedback = $("#selectGenderFeedback");
-		if (gender.find(":selected").val() === "") {
-			feedback.html("Please select gender.").attr("style", "display: block");
-			gender.attr("style", "border-color: #dc3545 !important");
+		feedback = $("#selectDepartmentFeedback");
+		if (department.find(":selected").val() === "") {
+			feedback.html("Please select department.").attr("style", "display: block");
+			department.attr("style", "border-color: #dc3545 !important");
 			hasError = true;
 		} else {
 			feedback.html("").removeAttr("style");
-			gender.removeAttr("style");
-			fields['gender'] = gender.find(":selected").val();
-		}
-		
-		feedback = $("#textBirthDateFeedback");
-		if (birthDate.val().trim().length === 0) {
-			feedback.html("Please select birth date.").attr("style", "display: block");
-			birthDate.attr("style", "border-color: #dc3545 !important");
-			hasError = true;
-		} else {
-			feedback.html("").removeAttr("style");
-			birthDate.removeAttr("style");
-			fields['birthDate'] = birthDate.val().trim();
-		}
-		
-		feedback = $("#textAddressFeedback");
-		if (address.val().trim().length === 0) {
-			feedback.html("Please enter address.").attr("style", "display: block");
-			address.attr("style", "border-color: #dc3545 !important");
-			hasError = true;
-		} else {
-			feedback.html("").removeAttr("style");
-			address.removeAttr("style");
-			fields['address'] = address.val().trim();
+			department.removeAttr("style");
+			fields['department'] = department.find(":selected").val();
 		}
 		
 		if (hasError) {
