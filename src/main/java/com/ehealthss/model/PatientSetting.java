@@ -6,8 +6,12 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.ehealthss.model.enums.DayOfWeek;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,11 +40,14 @@ public class PatientSetting {
 	@JoinColumn(name = "preferred_location")
 	private Location preferredLocation;
 
+	@Enumerated(EnumType.STRING)
+	private DayOfWeek preferredDayOfWeek;
+
 	private String preferredTime;
-	
+
 	@CreationTimestamp
 	private Date createdOn;
-	
+
 	@Column(insertable = false)
 	@UpdateTimestamp
 	private Date updatedOn;
@@ -48,10 +55,12 @@ public class PatientSetting {
 	public PatientSetting() {
 	}
 
-	public PatientSetting(Patient patient, Doctor preferredDoctor, Location preferredLocation, String preferredTime) {
+	public PatientSetting(Patient patient, Doctor preferredDoctor, Location preferredLocation, DayOfWeek preferredDayOfWeek,
+			String preferredTime) {
 		this.patient = patient;
 		this.preferredDoctor = preferredDoctor;
 		this.preferredLocation = preferredLocation;
+		this.preferredDayOfWeek = preferredDayOfWeek;
 		this.preferredTime = preferredTime;
 	}
 
@@ -87,6 +96,14 @@ public class PatientSetting {
 		this.preferredLocation = preferredLocation;
 	}
 
+	public DayOfWeek getPreferredDayOfWeek() {
+		return preferredDayOfWeek;
+	}
+
+	public void setPreferredDayOfWeek(DayOfWeek preferredDayOfWeek) {
+		this.preferredDayOfWeek = preferredDayOfWeek;
+	}
+
 	public String getPreferredTime() {
 		return preferredTime;
 	}
@@ -113,8 +130,8 @@ public class PatientSetting {
 
 	@Override
 	public String toString() {
-		return String.format("PatientSetting [id=%s, preferredTime=%s, createdOn=%s, updatedOn=%s]", id, preferredTime,
-				createdOn, updatedOn);
+		return String.format("PatientSetting [id=%s, preferredDOW=%s, preferredTime=%s, createdOn=%s, updatedOn=%s]",
+				id, preferredDayOfWeek, preferredTime, createdOn, updatedOn);
 	}
 
 	@Override
