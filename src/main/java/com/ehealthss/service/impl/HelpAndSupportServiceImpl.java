@@ -40,9 +40,11 @@ public class HelpAndSupportServiceImpl implements HelpAndSupportService {
 
 		if (user.getType() == UserType.PATIENT) {
 			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
+			DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
 			
 			model.addAttribute("patientGenders", patientGenders);
 			model.addAttribute("patientProfile", user.getPatient());
+			model.addAttribute("doctorDepartments", doctorDepartments);
 			
 		} else if (user.getType() == UserType.DOCTOR) {
 			DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
