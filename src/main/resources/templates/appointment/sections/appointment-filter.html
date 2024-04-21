@@ -1,0 +1,52 @@
+<div class="row align-items-center gap-3">
+	<div class="row">
+		<h4>Appointment</h4>
+	</div>
+	
+	<div class="row">
+		<div class="">Choose department and doctor to load
+			appointments.</div>
+	</div>
+
+	<div class="row">
+		<div class="col-4">
+			<label class="col-form-label h6"><span
+				class="text-danger me-1">*</span>Department</label>
+		</div>
+		<div class="col">
+			<select id="selectAppointmentDepartment" class="form-select"
+				aria-label="Department" required>
+				<option selected disabled value="">...</option>
+				<option th:each="department : ${doctorDepartments}"
+					th:value="${department}"
+					th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(department, '_', ' ')))}"></option>
+			</select>
+			<div id="selectAppointmentDepartmentFeedback"
+				class="invalid-feedback"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-4">
+			<label class="col-form-label h6"><span
+				class="text-danger me-1">*</span>Doctor</label>
+		</div>
+		<div class="col">
+			<select id="selectAppointmentDoctor" class="form-select"
+				aria-label="Doctor" required>
+				<option selected disabled value="">...</option>
+			</select>
+			<div id="selectAppointmentDoctorFeedback" class="invalid-feedback"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col"></div>
+		<div class="col-auto">
+			<button id="buttonLoadAppointments" type="button"
+				class="btn btn-primary">
+				<i class="fa-solid fa-calendar-check me-2"></i>Load Appointments
+			</button>
+		</div>
+	</div>
+</div>

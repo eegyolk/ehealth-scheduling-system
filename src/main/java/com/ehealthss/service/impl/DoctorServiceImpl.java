@@ -58,9 +58,6 @@ public class DoctorServiceImpl implements DoctorService {
 		String template = "doctor/doctor";
 
 		model.addAttribute("pageTitle", "Doctor");
-		model.addAttribute("withCalendarComponent", false);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 

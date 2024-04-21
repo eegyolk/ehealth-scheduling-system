@@ -31,10 +31,6 @@ public class HelpAndSupportServiceImpl implements HelpAndSupportService {
 		String template = "help-and-support/help-and-support";
 
 		model.addAttribute("pageTitle", "Help & Support");
-		model.addAttribute("withCalendarComponent", false);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", false);
-		model.addAttribute("withMapComponent", false);
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 

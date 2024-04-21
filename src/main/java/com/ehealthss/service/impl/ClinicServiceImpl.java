@@ -42,10 +42,6 @@ public class ClinicServiceImpl implements ClinicService {
 		String template = "clinic/clinic";
 
 		model.addAttribute("pageTitle", "Clinic");
-		model.addAttribute("withCalendarComponent", false);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
-		model.addAttribute("withMapComponent", true);
 
 		User user = userRepository.findByUsername(userDetails.getUsername());
 

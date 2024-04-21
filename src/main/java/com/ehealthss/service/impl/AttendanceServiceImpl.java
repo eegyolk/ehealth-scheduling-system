@@ -55,9 +55,6 @@ public class AttendanceServiceImpl implements AttendanceService {
 		String template = "attendance/attendance";
 
 		model.addAttribute("pageTitle", "Attendance");
-		model.addAttribute("withCalendarComponent", true);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		model.addAttribute("doctorProfile", user.getDoctor());

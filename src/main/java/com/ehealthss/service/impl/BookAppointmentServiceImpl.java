@@ -61,9 +61,6 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 		String template = "book-appointment/book-appointment";
 
 		model.addAttribute("pageTitle", "Book Appointment");
-		model.addAttribute("withCalendarComponent", true);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
 		
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		model.addAttribute("patientProfile", user.getPatient());

@@ -1,0 +1,32 @@
+<input id="hiddenAppointmentData" type="hidden" />
+
+<div class="modal fade" id="chooseAction" tabindex="-1"
+	aria-labelledby="#chooseActionLabel" aria-hidden="true">
+	<div id="divVADialog"
+		class="modal-dialog modal-dialog-centered modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#chooseActionLabel">Choose
+					Action</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="d-grid gap-2 col-12 mx-auto">
+					<button id="buttonChooseActionView" type="button"
+						class="btn btn-info" data-bs-dismiss="modal"
+						data-bs-toggle="modal" data-bs-target="#viewAppointment">
+						<i class="fa-solid fa-eye me-1"></i>View Appointment
+					</button>
+
+					<button id="buttonChooseActionUpdate" type="button"
+						class="btn btn-primary" data-bs-dismiss="modal"
+						data-bs-toggle="modal" data-bs-target="#updateStatus">
+						<i class="fa-solid fa-share me-1"></i>Update Status
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

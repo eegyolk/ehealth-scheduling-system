@@ -45,10 +45,6 @@ public class DoctorAttendanceServiceImpl implements DoctorAttendanceService {
 		String template = "doctor-attendance/doctor-attendance";
 
 		model.addAttribute("pageTitle", "Doctor Attendance");
-		model.addAttribute("withCalendarComponent", true);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
-		model.addAttribute("withMapComponent", false);
 
 		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);

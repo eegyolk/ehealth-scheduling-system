@@ -32,18 +32,19 @@
 	<link rel="stylesheet"
 		href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link href="/css/navbar-fixed.css" rel="stylesheet">
-	<link th:if="${withCalendarComponent}" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css">
-	<link th:if="${withTableComponent}" rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script th:if="${withCalendarComponent}" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-	<script th:if="${withCalendarComponent}" src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/tempus-dominus.min.js"></script>
-	<script th:if="${withCalendarComponent}" src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/jQuery-provider.js"></script>
-	<script th:if="${withFontAwesome}" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/solid.min.js"></script>
-    <script th:if="${withFontAwesome}" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/fontawesome.min.js"></script>
-	<script th:if="${withTableComponent}" src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
-	<script th:if="${withMapComponent}" src="https://maps.googleapis.com/maps/api/js" async defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/tempus-dominus.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.9.4/dist/js/jQuery-provider.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/solid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/fontawesome.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+	<script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
 	
 	<style>
 		html body {
@@ -92,6 +93,10 @@
 		 */
 		.dropdown-menu {
 			min-width: 0 !important;
+		}
+		
+		#appointmentCalendar {
+			max-width: 1050px;
 		}
 	</style>
 </head>

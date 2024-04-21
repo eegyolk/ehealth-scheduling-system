@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.ehealthss.model.enums.DayOfWeek;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,14 +31,17 @@ public class PatientSetting {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id")
+	@JsonIgnore
 	private Patient patient;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "preferred_doctor")
+	@JsonIgnore
 	private Doctor preferredDoctor;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "preferred_location")
+	@JsonIgnore
 	private Location preferredLocation;
 
 	@Enumerated(EnumType.STRING)

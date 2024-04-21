@@ -31,10 +31,6 @@ public class DashboardServiceImpl implements DashboardService {
 		String template = "dashboard/dashboard";
 
 		model.addAttribute("pageTitle", "Dashboard");
-		model.addAttribute("withCalendarComponent", true);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
-		model.addAttribute("withMapComponent", true);
 
 		User user = userRepository.findByUsername(userDetails.getUsername());
 

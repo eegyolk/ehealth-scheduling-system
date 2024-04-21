@@ -14,10 +14,6 @@ public class LoginServiceImpl implements LoginService {
 		String template = "login/login";
 
 		model.addAttribute("pageTitle", "Login");
-		model.addAttribute("withCalendarComponent", true);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
-		model.addAttribute("withMapComponent", true);
 		model.addAttribute("hasError", hasError);
 		model.addAttribute("isLogout", isLogout);
 

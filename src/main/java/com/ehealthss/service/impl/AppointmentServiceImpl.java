@@ -3,6 +3,8 @@ package com.ehealthss.service.impl;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,11 @@ import org.springframework.ui.Model;
 
 import com.ehealthss.bean.AppointmentActivityDTO;
 import com.ehealthss.bean.AppointmentDTO;
+import com.ehealthss.bean.CalendarEventRequestDTO;
 import com.ehealthss.model.Appointment;
 import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
+import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
@@ -28,6 +32,7 @@ import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
+import com.ehealthss.repository.DoctorRepository;
 import com.ehealthss.repository.LocationRepository;
 import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.AppointmentService;
@@ -40,13 +45,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	LocationRepository locationRepository;
 
 	@Autowired
+	DoctorRepository doctorRepository;
+
+	@Autowired
 	AppointmentRepository appointmentRepository;
-	
+
 	@Autowired
 	AppointmentActivityRepository appointmentActivityRepository;
 
@@ -56,33 +64,95 @@ public class AppointmentServiceImpl implements AppointmentService {
 		String template = "appointment/appointment";
 
 		model.addAttribute("pageTitle", "Appointment");
-		model.addAttribute("withCalendarComponent", true);
-		model.addAttribute("withFontAwesome", true);
-		model.addAttribute("withTableComponent", true);
-		model.addAttribute("withMapComponent", false);
-		
+
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		if (user.getType() == UserType.DOCTOR) {
 			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
 					AppointmentStatus.FULFILLED };
-			DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
-			
+
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
-			model.addAttribute("doctorDepartments", doctorDepartments);
 			model.addAttribute("doctorProfile", user.getDoctor());
-			
+
 		} else if (user.getType() == UserType.STAFF) {
 			AppointmentStatus[] appointmentStatuses = AppointmentStatus.class.getEnumConstants();
-			
+
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
 			model.addAttribute("staffProfile", user.getStaff());
 		}
+
+		DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();
+		model.addAttribute("doctorDepartments", doctorDepartments);
 
 		List<Location> locations = locationRepository.findAll();
 		model.addAttribute("locations", locations);
 
 		return template;
+
+	}
+
+	@Override
+	public Set<Doctor> fetchDoctorsByDepartmentAndLocation(DoctorDepartment doctorDepartment, UserDetails userDetails) {
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
+		List<Doctor> doctors = doctorRepository.findByDepartment(doctorDepartment);
+
+		Set<Doctor> doctorsByDepartmentAndLocation = new TreeSet<>();
+
+		for (Doctor doctor : doctors) {
+			List<DoctorSchedule> doctorSchedules = doctor.getDoctorSchedules();
+
+			for (DoctorSchedule doctorSchedule : doctorSchedules) {
+				if (user.getStaff().getLocation().getId() == doctorSchedule.getLocation().getId()) {
+					doctorsByDepartmentAndLocation.add(doctor);
+				}
+			}
+		}
+
+		return doctorsByDepartmentAndLocation;
+	}
+
+	@Override
+	public List<AppointmentDTO> fetchAppointments(UserDetails userDetails,
+			CalendarEventRequestDTO calendarEventRequestDTO) {
+
+		User user = userRepository.findByUsername(userDetails.getUsername());
+
+		Specification<Appointment> specification = (Specification<Appointment>) (root, query, builder) -> {
+
+			if (user.getType() == UserType.STAFF) {
+
+				/**
+				 * Joins the Appointment entity with Location and Doctor to filter appointments
+				 * based on location and doctor name. Returns criteria for appointments matching
+				 * staff location ID and doctor's first or last name containing the provided
+				 * fieldValue.
+				 */
+				Join<Appointment, Location> location = root.join("location");
+				Join<Appointment, Doctor> doctor = root.join("doctor");
+				return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
+						builder.equal(doctor.get("id"), calendarEventRequestDTO.getDoctorId()),
+						builder.between(root.get("datetime"),
+								calendarEventRequestDTO.getStartDate(),
+								calendarEventRequestDTO.getEndDate()));
+
+			} else { // DOCTOR
+
+				/**
+				 * Joins the Appointment entity with Doctor to filter appointments based on
+				 * doctor ID. Returns criteria for appointments matching doctor ID.
+				 */
+				Join<Appointment, Doctor> doctor = root.join("doctor");
+				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()), root.get("status")
+						.in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED, AppointmentStatus.FULFILLED));
+
+			}
+
+		};
+
+		return appointmentRepository.findAll(specification).stream()
+				.map(appointment -> convertToAppointmentDTO(appointment, false)).collect(Collectors.toList());
 
 	}
 
@@ -300,7 +370,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointmentActivityRepository.save(appointmentActivity);
 
 	}
-	
+
 	private DataTablesOutput<AppointmentDTO> recreateDataTablesOutputDoctorAttendance(
 			DataTablesOutput<Appointment> appointments) {
 
@@ -320,10 +390,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private AppointmentDTO convertToAppointmentDTO(Appointment appointment, boolean isWithActivity) {
 
 		return new AppointmentDTO(appointment.getId(), isWithActivity ? null : appointment.getPatient(),
-				isWithActivity ? null : appointment.getDoctor(),
-				isWithActivity ? null : appointment.getLocation(), appointment.getReferenceNo(),
-				appointment.getDatetime(), appointment.getDescription(), appointment.getReason(),
-				appointment.getStatus(), appointment.isJoinWaitlist(), appointment.getSlot(),
+				isWithActivity ? null : appointment.getDoctor(), isWithActivity ? null : appointment.getLocation(),
+				appointment.getReferenceNo(), appointment.getDatetime(), appointment.getDescription(),
+				appointment.getReason(), appointment.getStatus(), appointment.isJoinWaitlist(), appointment.getSlot(),
 				appointment.getCreatedOn(), appointment.getUpdatedOn(),
 				isWithActivity
 						? appointment.getAppointmentActivities().stream().map(this::convertToAppointmentActivityDTO)
