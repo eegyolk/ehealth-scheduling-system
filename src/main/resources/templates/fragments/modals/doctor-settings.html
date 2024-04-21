@@ -1,0 +1,80 @@
+<div class="modal fade" id="doctorProfile" tabindex="-1"
+	aria-labelledby="#doctorProfileLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#doctorProfileLabel">Profile</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="container">
+					<div id="divProfileFeedback" class="row mb-3"></div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">First Name</div>
+						<div class="col-8">
+							<input id="textFirstName" type="text" class="form-control"
+								th:value="${doctorProfile.firstName}" required />
+							<div id="textFirstNameFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Last Name</div>
+						<div class="col-8">
+							<input id="textLastName" type="text" class="form-control"
+								th:value="${doctorProfile.lastName}" required />
+							<div id="textLastNameFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Email</div>
+						<div class="col-8">
+							<input id="textEmail" type="email" class="form-control"
+								th:value="${doctorProfile.email}" required />
+							<div id="textEmailFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Phone</div>
+						<div class="col-8">
+							<input id="textPhone" type="text" class="form-control"
+								th:value="${doctorProfile.phone}" required />
+							<div id="textPhoneFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Department</div>
+						<div class="col-8">
+							<select id="selectDepartment" class="form-select"
+								aria-label="Department" required>
+								<option selected value="">...</option>
+								<option
+									th:selected="${doctorProfile.department == doctorDepartment}"
+									th:each="doctorDepartment : ${doctorDepartments}"
+									th:value="${doctorDepartment}" th:text="${doctorDepartment}"></option>
+							</select>
+							<div id="selectDepartmentFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button id="buttonCancelProfile" type="button"
+					class="btn btn-danger" data-bs-dismiss="modal">
+					<i class="bi bi-x-lg me-1"></i>Cancel
+				</button>
+				<button id="buttonSaveProfile" type="button" class="btn btn-primary">
+					<i class="bi bi-save me-1"></i>Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

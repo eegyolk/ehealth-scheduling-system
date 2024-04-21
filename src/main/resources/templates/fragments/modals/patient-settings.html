@@ -1,0 +1,101 @@
+<div class="modal fade" id="patientSettings" tabindex="-1"
+	aria-labelledby="#patientSettingsLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="#patientSettingsLabel">Settings</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="container">
+					<div id="divSettingsFeedback" class="row mb-3"></div>
+					
+					<input id="hiddenSettingsPreferredLocation" type="hidden" th:value="${patientSettings != null ? patientSettings.preferredLocation.id : ''}" />
+					<input id="hiddenSettingsDepartment" type="hidden" th:value="${patientSettings != null ? patientSettings.preferredDoctor.department : ''}" />
+					<input id="hiddenSettingsPreferredDoctor" type="hidden" th:value="${patientSettings != null ? patientSettings.preferredDoctor.id : ''}" />
+					<input id="hiddenSettingsPreferredDOW" type="hidden" th:value="${patientSettings != null ? patientSettings.preferredDayOfWeek : ''}" />
+					<input id="hiddenSettingsPreferredTime" type="hidden" th:value="${patientSettings != null ? patientSettings.preferredTime : ''}" />
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Preferred Clinic</div>
+						<div class="col-8">
+							<select id="selectSettingsClinic" class="form-select"
+								aria-label="Preferred Clinic" required>
+								<option selected disabled value="">...</option>
+								<option th:each="location : ${locations}"
+									th:value="${location.id}"
+									th:text="${location.name} + ' - ' + ${location.address}"></option>
+							</select>
+							<div id="selectSettingsClinicFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Department</div>
+						<div class="col-8">
+							<select id="selectSettingsDepartment" class="form-select"
+								aria-label="Department" disabled required>
+								<option selected disabled value="">...</option>
+								<option th:each="department : ${doctorDepartments}"
+									th:value="${department}"
+									th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(department, '_', ' ')))}"></option>
+							</select>
+							<div id="selectSettingsDepartmentFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Preferred Doctor</div>
+						<div class="col-8">
+							<select id="selectSettingsDoctor" class="form-select"
+								aria-label="Preferred Doctor" disabled required>
+								<option selected disabled value="">...</option>
+							</select>
+							<div id="selectSettingsDoctorFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">
+							Preferred DOW<i class="bi bi-question-circle-fill ms-1"
+								data-bs-toggle="tooltip" data-bs-placement="right"
+								data-bs-custom-class="custom-tooltip"
+								data-bs-title="Preferred day of the week where the selected doctor is available."></i>
+						</div>
+						<div class="col-8">
+							<select id="selectSettingsDOW" class="form-select"
+								aria-label="Preferred DOW" disabled required>
+								<option selected disabled value="">...</option>
+							</select>
+							<div id="selectSettingsDOWFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-4 pt-1">Preferred Time</div>
+						<div class="col-8">
+							<select id="selectSettingsTime" class="form-select"
+								aria-label="Preferred Time" disabled required>
+								<option selected disabled value="">...</option>
+							</select>
+							<div id="selectSettingsTimeFeedback" class="invalid-feedback"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button id="buttonCancelSettings" type="button"
+					class="btn btn-danger" data-bs-dismiss="modal">
+					<i class="bi bi-x-lg me-1"></i>Cancel
+				</button>
+				<button id="buttonSaveSettings" type="button"
+					class="btn btn-primary">
+					<i class="bi bi-save me-1"></i>Save
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

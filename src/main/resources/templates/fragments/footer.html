@@ -3,8 +3,12 @@
 <div sec:authorize="hasRole('ROLE_PATIENT')" th:include="~{fragments/modals/patient-profile}"></div>
 <div sec:authorize="hasRole('ROLE_DOCTOR')" th:include="~{fragments/modals/doctor-profile}"></div>
 <div sec:authorize="hasRole('ROLE_STAFF')" th:include="~{fragments/modals/staff-profile}"></div>
+<div sec:authorize="hasRole('ROLE_PATIENT')" th:include="~{fragments/modals/patient-settings}"></div>
+<div sec:authorize="hasRole('ROLE_DOCTOR')" th:include="~{fragments/modals/doctor-settings}"></div>
 
 <script src="/js/fragments/account.js"></script>
 <script sec:authorize="hasRole('ROLE_PATIENT')" src="/js/fragments/patient-profile.js"></script>
 <script sec:authorize="hasRole('ROLE_DOCTOR')" src="/js/fragments/doctor-profile.js"></script>
 <script sec:authorize="hasRole('ROLE_STAFF')" src="/js/fragments/staff-profile.js"></script>
+<script sec:authorize="hasRole('ROLE_PATIENT')" src="/js/fragments/patient-settings.js"></script>
+<script sec:authorize="hasRole('ROLE_DOCTOR')" src="/js/fragments/doctor-settings.js"></script>

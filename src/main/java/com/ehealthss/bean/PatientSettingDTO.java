@@ -5,6 +5,7 @@ import java.util.Date;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
+import com.ehealthss.model.enums.DayOfWeek;
 
 public class PatientSettingDTO {
 
@@ -12,19 +13,21 @@ public class PatientSettingDTO {
 	private Patient patient;
 	private Doctor preferredDoctor;
 	private Location preferredLocation;
+	private DayOfWeek preferredDayOfWeek;
 	private String preferredTime;
 	private Date createdOn;
 	private Date updatedOn;
-	
+
 	public PatientSettingDTO() {
 	}
 
 	public PatientSettingDTO(Integer id, Patient patient, Doctor preferredDoctor, Location preferredLocation,
-			String preferredTime, Date createdOn, Date updatedOn) {
+			DayOfWeek preferredDayOfWeek, String preferredTime, Date createdOn, Date updatedOn) {
 		this.id = id;
 		this.patient = patient;
 		this.preferredDoctor = preferredDoctor;
 		this.preferredLocation = preferredLocation;
+		this.preferredDayOfWeek = preferredDayOfWeek;
 		this.preferredTime = preferredTime;
 		this.createdOn = createdOn;
 		this.updatedOn = updatedOn;
@@ -62,6 +65,14 @@ public class PatientSettingDTO {
 		this.preferredLocation = preferredLocation;
 	}
 
+	public DayOfWeek getPreferredDayOfWeek() {
+		return preferredDayOfWeek;
+	}
+
+	public void setPreferredDayOfWeek(DayOfWeek preferredDayOfWeek) {
+		this.preferredDayOfWeek = preferredDayOfWeek;
+	}
+
 	public String getPreferredTime() {
 		return preferredTime;
 	}
@@ -89,8 +100,9 @@ public class PatientSettingDTO {
 	@Override
 	public String toString() {
 		return String.format(
-				"PatientSettingDTO [id=%s, patient=%s, preferredDoctor=%s, preferredLocation=%s, preferredTime=%s, createdOn=%s, updatedOn=%s]",
-				id, patient, preferredDoctor, preferredLocation, preferredTime, createdOn, updatedOn);
+				"PatientSettingDTO [id=%s, patient=%s, preferredDoctor=%s, preferredLocation=%s, preferredDayOfWeek=%s, preferredTime=%s, createdOn=%s, updatedOn=%s]",
+				id, patient, preferredDoctor, preferredLocation, preferredDayOfWeek, preferredTime, createdOn,
+				updatedOn);
 	}
 
 }

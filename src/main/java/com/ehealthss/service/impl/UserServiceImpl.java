@@ -117,8 +117,14 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(userDetails.getUsername());
 		PatientSetting patientSetting = user.getPatient().getPatientSetting();
 		
+		if (patientSetting == null) {
+			patientSetting = new PatientSetting();
+			patientSetting.setPatient(user.getPatient());
+		}
+		
 		patientSetting.setPreferredDoctor(patientSettingDTO.getPreferredDoctor());
 		patientSetting.setPreferredLocation(patientSettingDTO.getPreferredLocation());
+		patientSetting.setPreferredDayOfWeek(patientSettingDTO.getPreferredDayOfWeek());
 		patientSetting.setPreferredTime(patientSettingDTO.getPreferredTime());
 		patientSettingRepository.save(patientSetting);
 		
