@@ -124,28 +124,31 @@ public class AppointmentServiceImpl implements AppointmentService {
 			if (user.getType() == UserType.STAFF) {
 
 				/**
-				 * Joins the Appointment entity with Location and Doctor to filter appointments
-				 * based on location and doctor name. Returns criteria for appointments matching
-				 * staff location ID and doctor's first or last name containing the provided
-				 * fieldValue.
+				 * Joining the Appointment entity with the Location and Doctor entities;
+				 * filtering by location ID, doctor ID, and appointment datetime range
 				 */
 				Join<Appointment, Location> location = root.join("location");
 				Join<Appointment, Doctor> doctor = root.join("doctor");
 				return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
-						builder.equal(doctor.get("id"), calendarEventRequestDTO.getDoctorId()),
-						builder.between(root.get("datetime"),
-								calendarEventRequestDTO.getStartDate(),
+						builder.equal(doctor.get("id"), calendarEventRequestDTO.getId()),
+						builder.between(root.get("datetime"), calendarEventRequestDTO.getStartDate(),
 								calendarEventRequestDTO.getEndDate()));
 
 			} else { // DOCTOR
 
 				/**
-				 * Joins the Appointment entity with Doctor to filter appointments based on
-				 * doctor ID. Returns criteria for appointments matching doctor ID.
+				 * Joining the Appointment entity with the Doctor and Location entities;
+				 * filtering by doctor ID, appointment status, location ID, and appointment
+				 * datetime range
 				 */
 				Join<Appointment, Doctor> doctor = root.join("doctor");
-				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()), root.get("status")
-						.in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED, AppointmentStatus.FULFILLED));
+				Join<Appointment, Location> location = root.join("location");
+				return builder.and(builder.equal(doctor.get("id"), user.getDoctor().getId()),
+						root.get("status").in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
+								AppointmentStatus.FULFILLED),
+						builder.equal(location.get("id"), calendarEventRequestDTO.getId()),
+						builder.between(root.get("datetime"), calendarEventRequestDTO.getStartDate(),
+								calendarEventRequestDTO.getEndDate()));
 
 			}
 

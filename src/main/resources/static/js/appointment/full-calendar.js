@@ -1,6 +1,6 @@
 $().ready(function() {
 	
-	window.initAppointmentCalendar = function(doctorId=0) {
+	window.initAppointmentCalendar = function(id=0) {
 	  	window.appointmentCalendar = new FullCalendar.Calendar(document.getElementById("appointmentCalendar"), {
 		    initialView: "dayGridMonth",
 		    initialDate: new Date(),
@@ -12,10 +12,11 @@ $().ready(function() {
 		      right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
 		    },
 			events: function(info, successCallback, failureCallback) {
-				if (doctorId === 0) return [];
-					
+				if (id === 0) return [];
+				
+				// Data for Staff Filter
 				const data = {
-					doctorId,
+					id: id,
 					startDate: info.startStr,
 					endDate: info.endStr
 				}
@@ -30,7 +31,9 @@ $().ready(function() {
 					data: JSON.stringify(data),
 				}).done(function(data) {
 					successCallback(data.map(row => {
+						console.log(row);
 						row["title"] = row.description;
+						row["start"] = row.datetime;
 						row["textColor"] = "black";
 	
 						switch(row.status.toUpperCase()) {

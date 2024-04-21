@@ -6,7 +6,7 @@ import com.ehealthss.model.enums.AppointmentStatus;
 
 public class CalendarEventRequestDTO {
 
-	private int doctorId;
+	private int id;
 	private Date startDate;
 	private Date endDate;
 	private AppointmentStatus status;
@@ -14,19 +14,19 @@ public class CalendarEventRequestDTO {
 	public CalendarEventRequestDTO() {
 	}
 
-	public CalendarEventRequestDTO(int doctorId, Date startDate, Date endDate, AppointmentStatus status) {
-		this.doctorId = doctorId;
+	public CalendarEventRequestDTO(int id, Date startDate, Date endDate, AppointmentStatus status) {
+		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
 	}
 
-	public int getDoctorId() {
-		return doctorId;
+	public int getId() {
+		return id;
 	}
 
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getStartDate() {
@@ -55,8 +55,8 @@ public class CalendarEventRequestDTO {
 
 	@Override
 	public String toString() {
-		return String.format("CalendarEventRequestDTO [doctorId=%s, startDate=%s, endDate=%s, status=%s]", doctorId,
-				startDate, endDate, status);
+		return String.format("CalendarEventRequestDTO [id=%s, startDate=%s, endDate=%s, status=%s]", id, startDate,
+				endDate, status);
 	}
 
 }
