@@ -19,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ehealthss.model.Appointment;
 import com.ehealthss.model.AppointmentActivity;
+import com.ehealthss.model.AppointmentActivityAlert;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
+import com.ehealthss.model.Staff;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.model.enums.PatientGender;
+import com.ehealthss.repository.AppointmentActivityAlertRepository;
 import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
 import com.ehealthss.repository.DoctorRepository;
@@ -54,6 +57,9 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 	
 	@Autowired
 	AppointmentActivityRepository appointmentActivityRepository;
+	
+	@Autowired
+	AppointmentActivityAlertRepository appointmentActivityAlertRepository;
 
 	@Override
 	public String index(Model model, UserDetails userDetails) {
@@ -154,8 +160,14 @@ public class BookAppointmentServiceImpl implements BookAppointmentService {
 
 		AppointmentActivity appointmentActivity = new AppointmentActivity(newAppointment, user,
 				"Newly created appointment.", AppointmentStatus.PENDING);
-		appointmentActivityRepository.save(appointmentActivity);
-
+		appointmentActivity = appointmentActivityRepository.save(appointmentActivity);
+		
+		for (Staff staff: location.getStaff()) {
+			AppointmentActivityAlert appointmentActivityAlert = new AppointmentActivityAlert(appointmentActivity, user,
+					staff.getUser(), false, null, null);
+			appointmentActivityAlertRepository.save(appointmentActivityAlert);
+		}
+		
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import com.ehealthss.bean.AppointmentDTO;
 import com.ehealthss.bean.CalendarEventRequestDTO;
 import com.ehealthss.model.Appointment;
 import com.ehealthss.model.AppointmentActivity;
+import com.ehealthss.model.AppointmentActivityAlert;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
@@ -26,6 +27,7 @@ import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.model.enums.UserType;
+import com.ehealthss.repository.AppointmentActivityAlertRepository;
 import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
 import com.ehealthss.repository.DoctorRepository;
@@ -52,6 +54,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Autowired
 	AppointmentActivityRepository appointmentActivityRepository;
+
+	@Autowired
+	AppointmentActivityAlertRepository appointmentActivityAlertRepository;
 
 	@Override
 	public String index(Model model, UserDetails userDetails) {
@@ -201,7 +206,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Override
 	@Transactional
-	public void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivityDTO appointmentActivityDTO) {
+	public void updateStatus(UserDetails userDetails, int appointmentId,
+			AppointmentActivityDTO appointmentActivityDTO) {
 
 		Appointment appointment = appointmentRepository.getReferenceById(appointmentId);
 		appointment.setStatus(appointmentActivityDTO.getStatus());
@@ -216,6 +222,36 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointmentActivity.setNotes(appointmentActivityDTO.getNotes());
 		appointmentActivity.setStatus(appointmentActivityDTO.getStatus());
 		appointmentActivityRepository.save(appointmentActivity);
+
+		if (AppointmentStatus.BOOKED == appointmentActivityDTO.getStatus()
+				|| AppointmentStatus.FULFILLED == appointmentActivityDTO.getStatus()
+				|| AppointmentStatus.WAITLIST == appointmentActivityDTO.getStatus()) {
+
+			AppointmentActivityAlert appointmentActivityAlert = new AppointmentActivityAlert(appointmentActivity, user,
+					appointment.getPatient().getUser(), false, null, null);
+			appointmentActivityAlertRepository.save(appointmentActivityAlert);
+
+		} else if (AppointmentStatus.ARRIVED == appointmentActivityDTO.getStatus()) {
+
+			AppointmentActivityAlert appointmentActivityAlert = new AppointmentActivityAlert(appointmentActivity, user,
+					appointment.getPatient().getUser(), false, null, null);
+			appointmentActivityAlertRepository.save(appointmentActivityAlert);
+
+			appointmentActivityAlert = new AppointmentActivityAlert(appointmentActivity, user,
+					appointment.getDoctor().getUser(), false, null, null);
+			appointmentActivityAlertRepository.save(appointmentActivityAlert);
+
+		} else if (AppointmentStatus.CANCELLED == appointmentActivityDTO.getStatus()) {
+
+			if (UserType.STAFF == user.getType()) {
+
+				AppointmentActivityAlert appointmentActivityAlert = new AppointmentActivityAlert(appointmentActivity,
+						user, appointment.getPatient().getUser(), false, null, null);
+				appointmentActivityAlertRepository.save(appointmentActivityAlert);
+
+			}
+
+		}
 
 	}
 
