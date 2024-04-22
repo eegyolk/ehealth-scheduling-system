@@ -63,10 +63,6 @@ $().ready(function() {
 	}
 	
 	function buttonEvents() {
-		$("#buttonBack").click(function(ev) {
-			history.back();	
-		});
-		
 		$("#buttonSaveCO").click(function(ev) {
 			$("#buttonCancelCO").prop("disabled", true);
 			$("#buttonSaveCO").prop("disabled", true);

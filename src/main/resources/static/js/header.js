@@ -1,3 +1,14 @@
 $().ready(function() {
-	console.log("Initialize header jQuery");
+	buttonEvents();
+
+	function buttonEvents() {
+		$("#buttonBack").click(function(ev) {
+			history.go(-1);	
+		});
+		
+		$("#buttonRefresh").click(function(ev) {
+			location.reload();	
+		});	
+	}
+	
 });

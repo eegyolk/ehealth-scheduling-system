@@ -15,8 +15,12 @@
 				<button id="buttonBack" type="button" class="btn btn-dark me-2">
 					<i class="bi bi-chevron-left me-2"></i>Back
 				</button>
-				<button type="button" class="btn btn-primary">
+				<button id="buttonRefresh" type="button" class="btn btn-info">
 					<i class="fa-solid fa-arrows-rotate me-2"></i>Refresh
+				</button>
+				<button sec:authorize="hasRole('ROLE_PATIENT')" type="button" class="btn btn-primary ms-2" data-bs-toggle="modal"
+					data-bs-target="#createAppointment">
+					<i class="bi bi-plus-lg me-2"></i>Book Appointment
 				</button>
 			</div>
 		</div>
@@ -45,6 +49,7 @@
 	</main>
 
 	<!-- Modal -->
+	<div sec:authorize="hasRole('ROLE_PATIENT')" th:include="~{appointment/modals/create-appointment}"></div>
 	<div th:include="~{appointment/modals/choose-action}"></div>
 	<div th:include="~{appointment/modals/view-appointment}"></div>
 	<div th:include="~{appointment/modals/update-status}"></div>
@@ -53,6 +58,8 @@
 	<div th:include="~{fragments/footer}"></div>
 
 	<script src="/js/header.js"></script>
+	<script sec:authorize="hasRole('ROLE_PATIENT')"
+		src="/js/appointment/create-appointment.js"></script>
 	<script sec:authorize="hasRole('ROLE_STAFF')"
 		src="/js/appointment/staff-filter.js"></script>
 	<script sec:authorize="hasRole('ROLE_DOCTOR')"
