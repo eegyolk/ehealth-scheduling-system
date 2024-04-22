@@ -29,6 +29,7 @@ import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
 import com.ehealthss.model.enums.AppointmentStatus;
 import com.ehealthss.model.enums.DoctorDepartment;
+import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.AppointmentActivityRepository;
 import com.ehealthss.repository.AppointmentRepository;
@@ -67,7 +68,31 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
-		if (user.getType() == UserType.DOCTOR) {
+		if (user.getType() == UserType.PATIENT) {
+			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
+			List<Appointment> appointments = appointmentRepository
+					.findByPatientIdAndStatusOrderByCreatedOnDesc(user.getPatient().getId(), AppointmentStatus.FULFILLED);
+
+			Set<Doctor> assignedDoctors = new TreeSet<>();
+			Set<Location> assignedLocations = new TreeSet<>();
+
+			for (Appointment appointment : appointments) {
+				Doctor doctor = appointment.getDoctor();
+				doctor.setCreatedOn(appointment.getCreatedOn());
+				assignedDoctors.add(doctor);
+
+				Location location = appointment.getLocation();
+				location.setCreatedOn(appointment.getCreatedOn());
+				assignedLocations.add(location);
+			}
+
+			model.addAttribute("patientGenders", patientGenders);
+			model.addAttribute("patientProfile", user.getPatient());
+			model.addAttribute("patientSettings", user.getPatient().getPatientSetting());
+			model.addAttribute("lastDoctorVisited", assignedDoctors);
+			model.addAttribute("lastClinicVisited", assignedLocations);
+
+		} else if (user.getType() == UserType.DOCTOR) {
 			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
 					AppointmentStatus.FULFILLED };
 
@@ -121,20 +146,18 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		Specification<Appointment> specification = (Specification<Appointment>) (root, query, builder) -> {
 
-			if (user.getType() == UserType.STAFF) {
+			if (user.getType() == UserType.PATIENT) {
 
 				/**
-				 * Joining the Appointment entity with the Location and Doctor entities;
-				 * filtering by location ID, doctor ID, and appointment datetime range
+				 * Joining the Appointment entity with the Patient entity; filtering by patient
+				 * ID and appointment datetime range
 				 */
-				Join<Appointment, Location> location = root.join("location");
-				Join<Appointment, Doctor> doctor = root.join("doctor");
-				return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
-						builder.equal(doctor.get("id"), calendarEventRequestDTO.getId()),
+				Join<Appointment, Patient> patient = root.join("patient");
+				return builder.and(builder.equal(patient.get("id"), user.getPatient().getId()),
 						builder.between(root.get("datetime"), calendarEventRequestDTO.getStartDate(),
 								calendarEventRequestDTO.getEndDate()));
 
-			} else { // DOCTOR
+			} else if (user.getType() == UserType.DOCTOR) {
 
 				/**
 				 * Joining the Appointment entity with the Doctor and Location entities;
@@ -147,6 +170,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 						root.get("status").in(AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
 								AppointmentStatus.FULFILLED),
 						builder.equal(location.get("id"), calendarEventRequestDTO.getId()),
+						builder.between(root.get("datetime"), calendarEventRequestDTO.getStartDate(),
+								calendarEventRequestDTO.getEndDate()));
+
+			} else { // STAFF
+
+				/**
+				 * Joining the Appointment entity with the Location and Doctor entities;
+				 * filtering by location ID, doctor ID, and appointment datetime range
+				 */
+				Join<Appointment, Location> location = root.join("location");
+				Join<Appointment, Doctor> doctor = root.join("doctor");
+				return builder.and(builder.equal(location.get("id"), user.getStaff().getLocation().getId()),
+						builder.equal(doctor.get("id"), calendarEventRequestDTO.getId()),
 						builder.between(root.get("datetime"), calendarEventRequestDTO.getStartDate(),
 								calendarEventRequestDTO.getEndDate()));
 

@@ -14,11 +14,7 @@
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Book Appointment') ? 'fw-medium active' : '')"
 					href="/book-appointment">Book Appointment</a></li>
 
-				<li sec:authorize="hasRole('ROLE_STAFF')" class="nav-item px-2"><a
-					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Appointment') ? 'fw-medium active' : '')"
-					href="/appointment">Appointment</a></li>
-
-				<li sec:authorize="hasRole('ROLE_DOCTOR')" class="nav-item px-2"><a
+				<li class="nav-item px-2"><a
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Appointment') ? 'fw-medium active' : '')"
 					href="/appointment">Appointment</a></li>
 
@@ -42,43 +38,50 @@
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Help & Support') ? 'fw-medium active' : '')"
 					href="/help-and-support">Help & Support</a></li>
 
-				<li class="nav-item px-2"><button type="button"
-						class="btn btn-primary rounded-circle">
-						<i class="bi bi-search"></i>
-					</button></li>
-				<li class="nav-item px-2"><div class="vr"></div></li>
-				<li class="nav-item px-2"><button type="button"
-						class="btn btn-primary rounded-circle">
-						<i class="bi bi-bell-fill"></i>
-					</button></li>
-				<li class="nav-item px-2 btn-group"><button type="button"
-						class="btn btn-primary rounded-circle dropdown-toggle"
-						data-bs-toggle="dropdown">
-						<i class="bi bi-person-fill"></i>
-					</button>
+				<li class="nav-item px-2"><img src="/img/bell-solid.svg"
+					width="38px" height="38px" alt="User"
+					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
+					data-bs-toggle="dropdown"></li>
+				<li class="nav-item px-2 btn-group"><img
+					src="/img/user-solid.svg" width="38px" height="38px" alt="User"
+					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
+					data-bs-toggle="dropdown">
 					<ul class="dropdown-menu text-small shadow">
-						<li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#account">Account</a></li>
-						<li sec:authorize="hasRole('ROLE_PATIENT')"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#patientProfile">Profile</a></li>
-						<li sec:authorize="hasRole('ROLE_DOCTOR')"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#doctorProfile">Profile</a></li>
-						<li sec:authorize="hasRole('ROLE_STAFF')"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staffProfile">Profile</a></li>
-						<li sec:authorize="hasRole('ROLE_PATIENT')"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#patientSettings">Settings</a></li>
-						<li sec:authorize="hasRole('ROLE_DOCTOR')"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#doctorSettings">Settings</a></li>
+						<li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+							data-bs-target="#account">Account</a></li>
+						<li sec:authorize="hasRole('ROLE_PATIENT')"><a
+							class="dropdown-item" href="#" data-bs-toggle="modal"
+							data-bs-target="#patientProfile">Profile</a></li>
+						<li sec:authorize="hasRole('ROLE_DOCTOR')"><a
+							class="dropdown-item" href="#" data-bs-toggle="modal"
+							data-bs-target="#doctorProfile">Profile</a></li>
+						<li sec:authorize="hasRole('ROLE_STAFF')"><a
+							class="dropdown-item" href="#" data-bs-toggle="modal"
+							data-bs-target="#staffProfile">Profile</a></li>
+						<li sec:authorize="hasRole('ROLE_PATIENT')"><a
+							class="dropdown-item" href="#" data-bs-toggle="modal"
+							data-bs-target="#patientSettings">Settings</a></li>
+						<li sec:authorize="hasRole('ROLE_DOCTOR')"><a
+							class="dropdown-item" href="#" data-bs-toggle="modal"
+							data-bs-target="#doctorSettings">Settings</a></li>
 						<li><hr class="dropdown-divider"></li>
 						<li><a class="dropdown-item" href="/logout">Sign out</a></li>
 					</ul></li>
-				<li class="nav-item px-2"><button id="buttonFullscreen"
-						type="button" class="btn btn-primary rounded-circle">
-						<i class="bi bi-arrows-fullscreen"></i>
-					</button></li>
+				<li class="nav-item px-2"><img src="/img/maximize-solid.svg"
+					width="38px" height="38px" alt="User"
+					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
+					data-bs-toggle="dropdown"></li>
 
 			</ul>
 		</div>
 	</div>
-	
-	<input sec:authorize="hasRole('ROLE_STAFF')" id="hiddenAuthorizeRole"
-		type="hidden" class="form-control" value="ROLE_STAFF" />
-	<input sec:authorize="hasRole('ROLE_DOCTOR')" id="hiddenAuthorizeRole"
-		type="hidden" class="form-control" value="ROLE_DOCTOR" />
-	<input type="hidden" th:name="${_csrf.parameterName}"
+
+	<input sec:authorize="hasRole('ROLE_PATIENT')" id="hiddenAuthorizeRole"
+		type="hidden" class="form-control" value="ROLE_PATIENT" /> <input
+		sec:authorize="hasRole('ROLE_DOCTOR')" id="hiddenAuthorizeRole"
+		type="hidden" class="form-control" value="ROLE_DOCTOR" /> <input
+		sec:authorize="hasRole('ROLE_STAFF')" id="hiddenAuthorizeRole"
+		type="hidden" class="form-control" value="ROLE_STAFF" /> <input
+		type="hidden" th:name="${_csrf.parameterName}"
 		th:value="${_csrf.token}" />
 </nav>

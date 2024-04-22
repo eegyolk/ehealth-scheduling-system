@@ -12,13 +12,17 @@ $().ready(function() {
 		      right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth"
 		    },
 			events: function(info, successCallback, failureCallback) {
-				if (id === 0) return [];
-				
-				// Data for Staff Filter
 				const data = {
 					id: id,
 					startDate: info.startStr,
 					endDate: info.endStr
+				}
+				
+				// No filter section for PATIENT
+				if ($("#hiddenAuthorizeRole").val() === "ROLE_PATIENT") {
+					delete data['id'];
+				} else {
+					if (id === 0) return [];
 				}
 	
 				$.ajax({
