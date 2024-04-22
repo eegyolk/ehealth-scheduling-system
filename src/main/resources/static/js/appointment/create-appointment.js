@@ -139,10 +139,9 @@ $().ready(function() {
 					$("#divFeedback").html(`<div class="p-3 text-primary-emphasis border border-success-subtle bg-success-subtle">Your appointment has been created successfully.</div>`).addClass("p-2");
 					
 					setTimeout(function() {
-						// We destroy first then re-initialize the data table
-						// from /js/book-appointment/data-table.js file
-						window.tableAppointmentList.destroy();
-						window.initDataTableAppointmentList();
+						// The calendar object defined in /js/full-calendar.js will execute the same event source
+						// to update the data loaded in calendar
+						window.appointmentCalendar.refetchEvents();
 						
 						$("#buttonCancel").prop("disabled", false);
 						$("#buttonSave").prop("disabled", false);

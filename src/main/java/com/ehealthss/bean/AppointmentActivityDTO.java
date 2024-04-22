@@ -14,18 +14,20 @@ public class AppointmentActivityDTO {
 	private String notes;
 	private AppointmentStatus status;
 	private Date createdOn;
+	private int slot;
 
 	public AppointmentActivityDTO() {
 	}
 
 	public AppointmentActivityDTO(Integer id, Appointment appointment, User user, String notes,
-			AppointmentStatus status, Date createdOn) {
+			AppointmentStatus status, Date createdOn, int slot) {
 		this.id = id;
 		this.appointment = appointment;
 		this.user = user;
 		this.notes = notes;
 		this.status = status;
 		this.createdOn = createdOn;
+		this.slot = slot;
 	}
 
 	public Integer getId() {
@@ -76,11 +78,19 @@ public class AppointmentActivityDTO {
 		this.createdOn = createdOn;
 	}
 
+	public int getSlot() {
+		return slot;
+	}
+
+	public void setSlot(int slot) {
+		this.slot = slot;
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
-				"AppointmentActivityDTO [id=%s, appointment=%s, user=%s, notes=%s, status=%s, createdOn=%s]", id,
-				appointment, user, notes, status, createdOn);
+				"AppointmentActivityDTO [id=%s, appointment=%s, user=%s, notes=%s, status=%s, createdOn=%s, slot=%s]",
+				id, appointment, user, notes, status, createdOn, slot);
 	}
-	
+
 }

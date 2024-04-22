@@ -201,16 +201,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Override
 	@Transactional
-	public void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivity appointmentActivity) {
+	public void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivityDTO appointmentActivityDTO) {
 
 		Appointment appointment = appointmentRepository.getReferenceById(appointmentId);
-		appointment.setStatus(appointmentActivity.getStatus());
+		appointment.setStatus(appointmentActivityDTO.getStatus());
+		appointment.setSlot(appointmentActivityDTO.getSlot());
 		appointmentRepository.save(appointment);
 
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
+		AppointmentActivity appointmentActivity = new AppointmentActivity();
 		appointmentActivity.setAppointment(appointment);
 		appointmentActivity.setUser(user);
+		appointmentActivity.setNotes(appointmentActivityDTO.getNotes());
+		appointmentActivity.setStatus(appointmentActivityDTO.getStatus());
 		appointmentActivityRepository.save(appointmentActivity);
 
 	}
@@ -232,7 +236,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private AppointmentActivityDTO convertToAppointmentActivityDTO(AppointmentActivity appointmentActivity) {
 
 		return new AppointmentActivityDTO(appointmentActivity.getId(), null, appointmentActivity.getUser(),
-				appointmentActivity.getNotes(), appointmentActivity.getStatus(), appointmentActivity.getCreatedOn());
+				appointmentActivity.getNotes(), appointmentActivity.getStatus(), appointmentActivity.getCreatedOn(), 0);
 
 	}
 

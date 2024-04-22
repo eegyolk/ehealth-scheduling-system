@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.ehealthss.bean.AppointmentActivityDTO;
 import com.ehealthss.bean.AppointmentDTO;
 import com.ehealthss.bean.CalendarEventRequestDTO;
-import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.enums.DoctorDepartment;
 
@@ -24,6 +24,6 @@ public interface AppointmentService {
 
 	AppointmentDTO fetchAppointment(int appointmentId);
 
-	void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivity appointmentActivity);
+	void updateStatus(UserDetails userDetails, int appointmentId, AppointmentActivityDTO appointmentActivityDTO);
 
 }

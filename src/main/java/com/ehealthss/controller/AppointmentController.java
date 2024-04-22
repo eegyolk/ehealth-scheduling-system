@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.ehealthss.bean.AppointmentActivityDTO;
 import com.ehealthss.bean.AppointmentDTO;
 import com.ehealthss.bean.CalendarEventRequestDTO;
-import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.service.AppointmentService;
@@ -69,9 +69,9 @@ public class AppointmentController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/update/status/{appointmentId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public void updateStatus(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int appointmentId,
-			@RequestBody AppointmentActivity appointmentActivity) {
+			@RequestBody AppointmentActivityDTO appointmentActivityDTO) {
 
-		appointmentService.updateStatus(userDetails, appointmentId, appointmentActivity);
+		appointmentService.updateStatus(userDetails, appointmentId, appointmentActivityDTO);
 
 	}
 
