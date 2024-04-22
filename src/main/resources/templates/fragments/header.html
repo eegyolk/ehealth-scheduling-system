@@ -39,7 +39,16 @@
 					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
 					data-bs-toggle="dropdown"></li>
 				<li class="nav-item px-2 btn-group"><img
-					src="/img/user-solid.svg" width="38px" height="38px" alt="User"
+					sec:authorize="hasRole('ROLE_PATIENT')" src="/img/user-solid.svg"
+					width="38px" height="38px" alt="User"
+					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
+					data-bs-toggle="dropdown"> <img
+					sec:authorize="hasRole('ROLE_DOCTOR')" src="/img/user-doctor-solid.svg"
+					width="38px" height="38px" alt="User"
+					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
+					data-bs-toggle="dropdown"> <img
+					sec:authorize="hasRole('ROLE_STAFF')" src="/img/user-nurse-solid.svg"
+					width="38px" height="38px" alt="User"
 					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
 					data-bs-toggle="dropdown">
 					<ul class="dropdown-menu text-small shadow">
