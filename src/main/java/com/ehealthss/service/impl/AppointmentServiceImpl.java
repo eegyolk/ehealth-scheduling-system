@@ -69,6 +69,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		User user = userRepository.findByUsername(userDetails.getUsername());
 
 		if (user.getType() == UserType.PATIENT) {
+			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.CANCELLED };
 			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
 			List<Appointment> appointments = appointmentRepository
 					.findByPatientIdAndStatusOrderByCreatedOnDesc(user.getPatient().getId(), AppointmentStatus.FULFILLED);
@@ -86,6 +87,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 				assignedLocations.add(location);
 			}
 
+			model.addAttribute("appointmentStatuses", appointmentStatuses);
 			model.addAttribute("patientGenders", patientGenders);
 			model.addAttribute("patientProfile", user.getPatient());
 			model.addAttribute("patientSettings", user.getPatient().getPatientSetting());
@@ -93,8 +95,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 			model.addAttribute("lastClinicVisited", assignedLocations);
 
 		} else if (user.getType() == UserType.DOCTOR) {
-			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.BOOKED, AppointmentStatus.ARRIVED,
-					AppointmentStatus.FULFILLED };
+			AppointmentStatus[] appointmentStatuses = { AppointmentStatus.FULFILLED };
 
 			model.addAttribute("appointmentStatuses", appointmentStatuses);
 			model.addAttribute("doctorProfile", user.getDoctor());

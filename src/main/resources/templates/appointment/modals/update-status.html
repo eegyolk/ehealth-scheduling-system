@@ -29,7 +29,7 @@
 						</div>
 					</div>
 
-					<div id="divSlotUS" class="row mb-3">
+					<div sec:authorize="hasRole('ROLE_STAFF')" id="divSlotUS" class="row mb-3">
 						<div class="col-3 pt-1">
 							<span class="text-danger me-1">*</span>Slot
 						</div>

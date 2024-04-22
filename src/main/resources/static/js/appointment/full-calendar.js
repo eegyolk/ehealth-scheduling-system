@@ -35,7 +35,6 @@ $().ready(function() {
 					data: JSON.stringify(data),
 				}).done(function(data) {
 					successCallback(data.map(row => {
-						console.log(row);
 						row["title"] = row.description;
 						row["start"] = row.datetime;
 						row["textColor"] = "black";
