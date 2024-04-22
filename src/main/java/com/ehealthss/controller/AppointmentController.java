@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,8 +25,6 @@ import com.ehealthss.model.AppointmentActivity;
 import com.ehealthss.model.Doctor;
 import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.service.AppointmentService;
-
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/appointment")
@@ -59,20 +55,6 @@ public class AppointmentController {
 			@RequestBody CalendarEventRequestDTO calendarEventRequestDTO) {
 
 		return appointmentService.fetchAppointments(userDetails, calendarEventRequestDTO);
-
-	}
-	
-	
-	
-	
-	
-
-	@ResponseBody
-	@PostMapping(value = "/fetch/appointmentsx", consumes = { MediaType.APPLICATION_JSON_VALUE })
-	public DataTablesOutput<AppointmentDTO> fetchAppointments(@AuthenticationPrincipal UserDetails userDetails,
-			@Valid @RequestBody DataTablesInput input) {
-
-		return appointmentService.fetchAppointments(userDetails, input);
 
 	}
 

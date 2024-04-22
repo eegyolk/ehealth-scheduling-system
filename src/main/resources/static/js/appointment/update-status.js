@@ -3,14 +3,13 @@ $().ready(function() {
 	buttonEvents();
 	
 	function modalEvents() {
-		$("#updateStatus").on("show.bs.modal", function(ev) {			
+		$("#updateStatus").on("show.bs.modal", function(ev) {		
 			$("#hiddenIdUS").val($(ev.relatedTarget).data("id"));			
 			$("#selectStatusUS").val($(ev.relatedTarget).data("status"));
-			$("#selectSlotsUS").val($(ev.relatedTarget).data("slot"));			
+			$("#selectSlotUS").val($(ev.relatedTarget).data("slot"));			
 			
 			if ($("#hiddenAuthorizeRole").val() === "ROLE_STAFF") {
 				$("#selectStatusUS option[value='FULFILLED']").addClass("d-none");
-				$("#selectStatusUS option[value='CANCELLED']").addClass("d-none");
 				
 				if ($(ev.relatedTarget).data("join-waitlist") === false) {
 					$("#selectStatusUS option[value='WAITLIST']").addClass("d-none");
@@ -65,10 +64,9 @@ $().ready(function() {
 					$("#divFeedbackUS").html(`<div class="p-3 text-primary-emphasis border border-success-subtle bg-success-subtle">Appointment has been updated successfully.</div>`).addClass("p-2");
 					
 					setTimeout(function() {
-						// We destroy first then re-initialize the data table
-						// from /js/book-appointment/data-table.js file
-						window.tableAppointmentList.destroy();
-						window.initDataTableAppointmentList();
+						// The calendar object defined in /js/full-calendar.js will execute the same event source
+						// to update the data loaded in calendar
+						window.appointmentCalendar.refetchEvents();
 						
 						$("#buttonCancelUS").prop("disabled", false);
 						$("#buttonSaveUS").prop("disabled", false);
