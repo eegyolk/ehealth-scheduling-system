@@ -1,0 +1,78 @@
+<div class="row">
+	<div class="col-xl-9">
+		<div class="row gx-3 gy-3">
+			<div class="col-md-4">
+				<div class="card border-0 shadow-sm">
+					<div class="card-body p-4">
+						<h6 class="clas-subtitle">All Appointments</h6>
+						<h5 class="fs-2" th:text="${allAppointments}"></h5>
+
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<div class="card border-0 shadow-sm">
+					<div class="card-body p-4">
+						<h6 class="clas-subtitle">New Appointments</h6>
+						<h5 class="fs-2" th:text="${newAppointments}"></h5>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<div class="card border-0 shadow-sm">
+					<div class="card-body p-4">
+						<h6 class="clas-subtitle">Fulfilled Appointments</h6>
+						<h5 class="fs-2" th:text="${fulfilledAppointments}"></h5>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<div class="card border-0 shadow-sm">
+					<div class="card-body p-4">
+						<h6 class="clas-subtitle">Cancelled Appointments</h6>
+						<h5 class="fs-2" th:text="${cancelledAppointments}"></h5>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<div class="card border-0 shadow-sm">
+					<div class="card-body p-4">
+						<h6 class="clas-subtitle">Today's Appointments</h6>
+						<h5 class="fs-2" th:text="${todaysAppointments}"></h5>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<div class="card border-0 shadow-sm">
+					<div class="card-body p-4">
+						<h6 class="clas-subtitle">Upcoming Appointments</h6>
+						<h5 class="fs-2" th:text="${upcomingAppointments}"></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-xl-3">
+		<div class="row gx-3 gy-3">
+			<div class="col-md-12">
+				<div class="card bg-primary border-0 shadow-sm">
+					<div class="card-body text-center p-4">
+						<div class="bg-white d-inline-flex p-2 mb-3 rounded-circle">
+							<img src="/gmc-logo.png" height="60" width="60"
+								class="object-fit-scale" alt="logo">
+						</div>
+						<h5 class="fs-5 text-white">Greens Medical Clinic</h5>
+						<p class="text-white">8-3850 Green Falls Dr, Regina, SK S4V
+							3T6</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

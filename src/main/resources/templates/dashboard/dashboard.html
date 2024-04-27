@@ -20,6 +20,10 @@
 				</button>
 			</div>
 		</div>
+		
+		<div sec:authorize="hasRole('ROLE_PATIENT')" th:include="~{dashboard/types/patient}"></div>
+		<div sec:authorize="hasRole('ROLE_DOCTOR')" th:include="~{dashboard/types/doctor}"></div>
+		<div sec:authorize="hasRole('ROLE_STAFF')" th:include="~{dashboard/types/staff}"></div>
 	</main>
 
 	<!-- Footer -->
