@@ -55,7 +55,7 @@ public class DashboardServiceImpl implements DashboardService {
 		model.addAttribute("pageTitle", "Dashboard");
 
 		User user = userRepository.findByUsername(userDetails.getUsername());
-
+		
 		if (user.getType() == UserType.PATIENT) {
 			PatientGender[] patientGenders = PatientGender.class.getEnumConstants();
 			DoctorDepartment[] doctorDepartments = DoctorDepartment.class.getEnumConstants();

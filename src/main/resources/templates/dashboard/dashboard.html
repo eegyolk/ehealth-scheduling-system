@@ -8,7 +8,9 @@
 	<main class="container-fluid ps-4 pe-4">
 		<div class="row bg-white p-3 rounded-3 mb-3">
 			<div class="col align-middle mt-2">
-				<h4>Overview</h4>
+				<h4 sec:authorize="hasRole('ROLE_PATIENT')" class="text-primary" th:text="${'Welcome, Patient ' + patientProfile.firstName + ' ' + patientProfile.lastName + '!'}"></h4>
+				<h4 sec:authorize="hasRole('ROLE_DOCTOR')" class="text-primary" th:text="${'Welcome, Doctor ' + doctorProfile.firstName + ' ' + doctorProfile.lastName + '!'}"></h4>
+				<h4 sec:authorize="hasRole('ROLE_STAFF')" class="text-primary" th:text="${'Welcome, Staff ' + staffProfile.firstName + ' ' + staffProfile.lastName + '!'}"></h4>
 			</div>
 
 			<div class="col-md-auto mt-1">

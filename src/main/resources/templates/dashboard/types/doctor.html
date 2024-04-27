@@ -1,5 +1,6 @@
 <div class="row">
 	<div class="col-xl-9">
+		<h4 class="pt-2 pb-2">Appointments Overview</h4>
 		<div class="row gx-3 gy-3">
 			<div class="col-md-4">
 				<div class="card border-0 shadow-sm">
@@ -74,18 +75,21 @@
 							class="text-white" th:text="${'Phone: ' + assignedClinic.phone}"></small>
 					</div>
 
-					<div th:if="${todaysAttendance == null}" class="alert alert-warning m-4 mt-0" role="alert">
+					<div th:if="${todaysAttendance == null}"
+						class="alert alert-warning m-4 mt-0" role="alert">
 						Your <a href="/attendance" class="alert-link">clock-in</a> is
 						needed as per system guidelines.
 					</div>
-					
-					<div th:if="${todaysAttendance != null && todaysAttendance.inTime != null  && todaysAttendance.outTime == null}" class="alert alert-success m-4 mt-0" role="alert">
-						You are already clocked in. Thank you.
-					</div>
-					
-					<div th:if="${todaysAttendance != null && todaysAttendance.inTime != null && todaysAttendance.outTime != null}" class="alert alert-danger m-4 mt-0" role="alert">
-						You are already clocked out. Goodbye.
-					</div>
+
+					<div
+						th:if="${todaysAttendance != null && todaysAttendance.inTime != null  && todaysAttendance.outTime == null}"
+						class="alert alert-success m-4 mt-0" role="alert">You are
+						already clocked in. Thank you.</div>
+
+					<div
+						th:if="${todaysAttendance != null && todaysAttendance.inTime != null && todaysAttendance.outTime != null}"
+						class="alert alert-danger m-4 mt-0" role="alert">You are
+						already clocked out. Goodbye.</div>
 				</div>
 			</div>
 		</div>
