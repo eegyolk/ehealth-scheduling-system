@@ -1,20 +1,25 @@
 package com.ehealthss.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ehealthss.bean.AppointmentActivityAlertDTO;
 import com.ehealthss.bean.DoctorDTO;
 import com.ehealthss.bean.DoctorScheduleDTO;
 import com.ehealthss.bean.PatientDTO;
 import com.ehealthss.bean.PatientSettingDTO;
 import com.ehealthss.bean.StaffDTO;
 import com.ehealthss.bean.UserDTO;
+import com.ehealthss.repository.AppointmentActivityAlertRepository;
 import com.ehealthss.service.UserService;
 
 @RestController
@@ -23,6 +28,21 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@PostMapping(value = "fetch/activity-alerts", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public List<AppointmentActivityAlertDTO> fetchActivityAlerts(@AuthenticationPrincipal UserDetails userDetails)
+	{
+		
+		return userService.fetchActivityAlerts(userDetails);
+		
+	}
+	
+	@PostMapping(value = "/update/activity-alert/{alertId}", consumes = { MediaType.APPLICATION_JSON_VALUE })
+	public void updateActivityAlert(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int alertId) throws Exception {
+
+		userService.updateActivityAlert(userDetails, alertId);
+
+	}
 	
 	@PostMapping(value = "/update/password", consumes = { MediaType.APPLICATION_JSON_VALUE })
 	public void updatePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserDTO userDTO) throws Exception {

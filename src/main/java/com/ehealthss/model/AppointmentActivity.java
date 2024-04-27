@@ -1,6 +1,7 @@
 package com.ehealthss.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,6 +46,10 @@ public class AppointmentActivity {
 
 	@CreationTimestamp
 	private Date createdOn;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appointmentActivity")
+	@JsonIgnore
+	private List<AppointmentActivityAlert> appointmentActivityAlerts;
 
 	public AppointmentActivity() {
 	}
@@ -101,6 +107,14 @@ public class AppointmentActivity {
 
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public List<AppointmentActivityAlert> getAppointmentActivityAlerts() {
+		return appointmentActivityAlerts;
+	}
+
+	public void setAppointmentActivityAlerts(List<AppointmentActivityAlert> appointmentActivityAlerts) {
+		this.appointmentActivityAlerts = appointmentActivityAlerts;
 	}
 
 	@Override

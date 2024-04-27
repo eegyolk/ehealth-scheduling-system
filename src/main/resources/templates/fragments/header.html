@@ -34,19 +34,11 @@
 					th:class="'nav-link py-1 px-1 text-primary ' + ((${pageTitle} == 'Help & Support') ? 'fw-medium active' : '')"
 					href="/help-and-support">Help & Support</a></li>
 
-				<li class="nav-item px-2 position-relative"><img
-					src="/img/bell-solid.svg" width="38px" height="38px" alt="Alerts"
-					class="btn btn-primary p-2 rounded-circle dropdown-toggle"
-					data-bs-toggle="dropdown"><span
-					class="position-absolute top-10 start-30 mt-1 translate-middle badge rounded-pill border border-light bg-danger">
-						100 <span class="visually-hidden">unread messages</span>
-				</span>
-					<ul class="dropdown-menu text-small shadow">
-						<li><a class="dropdown-item" href="#">Account 1 1min</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="#">Account 2 2min</a></li>
-
-					</ul></li>
+				<li class="nav-item px-2"><img src="/img/bell-solid.svg"
+					width="38px" height="38px" alt="Alerts"
+					class="btn btn-primary p-2 rounded-circle"
+					data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+					aria-controls="offcanvasRight"><span id="activityAlertsCount"></span></li>
 				<li class="nav-item px-2 btn-group"><img
 					sec:authorize="hasRole('ROLE_PATIENT')" src="/img/user-solid.svg"
 					width="38px" height="38px" alt="Patient"
@@ -101,3 +93,4 @@
 		type="hidden" th:name="${_csrf.parameterName}"
 		th:value="${_csrf.token}" />
 </nav>
+

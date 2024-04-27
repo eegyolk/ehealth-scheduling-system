@@ -1,6 +1,6 @@
 $().ready(function() {
 	buttonEvents();
-
+	
 	function buttonEvents() {
 		$("#buttonBack").click(function(ev) {
 			history.go(-1);	
