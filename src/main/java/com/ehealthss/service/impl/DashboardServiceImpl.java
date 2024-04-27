@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 
 import com.ehealthss.model.Appointment;
 import com.ehealthss.model.Doctor;
+import com.ehealthss.model.DoctorSchedule;
 import com.ehealthss.model.Location;
 import com.ehealthss.model.Patient;
 import com.ehealthss.model.User;
@@ -24,6 +25,7 @@ import com.ehealthss.model.enums.DoctorDepartment;
 import com.ehealthss.model.enums.PatientGender;
 import com.ehealthss.model.enums.UserType;
 import com.ehealthss.repository.AppointmentRepository;
+import com.ehealthss.repository.DoctorAttendanceRepository;
 import com.ehealthss.repository.LocationRepository;
 import com.ehealthss.repository.UserRepository;
 import com.ehealthss.service.DashboardService;
@@ -41,6 +43,9 @@ public class DashboardServiceImpl implements DashboardService {
 
 	@Autowired
 	AppointmentRepository appointmentRepository;
+	
+	@Autowired
+	DoctorAttendanceRepository doctorAttendanceRepository;
 
 	@Override
 	public String index(Model model, UserDetails userDetails) {
@@ -66,8 +71,25 @@ public class DashboardServiceImpl implements DashboardService {
 			model.addAttribute("doctorDepartments", doctorDepartments);
 			model.addAttribute("doctorProfile", user.getDoctor());
 
+			// Overview
+			List<DoctorSchedule> doctorschedule = user.getDoctor().getDoctorSchedules().stream().map(item -> {
+				
+				
+				if (LocalDate.now().getDayOfWeek().toString().substring(0, 3).toUpperCase()
+						.equals(item.getDayOfWeek().toString())) {
+					return item;
+				}
+				return null;
+
+			}).filter(Objects::nonNull).toList();
+			model.addAttribute("assignedClinic", doctorschedule.get(0).getLocation());
+			model.addAttribute("todaysAttendance", doctorAttendanceRepository.findByDoctorIdAndLocationIdAndDate(user.getDoctor().getId(), doctorschedule.get(0).getLocation().getId(), java.sql.Date.valueOf(LocalDate.now())));
+
 		} else if (user.getType() == UserType.STAFF) {
 			model.addAttribute("staffProfile", user.getStaff());
+
+			// Overview
+			model.addAttribute("assignedClinic", user.getStaff().getLocation());
 
 		}
 

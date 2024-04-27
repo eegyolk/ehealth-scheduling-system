@@ -64,12 +64,13 @@
 				<div class="card bg-primary border-0 shadow-sm">
 					<div class="card-body text-center p-4">
 						<div class="bg-white d-inline-flex p-2 mb-3 rounded-circle">
-							<img src="/gmc-logo.png" height="60" width="60"
+							<img src="/img/med-clinic.png" height="60" width="60"
 								class="object-fit-scale" alt="logo">
 						</div>
-						<h5 class="fs-5 text-white">Greens Medical Clinic</h5>
-						<p class="text-white">8-3850 Green Falls Dr, Regina, SK S4V
-							3T6</p>
+						<h5 class="fs-5 text-white" th:text="${assignedClinic.name}"></h5>
+						<p class="text-white" th:text="${assignedClinic.address}"></p>
+						<small class="text-white" th:text="${'Email: ' + assignedClinic.email}"></small><br/>
+						<small class="text-white" th:text="${'Phone: ' + assignedClinic.phone}"></small>
 					</div>
 				</div>
 			</div>

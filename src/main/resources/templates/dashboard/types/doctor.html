@@ -10,7 +10,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<div class="card border-0 shadow-sm">
 					<div class="card-body p-4">
@@ -19,7 +19,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<div class="card border-0 shadow-sm">
 					<div class="card-body p-4">
@@ -28,7 +28,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<div class="card border-0 shadow-sm">
 					<div class="card-body p-4">
@@ -37,7 +37,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<div class="card border-0 shadow-sm">
 					<div class="card-body p-4">
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-4">
 				<div class="card border-0 shadow-sm">
 					<div class="card-body p-4">
@@ -57,19 +57,34 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-xl-3">
 		<div class="row gx-3 gy-3">
 			<div class="col-md-12">
 				<div class="card bg-primary border-0 shadow-sm">
 					<div class="card-body text-center p-4">
 						<div class="bg-white d-inline-flex p-2 mb-3 rounded-circle">
-							<img src="/gmc-logo.png" height="60" width="60"
+							<img src="/img/med-clinic.png" height="60" width="60"
 								class="object-fit-scale" alt="logo">
 						</div>
-						<h5 class="fs-5 text-white">Greens Medical Clinic</h5>
-						<p class="text-white">8-3850 Green Falls Dr, Regina, SK S4V
-							3T6</p>
+						<h5 class="fs-5 text-white" th:text="${assignedClinic.name}"></h5>
+						<p class="text-white" th:text="${assignedClinic.address}"></p>
+						<small class="text-white"
+							th:text="${'Email: ' + assignedClinic.email}"></small><br /> <small
+							class="text-white" th:text="${'Phone: ' + assignedClinic.phone}"></small>
+					</div>
+
+					<div th:if="${todaysAttendance == null}" class="alert alert-warning m-4 mt-0" role="alert">
+						Your <a href="/attendance" class="alert-link">clock-in</a> is
+						needed as per system guidelines.
+					</div>
+					
+					<div th:if="${todaysAttendance != null && todaysAttendance.inTime != null  && todaysAttendance.outTime == null}" class="alert alert-success m-4 mt-0" role="alert">
+						You are already clocked in. Thank you.
+					</div>
+					
+					<div th:if="${todaysAttendance != null && todaysAttendance.inTime != null && todaysAttendance.outTime != null}" class="alert alert-danger m-4 mt-0" role="alert">
+						You are already clocked out. Goodbye.
 					</div>
 				</div>
 			</div>
