@@ -109,7 +109,7 @@ public class DashboardServiceImpl implements DashboardService {
 
 			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getDatetime)).toList());
 			
-			model.addAttribute("myAppointment", appointments.size() > 0 ? appointments.stream().map(item -> {
+			List<AppointmentDTO> myAppointment = appointments.size() > 0 ? appointments.stream().map(item -> {
 
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				boolean isSameDate = LocalDate.now().toString().equals(formatter.format(item.getDatetime()));
@@ -119,7 +119,8 @@ public class DashboardServiceImpl implements DashboardService {
 				}
 				return null;
 
-			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getSlot)).toList().get(0) : null);
+			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getSlot)).toList() : List.of();
+			model.addAttribute("myAppointment", myAppointment.size() > 0 ? myAppointment.get(0) : null);
 
 		} else if (user.getType() == UserType.DOCTOR) {
 
@@ -129,7 +130,7 @@ public class DashboardServiceImpl implements DashboardService {
 			model.addAttribute("doctorProfile", user.getDoctor());
 
 			// Overview
-			model.addAttribute("nextAppointment", appointments.size() > 0 ? appointments.stream().map(item -> {
+			List<AppointmentDTO> nextAppointment = appointments.size() > 0 ? appointments.stream().map(item -> {
 
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				boolean isSameDate = LocalDate.now().toString().equals(formatter.format(item.getDatetime()));
@@ -139,7 +140,9 @@ public class DashboardServiceImpl implements DashboardService {
 				}
 				return null;
 
-			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getSlot)).toList().get(0) : null);
+			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getSlot)).toList() : List.of();
+			model.addAttribute("nextAppointment", nextAppointment.size() > 0 ? nextAppointment.get(0) : null);
+			
 			model.addAttribute("todaysAppointmentList", appointments.stream().map(item -> {
 
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -152,6 +155,7 @@ public class DashboardServiceImpl implements DashboardService {
 				return null;
 
 			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getSlot)).toList());
+			
 			model.addAttribute("upcomingAppointmentList", appointments.stream().map(item -> {
 
 				try {
@@ -185,6 +189,7 @@ public class DashboardServiceImpl implements DashboardService {
 			}).filter(Objects::nonNull).toList();
 			model.addAttribute("assignedClinic",
 					doctorschedule.size() > 0 ? doctorschedule.get(0).getLocation() : null);
+			
 			model.addAttribute("todaysAttendance",
 					doctorschedule.size() > 0
 							? doctorAttendanceRepository.findByDoctorIdAndLocationIdAndDate(user.getDoctor().getId(),
@@ -204,6 +209,7 @@ public class DashboardServiceImpl implements DashboardService {
 				return null;
 
 			}).filter(Objects::nonNull).sorted(Comparator.comparing(AppointmentDTO::getDatetime)).toList());
+			
 			model.addAttribute("upcomingAppointmentList", appointments.stream().map(item -> {
 
 				if (AppointmentStatus.BOOKED == item.getStatus() || AppointmentStatus.ARRIVED == item.getStatus()) {
