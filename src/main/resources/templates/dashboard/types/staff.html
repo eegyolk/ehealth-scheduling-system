@@ -57,6 +57,106 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-12 gx-3 gy-4">
+				<div class="card border-0 shadow-sm p-4 pt-4">
+					<div class="row">
+						<div class="col-12 pb-3">
+							<h5>Awaiting Appointments</h5>
+						</div>
+					</div>
+					<div th:if="${awaitingAppointmentList != null && #lists.size(awaitingAppointmentList) > 0}" class="row bg-secondary-subtle">
+						<div class="col-1 p-3 pt-2 pb-2">Ref. #</div>
+						<div class="col-2 p-3 pt-2 pb-2">Patient</div>
+						<div class="col-1 p-3 pt-2 pb-2">Slot #</div>
+						<div class="col-1 p-3 pt-2 pb-2">Status</div>
+						<div class="col-3 p-3 pt-2 pb-2">Title</div>
+						<div class="col-2 p-3 pt-2 pb-2">Datetime</div>
+						<div class="col-2 p-3 pt-2 pb-2">Clinic</div>
+					</div>
+					<div th:if="${awaitingAppointmentList != null && #lists.size(awaitingAppointmentList) > 0}" th:each="appointment,iterStat : ${awaitingAppointmentList}"
+						th:class="${#lists.size(awaitingAppointmentList) == iterStat.index + 1 ? 'row' : 'row border-bottom'}">
+						<div class="col-1 p-3 pt-2 pb-2"
+							th:text="${appointment.referenceNo}"></div>
+						<div class="col-2 p-3 pt-2 pb-2">
+							<span
+								th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}"></span>
+						</div>
+						<div class="col-1 p-3 pt-2 pb-2" th:text="${appointment.slot}"></div>
+						<div th:if="${appointment.status.toString() == 'PENDING'}"
+							class="col-1 p-3 pt-2 pb-2">
+							<span class="badge text-bg-secondary" th:text="${appointment.status}"></span>
+						</div>
+						<div th:if="${appointment.status.toString() == 'WAITLIST'}"
+							class="col-1 p-3 pt-2 pb-2">
+							<span class="badge text-bg-warning"
+								th:text="${appointment.status}"></span>
+						</div>
+						<div class="col-3 p-3 pt-2 pb-2"
+							th:text="${appointment.description}"></div>
+						<div class="col-2 p-3 pt-2 pb-2"
+							th:text="${#dates.format(appointment.datetime, 'yyyy-MM-dd HH:mm')}"></div>
+						<div class="col-2 p-3 pt-2 pb-2">
+							<span th:text="${appointment.location.name}"></span>
+						</div>
+					</div>
+					<div th:if="${awaitingAppointmentList == null || #lists.size(awaitingAppointmentList) == 0}" class="row">
+						<div class="col-12 pb-2">No records found.</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-12 gx-3 gy-4">
+				<div class="card border-0 shadow-sm p-4 pt-4">
+					<div class="row">
+						<div class="col-12 pb-3">
+							<h5>Upcoming Appointments</h5>
+						</div>
+					</div>
+					<div th:if="${upcomingAppointmentList != null && #lists.size(upcomingAppointmentList) > 0}" class="row bg-secondary-subtle">
+						<div class="col-1 p-3 pt-2 pb-2">Ref. #</div>
+						<div class="col-2 p-3 pt-2 pb-2">Patient</div>
+						<div class="col-1 p-3 pt-2 pb-2">Slot #</div>
+						<div class="col-1 p-3 pt-2 pb-2">Status</div>
+						<div class="col-3 p-3 pt-2 pb-2">Title</div>
+						<div class="col-2 p-3 pt-2 pb-2">Datetime</div>
+						<div class="col-2 p-3 pt-2 pb-2">Clinic</div>
+					</div>
+					<div th:if="${upcomingAppointmentList != null && #lists.size(upcomingAppointmentList) > 0}" th:each="appointment,iterStat : ${upcomingAppointmentList}"
+						th:class="${#lists.size(upcomingAppointmentList) == iterStat.index + 1 ? 'row' : 'row border-bottom'}">
+						<div class="col-1 p-3 pt-2 pb-2"
+							th:text="${appointment.referenceNo}"></div>
+						<div class="col-2 p-3 pt-2 pb-2">
+							<span
+								th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}"></span>
+						</div>
+						<div class="col-1 p-3 pt-2 pb-2" th:text="${appointment.slot}"></div>
+						<div th:if="${appointment.status.toString() == 'BOOKED'}"
+							class="col-1 p-3 pt-2 pb-2">
+							<span class="badge text-bg-info" th:text="${appointment.status}"></span>
+						</div>
+						<div th:if="${appointment.status.toString() == 'ARRIVED'}"
+							class="col-1 p-3 pt-2 pb-2">
+							<span class="badge text-bg-primary"
+								th:text="${appointment.status}"></span>
+						</div>
+						<div class="col-3 p-3 pt-2 pb-2"
+							th:text="${appointment.description}"></div>
+						<div class="col-2 p-3 pt-2 pb-2"
+							th:text="${#dates.format(appointment.datetime, 'yyyy-MM-dd HH:mm')}"></div>
+						<div class="col-2 p-3 pt-2 pb-2">
+							<span th:text="${appointment.location.name}"></span>
+						</div>
+					</div>
+					<div th:if="${upcomingAppointmentList == null || #lists.size(upcomingAppointmentList) == 0}" class="row">
+						<div class="col-12 pb-2">No records found.</div>
+					</div>
+				</div>
+			</div>
+
+			 
+		</div>
 	</div>
 	
 	<div class="col-xl-3">
