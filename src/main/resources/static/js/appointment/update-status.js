@@ -5,22 +5,25 @@ $().ready(function() {
 	function modalEvents() {
 		$("#updateStatus").on("show.bs.modal", function(ev) {		
 			$("#hiddenIdUS").val($(ev.relatedTarget).data("id"));			
-			$("#selectStatusUS").val($(ev.relatedTarget).data("status"));
 			$("#selectSlotUS").val($(ev.relatedTarget).data("slot"));			
-			
-			if ($("#hiddenAuthorizeRole").val() === "ROLE_STAFF") {
-				$("#selectStatusUS option[value='FULFILLED']").addClass("d-none");
+
+			if ($("#hiddenAuthorizeRole").val() === "ROLE_PATIENT") {
+				$("#selectStatusUS").val("CANCELLED");
 				
-				if ($(ev.relatedTarget).data("join-waitlist") === false) {
-					$("#selectStatusUS option[value='WAITLIST']").addClass("d-none");
-				}
 			} else if ($("#hiddenAuthorizeRole").val() === "ROLE_DOCTOR") {
 				$("#selectStatusUS option[value='PENDING']").remove();
 				$("#selectStatusUS option[value='BOOKED']").remove();
 				$("#selectStatusUS option[value='CANCELLED']").remove();
 				$("#selectStatusUS option[value='WAITLIST']").remove();
+				$("#selectStatusUS").val("FULFILLED");
 				$("#divSlotUS").addClass("d-none");
-			} 
+			} else if ($("#hiddenAuthorizeRole").val() === "ROLE_STAFF") {
+				$("#selectStatusUS option[value='FULFILLED']").addClass("d-none");
+				if ($(ev.relatedTarget).data("join-waitlist") === false) {
+					$("#selectStatusUS option[value='WAITLIST']").addClass("d-none");
+				}
+				$("#selectStatusUS").val($(ev.relatedTarget).data("status"));
+			}
 		});
 		
 		$("#updateStatus").on("hidden.bs.modal", function(ev) {
