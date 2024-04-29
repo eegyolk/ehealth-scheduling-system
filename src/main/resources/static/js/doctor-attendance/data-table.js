@@ -85,7 +85,7 @@ $().ready(function() {
 					searchable: false,
 					orderable: false,
 					render: function(data, type, row) {
-						return `<small>${data}</small>`;
+						return `<small>${data ? data : '-'}</small>`;
 					}
 				},
 				{
