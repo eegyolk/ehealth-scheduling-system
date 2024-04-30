@@ -114,7 +114,8 @@ public class DashboardServiceImpl implements DashboardService {
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				boolean isSameDate = LocalDate.now().toString().equals(formatter.format(item.getDatetime()));
 
-				if (AppointmentStatus.ARRIVED == item.getStatus() && isSameDate) {
+				if ((AppointmentStatus.BOOKED == item.getStatus() || AppointmentStatus.ARRIVED == item.getStatus())
+						&& isSameDate) {
 					return this.convertToAppointmentDTO(item, false);
 				}
 				return null;
